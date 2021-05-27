@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { FormFieldDefinition } from '../../forms/user-defined-form-viewer/user-defined-form-viewer.component';
 
@@ -9,6 +9,9 @@ import { FormFieldDefinition } from '../../forms/user-defined-form-viewer/user-d
 })
 export class MaterialEditorComponent implements OnInit {
   public formDef!: { key: string, fields: FormFieldDefinition[] };
+
+  @Output()
+  save = new EventEmitter<any>();
 
   @Input()
   public material: any;  //  = {"name":"TShirt","description":"A simple tshirt","category":"clothing","baseCost":1.45,"supplier":"gilden","supplierItemUrl":"dsagfds","options":{"items":[{"name":"Size","selections":{"items":[{"value":"M","display":"M","img":"","priceAdjustment":0},{"value":"S","display":"S","img":"","priceAdjustment":0},{"value":"XXL","display":"XXL","img":"","priceAdjustment":0.1}]}},{"name":"Color","selections":{"items":[{"value":"BLUE","display":"BLUE","img":"","priceAdjustment":0},{"value":"RED","display":"RED","img":"","priceAdjustment":0},{"value":"TIE DYE","display":"TIE","img":"DYE","priceAdjustment":0.15}]}}]}}
@@ -121,6 +124,9 @@ export class MaterialEditorComponent implements OnInit {
     };
   }
 
+  emitSave() {
+    this.save.emit(this.material);
+  }
 
   print() {
     console.log(JSON.stringify(this.material));

@@ -321,6 +321,24 @@ export class MaterialsListPageComponent implements OnInit {
     }
   ];
 
+  onSave($event: any) {
+    console.log('Saved!');
+    console.log($event);
+
+    let idx = -1;
+    for (let i = 0; i < this.materials.length; i++) {
+      const material = this.materials[i];
+      if (material.name === $event.name) {
+        idx = i;
+        break;
+      }
+    }
+
+    if (idx > -1) {
+      // this.materials[idx] = $event;  // TODO: fix angular error when saving, maybe needs the trackby function in ngFor
+    }
+  }
+
   selected!: User[];
   constructor() { }
 
