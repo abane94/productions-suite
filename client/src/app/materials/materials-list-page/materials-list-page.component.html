@@ -19,7 +19,7 @@
 
     <clr-dg-detail *clrIfDetail="let detail">
         <clr-dg-detail-header>{{detail.name}}</clr-dg-detail-header>
-        <app-material-editor></app-material-editor>
+        <app-material-editor [material]="detail"></app-material-editor>
         <br />
         <app-user-defined-form-data-display [data]="detail" [formDef]="formDef"
             [nestedDisplayField]="nestedDisplayField"></app-user-defined-form-data-display>

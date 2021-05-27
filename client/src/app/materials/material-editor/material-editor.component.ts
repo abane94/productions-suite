@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { FormFieldDefinition } from '../../forms/user-defined-form-viewer/user-defined-form-viewer.component';
 
 @Component({
@@ -9,95 +9,121 @@ import { FormFieldDefinition } from '../../forms/user-defined-form-viewer/user-d
 })
 export class MaterialEditorComponent implements OnInit {
   public formDef!: { key: string, fields: FormFieldDefinition[] };
-  form: FormGroup;
 
-  private material = {"name":"TShirt","description":"A simple tshirt","category":"clothing","baseCost":1.45,"supplier":"gilden","supplierItemUrl":"dsagfds","options":{"items":[{"name":"Size","selections":{"items":[{"value":"M","display":"M","img":"","priceAdjustment":0},{"value":"S","display":"S","img":"","priceAdjustment":0},{"value":"XXL","display":"XXL","img":"","priceAdjustment":0.1}]}},{"name":"Color","selections":{"items":[{"value":"BLUE","display":"BLUE","img":"","priceAdjustment":0},{"value":"RED","display":"RED","img":"","priceAdjustment":0},{"value":"TIE DYE","display":"TIE","img":"DYE","priceAdjustment":0.15}]}}]}}
+  @Input()
+  public material: any;  //  = {"name":"TShirt","description":"A simple tshirt","category":"clothing","baseCost":1.45,"supplier":"gilden","supplierItemUrl":"dsagfds","options":{"items":[{"name":"Size","selections":{"items":[{"value":"M","display":"M","img":"","priceAdjustment":0},{"value":"S","display":"S","img":"","priceAdjustment":0},{"value":"XXL","display":"XXL","img":"","priceAdjustment":0.1}]}},{"name":"Color","selections":{"items":[{"value":"BLUE","display":"BLUE","img":"","priceAdjustment":0},{"value":"RED","display":"RED","img":"","priceAdjustment":0},{"value":"TIE DYE","display":"TIE","img":"DYE","priceAdjustment":0.15}]}}]}}
 
-  constructor(private fb: FormBuilder) {
-    this.form = fb.group({
-      name: this.material.name,
-      description: this.material.description,
-      category: this.material.category,
-      baseCost: this.material.baseCost,
-      supplier: this.material.supplier,
-      supplierItemUrl: this.material.supplierItemUrl,
-      // tags: [{}],
+  constructor() {}
 
-      options: this.material.options
-    });
-  }
   ngOnInit(): void {
     this.formDef = {
-      key: 'MaterialOptions',
+      key: 'dgsdfgsfdh',
       fields: [
         {
           type: 'TEXT',
           key: 'name',
-          label: 'Options Name',
+          label: 'Name',
+          placeholder: '',
+          required: true
+        },
+        {
+          type: 'TEXT',
+          key: 'description',
+          label: 'Description',
+          placeholder: '',
+          required: true
+        },
+        {
+          type: 'TEXT',
+          key: 'category',
+          label: 'Category',
+          placeholder: '',
+          required: true
+        },
+        {
+          type: 'NUMBER',
+          key: 'baseCost',
+          label: 'Base Cost',
+          placeholder: '',
+          required: true
+        },
+        {
+          type: 'TEXT',
+          key: 'supplier',
+          label: 'Supplier',
+          placeholder: '',
+          required: true
+        },
+        {
+          type: 'TEXT',
+          key: 'supplierItemUrl',
+          label: 'supplierItemUrl',
           placeholder: '',
           required: true
         },
         {
           type: 'NESTED',
-          key: 'selections',
-          label: 'Selections',
+          key: 'options',
+          label: 'Options',
           innerForm: {
-            key: 'SelectionsInnerForm',
+            key: 'MaterialOptions',
             fields: [
               {
                 type: 'TEXT',
-                key: 'value',
-                label: 'Value',
+                key: 'name',
+                label: 'Options Name',
                 placeholder: '',
                 required: true
               },
               {
-                type: 'TEXT',
-                key: 'display',
-                label: 'Display',
-                placeholder: '',
-                required: true
-              },
-              {
-                type: 'TEXT',
-                key: 'img',
-                label: 'Image',
-                placeholder: '',
-                required: false
-              },
-              {
-                type: 'NUMBER',
-                key: 'priceAdjustment',
-                label: 'Price Adjustment (per unit)',
-                // placeholder: '',
-                required: false,
-                step: 0.01
+                type: 'NESTED',
+                key: 'selections',
+                label: 'Selections',
+                innerForm: {
+                  key: 'SelectionsInnerForm',
+                  fields: [
+                    {
+                      type: 'TEXT',
+                      key: 'value',
+                      label: 'Value',
+                      placeholder: '',
+                      required: true
+                    },
+                    {
+                      type: 'TEXT',
+                      key: 'display',
+                      label: 'Display',
+                      placeholder: '',
+                      required: true
+                    },
+                    {
+                      type: 'TEXT',
+                      key: 'img',
+                      label: 'Image',
+                      placeholder: '',
+                      required: false
+                    },
+                    {
+                      type: 'NUMBER',
+                      key: 'priceAdjustment',
+                      label: 'Price Adjustment (per unit)',
+                      // placeholder: '',
+                      required: false,
+                      step: 0.01
+                    }
+                  ]
+                }
               }
             ]
           }
         }
       ]
-    }
+    };
   }
 
 
   print() {
-    console.log(JSON.stringify(this.form.value))
-  }
-
-  alertErrors(item: AbstractControl) {
-    const invalid: Record<string, any> = {};
-    const controls = (item as FormGroup).controls;
-    if (controls) {
-      for (const name in controls) {
-        if (controls[name].invalid) {
-          invalid[name] = controls[name].errors;
-        }
-      }
-    }
-
-    alert(`${item.valid} - ${item.invalid} - ${JSON.stringify(item.errors)} - ${JSON.stringify(invalid, undefined, 2)}`);
-
+    console.log(JSON.stringify(this.material));
   }
 
 }
