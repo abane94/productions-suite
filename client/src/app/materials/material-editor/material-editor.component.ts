@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { FormFieldDefinition } from '../user-defined-form-viewer/user-defined-form-viewer.component';
+import { FormFieldDefinition } from '../../forms/user-defined-form-viewer/user-defined-form-viewer.component';
 
 @Component({
   selector: 'app-material-editor',

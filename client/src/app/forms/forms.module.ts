@@ -6,14 +6,13 @@ import { ClarityModule } from '@clr/angular';
 import { ListItemModalContainerComponent } from './list-item-modal-container/list-item-modal-container.component';
 import { MasterDetailControlComponent } from './master-detail-control/master-detail-control.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MaterialEditorComponent } from './material-editor/material-editor.component';
 import { NamedTemplateDirective } from './named-template/named-template.directive';
 import { UserDefinedFormDataDisplayComponent } from './user-defined-form-data-display/user-defined-form-data-display.component';
 
 
 
 @NgModule({
-  declarations: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, MaterialEditorComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent],
+  declarations: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent],
   imports: [
     CommonModule,
     ClarityModule,
@@ -24,6 +23,6 @@ import { UserDefinedFormDataDisplayComponent } from './user-defined-form-data-di
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA // Tells Angular we will have custom tags in our templates
   ],
-  exports: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, MaterialEditorComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent]
+  exports: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent]
 })
 export class FormsModule { }
