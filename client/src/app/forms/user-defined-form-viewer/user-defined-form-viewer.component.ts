@@ -5,7 +5,6 @@ import { NamedTemplateDirective } from '../named-template/named-template.directi
 
 /**
  * TODO:
- *    add hidden field type for static data
  *    add a way to do conditional logic, maybe just something simple like { fieldname: value }, the if that is true, the field is shown
  *    add a regex field that is optional, angular material supports this (?) so maybe clarity will also?
  */
@@ -15,14 +14,17 @@ export const castOptionsField = (f: FormFieldDefinition) => (f as MultiFormField
 export const castNestedField = (f: FormFieldDefinition) => (f as NestedFormFieldDefinition);
 
 export interface FormFieldDefinitionBase<T> {
-  type: 'TEXT' | 'NUMBER' | 'CHECK' | 'RADIO' | 'TOGGLE' |'DATE' | 'AUTOCOMPLETE' /** Combo? */ | 'SELECT' | 'RANGE' | 'TEXTAREA' | 'NESTED';  // TODO could have phone and email options, or those could be validators. HTML might have input types of these...
+  type: 'TEXT' | 'NUMBER' | 'CHECK' | 'RADIO' | 'TOGGLE' |'DATE' | 'AUTOCOMPLETE' /** Combo? */ | 'SELECT' | 'RANGE' | 'TEXTAREA' | 'NESTED' | 'HIDDEN';  // TODO could have phone and email options, or those could be validators. HTML might have input types of these...
   key: string;
-  label: string;
+  label?: string;
   placeholder?: string;
   default?: T;
   required?: boolean;
   // validators: any; // TODO: define valadators that a user can pick from a multi select
+}
 
+interface HiddenFormField extends FormFieldDefinitionBase<any> {
+  type: 'HIDDEN';
 }
 
 interface TextFormFieldDefinition extends FormFieldDefinitionBase<string> {
@@ -73,7 +75,7 @@ interface MultiFormFieldDefinition {
 }
 
 
-export type FormFieldDefinition = TextFormFieldDefinition | NumberFormFieldDefinition | BoolFormFieldDefinition | MultiFormFieldDefinition | DateFormFieldDefinition | NestedFormFieldDefinition;
+export type FormFieldDefinition = TextFormFieldDefinition | NumberFormFieldDefinition | BoolFormFieldDefinition | MultiFormFieldDefinition | DateFormFieldDefinition | NestedFormFieldDefinition | HiddenFormField;
 
 export interface FormDefinition {
   key: string;
@@ -144,6 +146,7 @@ export class UserDefinedFormViewerComponent extends GenericControlValueAccessor<
         switch(formDef.type) {
         case('TEXT'):
         case('TEXTAREA'):
+        case('HIDDEN'):
             defaultItem[formDef.key] = formDef.default || '';
             break;
         case('NUMBER'):

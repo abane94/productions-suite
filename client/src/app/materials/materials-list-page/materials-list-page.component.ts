@@ -30,6 +30,11 @@ export class MaterialsListPageComponent implements OnInit {
     key: 'dgsdfgsfdh',
     fields: [
       {
+        type: 'HIDDEN',
+        key: 'id',
+        label: 'ID'
+      },
+      {
         type: 'TEXT',
         key: 'name',
         label: 'Name',
