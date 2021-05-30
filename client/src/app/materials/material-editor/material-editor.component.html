@@ -1,5 +1,5 @@
 <div>
-    <app-user-defined-form-viewer [(ngModel)]="material" [formDef]="formDef"></app-user-defined-form-viewer>
+    <app-user-defined-form-viewer [formControl]="control" [formDef]="formDef"></app-user-defined-form-viewer>
 </div>
 
 <button (click)="emitSave()">Save</button>
