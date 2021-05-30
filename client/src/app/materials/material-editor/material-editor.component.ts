@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { FormFieldDefinition } from '../../forms/user-defined-form-viewer/user-defined-form-viewer.component';
+import { FormFieldDefinition, OptionDefinition } from '../../forms/user-defined-form-viewer/user-defined-form-viewer.component';
+import MaterialFormDefinition from '../material-form-definition';
 
 @Component({
   selector: 'app-material-editor',
@@ -21,115 +22,24 @@ export class MaterialEditorComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    // TODO: get categories and classes from server
+    const categories: OptionDefinition[] = [{
+      value: 'apparel',
+      display: 'Apparel'
+    }, {
+      value: 'sign',
+      display: 'Sign'
+    }];
+    const classes: OptionDefinition[] = [{
+      display: 'Shirt',
+      value: 'Shirt'
+    }, {
+      display: 'Hat',
+      value: 'hat'
+    }
+    ];
+    this.formDef = MaterialFormDefinition(categories, classes)
     this.control = this.fb.control(this.material);
-    this.formDef = {
-      key: 'dgsdfgsfdh',
-      fields: [
-        {
-          type: 'HIDDEN',
-          key: 'id',
-          label: 'ID'
-        },
-        {
-          type: 'TEXT',
-          key: 'name',
-          label: 'Name',
-          placeholder: '',
-          required: true
-        },
-        {
-          type: 'TEXT',
-          key: 'description',
-          label: 'Description',
-          placeholder: '',
-          required: true
-        },
-        {
-          type: 'TEXT',
-          key: 'category',
-          label: 'Category',
-          placeholder: '',
-          required: true
-        },
-        {
-          type: 'NUMBER',
-          key: 'baseCost',
-          label: 'Base Cost',
-          placeholder: '',
-          required: true
-        },
-        {
-          type: 'TEXT',
-          key: 'supplier',
-          label: 'Supplier',
-          placeholder: '',
-          required: true
-        },
-        {
-          type: 'TEXT',
-          key: 'supplierItemUrl',
-          label: 'supplierItemUrl',
-          placeholder: '',
-          required: true
-        },
-        {
-          type: 'NESTED',
-          key: 'options',
-          label: 'Options',
-          innerForm: {
-            key: 'MaterialOptions',
-            fields: [
-              {
-                type: 'TEXT',
-                key: 'name',
-                label: 'Options Name',
-                placeholder: '',
-                required: true
-              },
-              {
-                type: 'NESTED',
-                key: 'selections',
-                label: 'Selections',
-                innerForm: {
-                  key: 'SelectionsInnerForm',
-                  fields: [
-                    {
-                      type: 'TEXT',
-                      key: 'value',
-                      label: 'Value',
-                      placeholder: '',
-                      required: true
-                    },
-                    {
-                      type: 'TEXT',
-                      key: 'display',
-                      label: 'Display',
-                      placeholder: '',
-                      required: true
-                    },
-                    {
-                      type: 'TEXT',
-                      key: 'img',
-                      label: 'Image',
-                      placeholder: '',
-                      required: false
-                    },
-                    {
-                      type: 'NUMBER',
-                      key: 'priceAdjustment',
-                      label: 'Price Adjustment (per unit)',
-                      // placeholder: '',
-                      required: false,
-                      step: 0.01
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        }
-      ]
-    };
   }
 
   emitSave() {

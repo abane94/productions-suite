@@ -17,7 +17,7 @@
                 </ng-container>
 
                 <ng-container *ngSwitchDefault>
-                    {{ data[field.key]}}
+                    {{ data[field.key]?.display || data[field.key] }}
                 </ng-container>
             </ng-container>
         </td>

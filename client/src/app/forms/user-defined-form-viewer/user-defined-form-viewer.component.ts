@@ -53,7 +53,7 @@ interface NestedFormFieldDefinition extends FormFieldDefinitionBase<any> {
   innerForm: {key: string, fields: FormFieldDefinition[]};
 }
 
-interface OptionDefinition {
+export interface OptionDefinition {
   value: string;
   display: string;
   default?: true;

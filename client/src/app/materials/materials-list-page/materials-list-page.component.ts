@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NestedDisplayFields } from 'src/app/forms/user-defined-form-data-display/user-defined-form-data-display.component';
 import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
+import MaterialFormDefinition from '../material-form-definition';
 
 interface User {
   id: number;
@@ -26,120 +27,13 @@ export class MaterialsListPageComponent implements OnInit {
     }
   };
 
-  formDef: FormDefinition = {
-    key: 'dgsdfgsfdh',
-    fields: [
-      {
-        type: 'HIDDEN',
-        key: 'id',
-        label: 'ID'
-      },
-      {
-        type: 'TEXT',
-        key: 'name',
-        label: 'Name',
-        placeholder: '',
-        required: true
-      },
-      {
-        type: 'TEXT',
-        key: 'description',
-        label: 'Description',
-        placeholder: '',
-        required: true
-      },
-      {
-        type: 'TEXT',
-        key: 'category',
-        label: 'Category',
-        placeholder: '',
-        required: true
-      },
-      {
-        type: 'NUMBER',
-        key: 'baseCost',
-        label: 'Base Cost',
-        placeholder: '',
-        required: true
-      },
-      {
-        type: 'TEXT',
-        key: 'supplier',
-        label: 'Supplier',
-        placeholder: '',
-        required: true
-      },
-      {
-        type: 'TEXT',
-        key: 'supplierItemUrl',
-        label: 'supplierItemUrl',
-        placeholder: '',
-        required: true
-      },
-      {
-        type: 'NESTED',
-        key: 'options',
-        label: 'Options',
-        innerForm: {
-          key: 'MaterialOptions',
-          fields: [
-            {
-              type: 'TEXT',
-              key: 'name',
-              label: 'Options Name',
-              placeholder: '',
-              required: true
-            },
-            {
-              type: 'NESTED',
-              key: 'selections',
-              label: 'Selections',
-              innerForm: {
-                key: 'SelectionsInnerForm',
-                fields: [
-                  {
-                    type: 'TEXT',
-                    key: 'value',
-                    label: 'Value',
-                    placeholder: '',
-                    required: true
-                  },
-                  {
-                    type: 'TEXT',
-                    key: 'display',
-                    label: 'Display',
-                    placeholder: '',
-                    required: true
-                  },
-                  {
-                    type: 'TEXT',
-                    key: 'img',
-                    label: 'Image',
-                    placeholder: '',
-                    required: false
-                  },
-                  {
-                    type: 'NUMBER',
-                    key: 'priceAdjustment',
-                    label: 'Price Adjustment (per unit)',
-                    // placeholder: '',
-                    required: false,
-                    step: 0.01
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    ]
-  };
+  formDef: FormDefinition = MaterialFormDefinition([], []);
   materials: any[] = [
     {
       id: 1,
       name: 'TShirt',
       description: 'A simple tshirt',
-      'category': 'clothing',
+      'category': {value: 'clothing', display: 'clothing' },
       'baseCost': 1.45,
       'supplier': 'gilden',
       'supplierItemUrl': 'dsagfds',
@@ -202,7 +96,7 @@ export class MaterialsListPageComponent implements OnInit {
       id: 2,
       name: 'Long Sleeve',
       description: 'A simple tshirt',
-      'category': 'clothing',
+      'category': {value: 'clothing', display: 'clothing' },
       'baseCost': 1.45,
       'supplier': 'gilden',
       'supplierItemUrl': 'dsagfds',
@@ -265,7 +159,7 @@ export class MaterialsListPageComponent implements OnInit {
       id: 3,
       name: 'Hoodie',
       description: 'A simple tshirt',
-      'category': 'clothing',
+      'category': {value: 'clothing', display: 'clothing' },
       'baseCost': 1.45,
       'supplier': 'gilden',
       'supplierItemUrl': 'dsagfds',
