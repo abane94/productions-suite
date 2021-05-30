@@ -10,6 +10,7 @@ import MaterialFormDefinition from '../material-form-definition';
   styleUrls: ['./materials-list-page.component.scss']
 })
 export class MaterialsListPageComponent implements OnInit {
+  addModalIsOpen = false;
   nestedDisplayField: NestedDisplayFields = {
     MaterialOptions: {
       field: 'name',
@@ -48,6 +49,12 @@ export class MaterialsListPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  async addMaterial(material) {
+    this.addModalIsOpen = false;
+    await this.materialService.addMaterial(material);
+    this.materials = await this.materialService.getMaterials();
   }
 
 }
