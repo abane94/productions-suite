@@ -8,11 +8,12 @@ import { MasterDetailControlComponent } from './master-detail-control/master-det
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NamedTemplateDirective } from './named-template/named-template.directive';
 import { UserDefinedFormDataDisplayComponent } from './user-defined-form-data-display/user-defined-form-data-display.component';
+import { GeneralEditorComponent } from './general-editor/general-editor.component';
 
 
 
 @NgModule({
-  declarations: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent],
+  declarations: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent, GeneralEditorComponent],
   imports: [
     CommonModule,
     ClarityModule,
@@ -23,6 +24,6 @@ import { UserDefinedFormDataDisplayComponent } from './user-defined-form-data-di
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA // Tells Angular we will have custom tags in our templates
   ],
-  exports: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent]
+  exports: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent, GeneralEditorComponent]
 })
 export class FormsModule { }
