@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MaterialService } from 'src/app/data/material.service';
 import { NestedDisplayFields } from 'src/app/forms/user-defined-form-data-display/user-defined-form-data-display.component';
 import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
+import { Material } from 'src/types/materials.types';
 import MaterialFormDefinition from '../material-form-definition';
 
 @Component({
@@ -23,14 +24,14 @@ export class MaterialsListPageComponent implements OnInit {
   };
 
   formDef: FormDefinition = MaterialFormDefinition([], []);
-  materials: any[] = [];
+  materials: Material[] = [];
 
-  selected!: any[];
+  selected!: Material[];
   constructor(private materialService: MaterialService) {
     this.materialService.getMaterials().then(materials => this.materials = materials);
   }
 
-  onSave($event: any) {
+  onSave($event: Material) {
     console.log('Saved!');
     console.log($event);
 

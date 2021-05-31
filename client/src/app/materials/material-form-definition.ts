@@ -1,7 +1,7 @@
-import { FormFieldDefinition, OptionDefinition } from "../forms/user-defined-form-viewer/user-defined-form-viewer.component";
+import { FormDefinition, FormFieldDefinition, OptionDefinition } from "../forms/user-defined-form-viewer/user-defined-form-viewer.component";
 
 
-export default function MaterialFormDefinition(categories: OptionDefinition[], classes: OptionDefinition[]): { key: string, fields: FormFieldDefinition[] } {
+export default function MaterialFormDefinition(categories: OptionDefinition[], classes: OptionDefinition[]): FormDefinition {
     return {
         key: 'dgsdfgsfdh',
         fields: [

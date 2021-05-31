@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Material } from 'src/types/materials.types';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class MaterialService {
     return this.materials;
   }
 
-  async addMaterial(material: any) {
+  async addMaterial(material: Material) {
     if (material.id) {
       console.error('Adding material that already has ID');
     } else {
@@ -27,7 +28,7 @@ export class MaterialService {
   }
 
 
-  private materials = [
+  private materials: Material[] = [
     {
       id: 1,
       name: 'TShirt',

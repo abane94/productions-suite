@@ -1,7 +1,7 @@
-import { FormFieldDefinition, OptionDefinition } from "../forms/user-defined-form-viewer/user-defined-form-viewer.component";
+import { FormDefinition, FormFieldDefinition, OptionDefinition } from "../forms/user-defined-form-viewer/user-defined-form-viewer.component";
 
 
-export default function RecipeFormDefinition(materialClasses: OptionDefinition[]): { key: string, fields: FormFieldDefinition[] } {
+export default function RecipeFormDefinition(materialClasses: OptionDefinition[]): FormDefinition {
     return {
         key: 'sdgdf',
         fields: [

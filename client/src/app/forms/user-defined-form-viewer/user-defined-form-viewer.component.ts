@@ -50,7 +50,7 @@ interface BoolFormFieldDefinition extends FormFieldDefinitionBase<boolean> {
 
 interface NestedFormFieldDefinition extends FormFieldDefinitionBase<any> {
   type: 'NESTED',
-  innerForm: {key: string, fields: FormFieldDefinition[]};
+  innerForm: FormDefinition;
 }
 
 export interface OptionDefinition {

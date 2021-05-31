@@ -3,6 +3,7 @@ import { MaterialService } from 'src/app/data/material.service';
 import { RecipeService } from 'src/app/data/recipe.service';
 import { NestedDisplayFields } from 'src/app/forms/user-defined-form-data-display/user-defined-form-data-display.component';
 import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
+import { Recipe } from 'src/types/recipes.types';
 import RecipeFormDefinition from '../recipe-form-definition';
 
 @Component({
@@ -25,9 +26,9 @@ export class RecipesListPageComponent implements OnInit {
   };
 
   formDef: FormDefinition;
-  recipes: any[] = [];
+  recipes: Recipe[] = [];
 
-  selected!: any[];
+  selected!: Recipe[];
   constructor(private recipeService: RecipeService, private materialService: MaterialService) {
     this.recipeService.getRecipes().then(recipes => this.recipes = recipes);
     this.setup();
@@ -39,7 +40,7 @@ export class RecipesListPageComponent implements OnInit {
     this.formDef = RecipeFormDefinition(materialsClasses.map(m => ({value: m, display: m})));
   }
 
-  onSave($event: any) {
+  onSave($event: Recipe) {
     console.log('Saved!');
     console.log($event);
 

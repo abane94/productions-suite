@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { FormFieldDefinition, OptionDefinition } from '../../forms/user-defined-form-viewer/user-defined-form-viewer.component';
+import { FormDefinition, FormFieldDefinition, OptionDefinition } from '../../forms/user-defined-form-viewer/user-defined-form-viewer.component';
 // import GeneralFormDefinition from '../general-form-definition';
 
 @Component({
@@ -8,17 +8,17 @@ import { FormFieldDefinition, OptionDefinition } from '../../forms/user-defined-
   templateUrl: './general-editor.component.html',
   styleUrls: ['./general-editor.component.scss']
 })
-export class GeneralEditorComponent implements OnInit {
+export class GeneralEditorComponent<T> implements OnInit {
   @Input()
-  public formDef!: { key: string, fields: FormFieldDefinition[] };
+  public formDef!: FormDefinition;
 
   control: FormControl;
 
   @Output()
-  save = new EventEmitter<any>();
+  save = new EventEmitter<T>();
 
   @Input()
-  public value: any;
+  public value: T;
 
   constructor(private fb: FormBuilder) {}
 

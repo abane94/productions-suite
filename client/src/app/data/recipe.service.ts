@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Recipe } from 'src/types/recipes.types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
-  private recipes: any[] = [];
+  private recipes: Recipe[] = [];
 
   constructor() { }
 
@@ -12,7 +13,7 @@ export class RecipeService {
     return this.recipes;
   }
 
-  async addRecipe(recipe: any) {
+  async addRecipe(recipe: Recipe) {
     if (recipe.id) {
       console.error('Adding recipe that already has ID');
     } else {
