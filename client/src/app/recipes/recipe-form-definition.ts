@@ -26,13 +26,6 @@ export default function RecipeFormDefinition(materialClasses: OptionDefinition[]
             },
             {
                 type: 'NUMBER',
-                key: 'quant',
-                label: 'Quantity',
-                placeholder: '',
-                required: true
-            },
-            {
-                type: 'NUMBER',
                 key: 'baseHours',
                 label: 'Base Hours',
                 placeholder: '',

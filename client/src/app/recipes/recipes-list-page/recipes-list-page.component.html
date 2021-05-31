@@ -1,1 +1,48 @@
-<p>recipes-list-page works!</p>
+<button class="btn btn-primary" (click)="addModalIsOpen = true">
+    <!-- <cds-icon shape="home"></cds-icon> -->
+    Add
+</button>
+
+<clr-datagrid [(clrDgSelected)]="selected" *ngIf="formDef">
+    <clr-dg-column>Name</clr-dg-column>
+    <clr-dg-column>Base Hours</clr-dg-column>
+    <clr-dg-column>Hours Per Unit</clr-dg-column>
+    <clr-dg-column>Description</clr-dg-column>
+
+    <clr-dg-placeholder>We couldn't find any recipes!</clr-dg-placeholder>
+
+    <clr-dg-row *clrDgItems="let recipe of recipes" [clrDgItem]="recipe">
+        <!-- <clr-dg-cell>{{user.id}}</clr-dg-cell> -->
+        <clr-dg-cell>{{recipe.name}}</clr-dg-cell>
+        <clr-dg-cell>{{recipe.baseHours}}</clr-dg-cell>
+        <clr-dg-cell>{{recipe.hoursPerUnit }}</clr-dg-cell>
+        <clr-dg-cell>{{recipe.description }}</clr-dg-cell>
+        <!-- <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color">{{user.color}}</span>
+      </clr-dg-cell> -->
+    </clr-dg-row>
+
+    <clr-dg-detail *clrIfDetail="let detail">
+        <clr-dg-detail-header>{{detail.name}}</clr-dg-detail-header>
+        <app-general-editor [value]="detail" (save)="onSave($event)" [formDef]="formDef"></app-general-editor>
+        <br />
+        <app-user-defined-form-data-display [data]="detail" [formDef]="formDef"
+            [nestedDisplayField]="nestedDisplayField"></app-user-defined-form-data-display>
+    </clr-dg-detail>
+
+    <clr-dg-footer>{{recipes.length}} users</clr-dg-footer>
+</clr-datagrid>
+
+
+
+<!--  Add Modal -->
+<clr-modal [(clrModalOpen)]="addModalIsOpen">
+    <h3 class="modal-title">Add Recipe</h3>
+    <div class="modal-body">
+        <app-general-editor (save)="addRecipe($event)"  [formDef]="formDef"></app-general-editor>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="addModalIsOpen = false">Cancel</button>
+        <!-- <button type="button" class="btn btn-primary" (click)="isOpen = false">Add</button> -->
+    </div>
+</clr-modal>

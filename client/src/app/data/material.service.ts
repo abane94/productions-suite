@@ -21,6 +21,11 @@ export class MaterialService {
     }
   }
 
+  async getMaterialClasses() {
+    const classList = this.materials.map(m => m['class'] as string);
+    return classList.filter((c, i, self) => self.indexOf(c) === i)
+  }
+
 
   private materials = [
     {
@@ -29,6 +34,7 @@ export class MaterialService {
       description: 'A simple tshirt',
       'category': {value: 'clothing', display: 'clothing' },
       'baseCost': 1.45,
+      class: 'shirt',
       'supplier': 'gilden',
       'supplierItemUrl': 'dsagfds',
       'options': {
@@ -91,6 +97,7 @@ export class MaterialService {
       name: 'Long Sleeve',
       description: 'A simple tshirt',
       'category': {value: 'clothing', display: 'clothing' },
+      class: 'shirt',
       'baseCost': 1.45,
       'supplier': 'gilden',
       'supplierItemUrl': 'dsagfds',
@@ -153,6 +160,7 @@ export class MaterialService {
       id: 3,
       name: 'Hoodie',
       description: 'A simple tshirt',
+      class: 'shirt',
       'category': {value: 'clothing', display: 'clothing' },
       'baseCost': 1.45,
       'supplier': 'gilden',

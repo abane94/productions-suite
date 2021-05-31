@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MaterialService } from 'src/app/data/material.service';
+import { RecipeService } from 'src/app/data/recipe.service';
+import { NestedDisplayFields } from 'src/app/forms/user-defined-form-data-display/user-defined-form-data-display.component';
+import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
+import RecipeFormDefinition from '../recipe-form-definition';
 
 @Component({
   selector: 'app-recipes-list-page',
@@ -7,9 +12,58 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RecipesListPageComponent implements OnInit {
 
-  constructor() { }
+  addModalIsOpen = false;
+  nestedDisplayField: NestedDisplayFields = {
+    RecipeOptions: {
+      field: 'name',
+      nested: {
+        SelectionsInnerForm: {
+          field: 'display'
+        }
+      }
+    }
+  };
+
+  formDef: FormDefinition;
+  recipes: any[] = [];
+
+  selected!: any[];
+  constructor(private recipeService: RecipeService, private materialService: MaterialService) {
+    this.recipeService.getRecipes().then(recipes => this.recipes = recipes);
+    this.setup();
+  }
+
+  async setup() {
+    this.recipes = await this.recipeService.getRecipes();
+    const materialsClasses = await this.materialService.getMaterialClasses();
+    this.formDef = RecipeFormDefinition(materialsClasses.map(m => ({value: m, display: m})));
+  }
+
+  onSave($event: any) {
+    console.log('Saved!');
+    console.log($event);
+
+    let idx = -1;
+    for (let i = 0; i < this.recipes.length; i++) {
+      const recipe = this.recipes[i];
+      if (recipe.name === $event.name) {
+        idx = i;
+        break;
+      }
+    }
+
+    if (idx > -1) {
+      // this.recipes[idx] = $event;  // TODO: fix angular error when saving, maybe needs the trackby function in ngFor
+    }
+  }
 
   ngOnInit(): void {
+  }
+
+  async addRecipe(recipe) {
+    this.addModalIsOpen = false;
+    await this.recipeService.addRecipe(recipe);
+    this.recipes = await this.recipeService.getRecipes();
   }
 
 }

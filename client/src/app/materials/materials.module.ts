@@ -15,7 +15,7 @@ import { FormsModule as ngFormsModule, ReactiveFormsModule } from '@angular/form
     ClarityModule,
     FormsModule,
     ngFormsModule,
-  ReactiveFormsModule
+    ReactiveFormsModule
   ]
 })
 export class MaterialsModule { }
