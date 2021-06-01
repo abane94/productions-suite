@@ -3,7 +3,7 @@
     Add
 </button>
 
-<clr-datagrid [(clrDgSelected)]="selected">
+<clr-datagrid (clrDgRefresh)="gridHandler.refresh($event)" [clrDgLoading]="gridHandler.loading" [(clrDgSelected)]="selected">
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'supplier'">Supplier</clr-dg-column>
     <clr-dg-column [clrDgField]="'baseCost'">Base Cost</clr-dg-column>
@@ -11,7 +11,7 @@
 
     <clr-dg-placeholder>We couldn't find any materials!</clr-dg-placeholder>
 
-    <clr-dg-row *clrDgItems="let material of materials" [clrDgItem]="material">
+    <clr-dg-row *ngFor="let material of materials" [clrDgItem]="material">
         <!-- <clr-dg-cell>{{user.id}}</clr-dg-cell> -->
         <clr-dg-cell>{{material.name}}</clr-dg-cell>
         <clr-dg-cell>{{material.supplier}}</clr-dg-cell>
@@ -30,7 +30,12 @@
             [nestedDisplayField]="nestedDisplayField"></app-user-defined-form-data-display>
     </clr-dg-detail>
 
-    <clr-dg-footer>{{materials.length}} users</clr-dg-footer>
+    <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="2" [clrDgTotalItems]="gridHandler.total">
+          <clr-dg-page-size [clrPageSizeOptions]="[1,2,5,10]">Users per page</clr-dg-page-size>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} users
+        </clr-dg-pagination>
+      </clr-dg-footer>
 </clr-datagrid>
 
 

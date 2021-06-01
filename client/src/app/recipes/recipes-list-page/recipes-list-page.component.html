@@ -3,7 +3,8 @@
     Add
 </button>
 
-<clr-datagrid [(clrDgSelected)]="selected" *ngIf="formDef">
+<clr-datagrid (clrDgRefresh)="gridHandler.refresh($event)" [clrDgLoading]="gridHandler.loading"
+    [(clrDgSelected)]="selected" *ngIf="formDef">
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'baseHours'">Base Hours</clr-dg-column>
     <clr-dg-column [clrDgField]="'hoursPerUnit'">Hours Per Unit</clr-dg-column>
@@ -11,7 +12,7 @@
 
     <clr-dg-placeholder>We couldn't find any recipes!</clr-dg-placeholder>
 
-    <clr-dg-row *clrDgItems="let recipe of recipes" [clrDgItem]="recipe">
+    <clr-dg-row *ngFor="let recipe of recipes" [clrDgItem]="recipe">
         <!-- <clr-dg-cell>{{user.id}}</clr-dg-cell> -->
         <clr-dg-cell>{{recipe.name}}</clr-dg-cell>
         <clr-dg-cell>{{recipe.baseHours}}</clr-dg-cell>
@@ -30,7 +31,12 @@
             [nestedDisplayField]="nestedDisplayField"></app-user-defined-form-data-display>
     </clr-dg-detail>
 
-    <clr-dg-footer>{{recipes.length}} users</clr-dg-footer>
+    <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="2" [clrDgTotalItems]="gridHandler.total">
+            <clr-dg-page-size [clrPageSizeOptions]="[1,2,5,10]">Users per page</clr-dg-page-size>
+            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} users
+        </clr-dg-pagination>
+    </clr-dg-footer>
 </clr-datagrid>
 
 
@@ -39,7 +45,7 @@
 <clr-modal [(clrModalOpen)]="addModalIsOpen">
     <h3 class="modal-title">Add Recipe</h3>
     <div class="modal-body">
-        <app-general-editor (save)="addRecipe($event)"  [formDef]="formDef"></app-general-editor>
+        <app-general-editor (save)="addRecipe($event)" [formDef]="formDef"></app-general-editor>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="addModalIsOpen = false">Cancel</button>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataGridHandlerService } from 'src/app/data/data-grid-handler.service';
 import { MaterialService } from 'src/app/data/material.service';
 import { RecipeService } from 'src/app/data/recipe.service';
 import { NestedDisplayFields } from 'src/app/forms/user-defined-form-data-display/user-defined-form-data-display.component';
@@ -29,13 +30,14 @@ export class RecipesListPageComponent implements OnInit {
   recipes: Recipe[] = [];
 
   selected!: Recipe[];
-  constructor(private recipeService: RecipeService, private materialService: MaterialService) {
-    this.recipeService.get().then(recipes => this.recipes = recipes);
+  constructor(private recipeService: RecipeService, private materialService: MaterialService, public gridHandler: DataGridHandlerService<Recipe>) {
+    gridHandler.setService(recipeService);
+    gridHandler.onItems$.subscribe(recipes => this.recipes = recipes );
     this.setup();
   }
 
   async setup() {
-    this.recipes = await this.recipeService.get();
+    this.recipes = (await this.recipeService.get()).items;
     const materialsClasses = await this.materialService.getMaterialClasses();
     this.formDef = RecipeFormDefinition(materialsClasses.map(m => ({value: m, display: m})));
   }
@@ -64,7 +66,7 @@ export class RecipesListPageComponent implements OnInit {
   async addRecipe(recipe) {
     this.addModalIsOpen = false;
     await this.recipeService.add(recipe);
-    this.recipes = await this.recipeService.get();
+    this.recipes = (await this.recipeService.get()).items;
   }
 
 }

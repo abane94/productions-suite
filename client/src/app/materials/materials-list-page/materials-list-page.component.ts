@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
+import { DataGridHandlerService } from 'src/app/data/data-grid-handler.service';
 import { MaterialService } from 'src/app/data/material.service';
 import { NestedDisplayFields } from 'src/app/forms/user-defined-form-data-display/user-defined-form-data-display.component';
 import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
@@ -28,8 +29,10 @@ export class MaterialsListPageComponent implements OnInit {
   materials: Material[] = [];
 
   selected!: Material[];
-  constructor(private materialService: MaterialService) {
-    this.materialService.get().then(materials => this.materials = materials);
+  constructor(private materialService: MaterialService, public gridHandler: DataGridHandlerService<Material>) {
+    gridHandler.setService(materialService);
+    gridHandler.onItems$.subscribe(materials => this.materials = materials );
+    this.materialService.get().then(result => this.materials = result.items);
   }
 
   onSave($event: Material) {
@@ -56,7 +59,7 @@ export class MaterialsListPageComponent implements OnInit {
   async addMaterial(material) {
     this.addModalIsOpen = false;
     await this.materialService.add(material);
-    this.materials = await this.materialService.get();
+    this.materials = (await this.materialService.get()).items;
   }
 
 }
