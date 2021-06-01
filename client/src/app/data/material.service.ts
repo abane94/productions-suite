@@ -1,34 +1,20 @@
 import { Injectable } from '@angular/core';
+import { ClrDatagridStateInterface } from '@clr/angular';
 import { Material } from 'src/types/materials.types';
+import { GenericDataService } from './generic-data-service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MaterialService {
-
-  constructor() { }
-
-
-  async getMaterials() {
-    return this.materials;
-  }
-
-  async addMaterial(material: Material) {
-    if (material.id) {
-      console.error('Adding material that already has ID');
-    } else {
-      material.id = this.materials.length;
-      this.materials.push(material);
-    }
-  }
+export class MaterialService extends GenericDataService<Material> {
 
   async getMaterialClasses() {
-    const classList = this.materials.map(m => m['class'] as string);
+    const classList = this.items.map(m => m['class'] as string);
     return classList.filter((c, i, self) => self.indexOf(c) === i)
   }
 
 
-  private materials: Material[] = [
+  items: Material[] = [
     {
       id: 1,
       name: 'TShirt',

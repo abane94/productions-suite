@@ -30,12 +30,12 @@ export class RecipesListPageComponent implements OnInit {
 
   selected!: Recipe[];
   constructor(private recipeService: RecipeService, private materialService: MaterialService) {
-    this.recipeService.getRecipes().then(recipes => this.recipes = recipes);
+    this.recipeService.get().then(recipes => this.recipes = recipes);
     this.setup();
   }
 
   async setup() {
-    this.recipes = await this.recipeService.getRecipes();
+    this.recipes = await this.recipeService.get();
     const materialsClasses = await this.materialService.getMaterialClasses();
     this.formDef = RecipeFormDefinition(materialsClasses.map(m => ({value: m, display: m})));
   }
@@ -63,8 +63,8 @@ export class RecipesListPageComponent implements OnInit {
 
   async addRecipe(recipe) {
     this.addModalIsOpen = false;
-    await this.recipeService.addRecipe(recipe);
-    this.recipes = await this.recipeService.getRecipes();
+    await this.recipeService.add(recipe);
+    this.recipes = await this.recipeService.get();
   }
 
 }

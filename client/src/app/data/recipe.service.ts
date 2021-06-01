@@ -1,24 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Recipe } from 'src/types/recipes.types';
+import { GenericDataService } from './generic-data-service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RecipeService {
-  private recipes: Recipe[] = [];
+export class RecipeService extends GenericDataService<Recipe> {
+  items: Recipe[] = [];
 
-  constructor() { }
-
-  async getRecipes() {
-    return this.recipes;
-  }
-
-  async addRecipe(recipe: Recipe) {
-    if (recipe.id) {
-      console.error('Adding recipe that already has ID');
-    } else {
-      recipe.id = this.recipes.length;
-      this.recipes.push(recipe);
-    }
-  }
 }
