@@ -1,5 +1,5 @@
 <div>
-    <div style="height:200px; width:300px;overflow-y: scroll;">
+    <div style="height:200px;overflow-y: scroll;overflow-x: hidden;">
         <form *ngIf="_form && itemsArray" [formGroup]="_form">
             <div formArrayName="items">
                 <div class="array" *ngFor="let item of itemsArray.controls; let i = index;">
@@ -34,6 +34,10 @@
             </div>
         </form>
     </div>
-    <button (click)="print()">Print</button>
-    <button (click)="add()">Add</button>
+    <div fxLayout="row" fxLayoutAlign="end center" >
+        <!-- <button (click)="print()">Print</button> -->
+        <button (click)="add()" type="button" class="btn btn-icon btn-success" aria-label="done">
+            <cds-icon shape="plus"></cds-icon>
+        </button>
+    </div>
 </div>

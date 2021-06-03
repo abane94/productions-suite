@@ -20,6 +20,7 @@ export interface FormFieldDefinitionBase<T> {
   placeholder?: string;
   default?: T;
   required?: boolean;
+  helperText?: string;
   // validators: any; // TODO: define valadators that a user can pick from a multi select
 }
 
@@ -71,6 +72,7 @@ interface MultiFormFieldDefinition {
   key: string;
   label: string;
   options: OptionsSource;
+  helperText?: string;
   multiple: boolean;  // TODO check to see which components this is possible on, and the editor will have to make sure it checks out
 }
 
@@ -89,13 +91,16 @@ export interface FormDefinition {
   providers: [GenericControlProvider(UserDefinedFormViewerComponent)]
 })
 export class UserDefinedFormViewerComponent extends GenericControlValueAccessor<any> implements OnInit {
-
   @Input()
   public formDef!: FormDefinition;
 
   @Input() templates: NamedTemplateDirective[] = [];
 
-  newDate = () => new Date()
+  newDate = () => new Date();
+
+
+  // todo: move query params to a util location
+  urlParams = new URLSearchParams(window.location.search);
 
   // public form: FormGroup;
 

@@ -1,6 +1,6 @@
 <!-- form header information and wrappers etc...-->
 
-<form *ngIf="_form && formDef" clrForm [formGroup]="_form" class="clr-form clr-form-horizontal"> <!-- TODO: conditional logic to determin layout-->
+<form *ngIf="_form && formDef" clrForm [formGroup]="_form" clrLayout="horizontal"> <!-- TODO: conditional logic to determin layout-->
     <div *ngFor="let field of formDef.fields;">
         <div [ngSwitch]="field.type">
             <div *ngSwitchCase="'HIDDEN'">
@@ -9,10 +9,10 @@
             <div *ngSwitchCase="'TEXT'">
                 <!-- <input [formControlName]="field.key"> -->
                 <clr-input-container>
-                    <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
+                    <label class="clr-control-label">{{ field.label }}{{ field.required ? '*' : '' }}</label>
                     <input clrInput type="text" [formControlName]="field.key" />
-                    <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-                    <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
+                    <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
+                    <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
                 </clr-input-container>
             </div>
             <div *ngSwitchCase="'NUMBER'">
@@ -20,8 +20,8 @@
                 <clr-input-container>
                     <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
                     <input clrInput type="number" [formControlName]="field.key"/> <!--  [step]="field.step" -->
-                    <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-                    <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
+                    <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
+                    <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
                 </clr-input-container>
             </div>
             <div *ngSwitchCase="'CHECK'">
@@ -30,8 +30,8 @@
                     <clr-checkbox-wrapper>
                         <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
                         <input clrCheckbox type="checkbox" [formControlName]="field.key"/> <!--  [step]="field.step" -->
-                        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-                        <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
+                        <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
+                        <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
                     </clr-checkbox-wrapper>
                 </clr-checkbox-container>
             </div>
@@ -41,29 +41,31 @@
                     <select clrSelect [formControlName]="field.key">
                       <option *ngFor="let opt of castOptionsField(field).options.options" [value]="opt.value">{{ opt.display }}</option>
                     </select>
-                    <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-                    <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
+                    <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
+                    <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
                   </clr-select-container>
             </div>
             <div *ngSwitchCase="'DATE'">
                 <clr-date-container>
                     <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
                     <input type="date" [formControlName]="field.key" [clrDate]="newDate()" >
-                    <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-                    <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
+                    <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
+                    <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
                 </clr-date-container>
             </div>
-            <div *ngSwitchCase="'NESTED'">
-                <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
+            <div *ngSwitchCase="'NESTED'" style="padding-top: 10px">
+                <label class="nested-label">{{ field.label }}{{ field.required ? '*' : '' }}</label>
                 <app-master-detail-control [formControlName]="field.key" [innerForm]="castNestedField(field).innerForm" [templates]="templates"></app-master-detail-control>
 
-                <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-                <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
+                <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
+                <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
             </div>
         </div>
     </div>
 </form>
 
-<button class="btn btn-primary" (click)="printValue()">Primary</button>
+<button *ngIf="urlParams.has('debug')" class="btn btn-primary" (click)="printValue()">Print To Console</button>
 
-{{ Errors | json }}
+<div *ngIf="urlParams.has('debug')">
+    {{ Errors | json }}
+</div>

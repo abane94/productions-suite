@@ -1,5 +1,5 @@
 <button class="btn btn-primary" (click)="addModalIsOpen = true">
-    <!-- <cds-icon shape="home"></cds-icon> -->
+    <cds-icon shape="plus"></cds-icon>
     Add
 </button>
 
@@ -33,7 +33,7 @@
 
     <clr-dg-footer>
         <clr-dg-pagination #pagination [clrDgPageSize]="2" [clrDgTotalItems]="gridHandler.total">
-            <clr-dg-page-size [clrPageSizeOptions]="[1,2,5,10]">Users per page</clr-dg-page-size>
+            <clr-dg-page-size [clrPageSizeOptions]="[1,2,5,10]">Recipes per page</clr-dg-page-size>
             {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} users
         </clr-dg-pagination>
     </clr-dg-footer>
@@ -46,9 +46,5 @@
     <h3 class="modal-title">Add Recipe</h3>
     <div class="modal-body">
         <app-general-editor (save)="addRecipe($event)" [formDef]="formDef"></app-general-editor>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="addModalIsOpen = false">Cancel</button>
-        <!-- <button type="button" class="btn btn-primary" (click)="isOpen = false">Add</button> -->
     </div>
 </clr-modal>
