@@ -1,1 +1,70 @@
-<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->
+
+
+<div class="main-container">
+    <header class="header header-6">
+        <div class="branding">
+            <a href="javascript:void(0)">
+                <cds-icon shape="factory"></cds-icon>
+                <span class="title">Production Suite</span>
+            </a>
+        </div>
+        <div class="header-nav">
+            <a routerLink="materials" class="nav-link nav-icon">
+                <cds-icon shape="objects"></cds-icon>
+            </a>
+            <a routerLink="recipes" class="active nav-link nav-icon">
+                <cds-icon shape="list"></cds-icon>
+            </a>
+            <a routerLink="customers" class="active nav-link nav-icon">
+                <cds-icon shape="users"></cds-icon>
+            </a>
+        </div>
+    </header>
+
+    <!-- <nav class="subnav">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link active" href="javascript://">Subnav Link 1</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript://">Subnav Link 2</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript://">Subnav Link 3</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript://">Subnav Link 4</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript://">Subnav Link 5</a>
+        </li>
+      </ul>
+    </nav> -->
+
+    <div class="content-container">
+
+        <!-- Router Outlet -->
+        <div class="content-area">
+            <router-outlet></router-outlet>
+        </div>
+
+        <!-- <nav class="sidenav">
+        <section class="sidenav-content">
+          <section class="nav-group">
+            <input id="tabexample2" type="checkbox" />
+            <label for="tabexample2">Sidenav</label>
+            <ul class="nav-list">
+              <li><a class="nav-link">Link 1</a></li>
+              <li><a class="nav-link">Link 2</a></li>
+              <li><a class="nav-link active">Link 3</a></li>
+              <li><a class="nav-link">Link 4</a></li>
+              <li><a class="nav-link">Link 5</a></li>
+              <li><a class="nav-link">Link 6</a></li>
+            </ul>
+          </section>
+        </section>
+      </nav> -->
+
+    </div>
+</div>

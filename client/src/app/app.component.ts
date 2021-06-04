@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import '@cds/core/icon/register.js';
-import { ClarityIcons, plusIcon, popOutIcon, userIcon } from '@cds/core/icon';
+import { ClarityIcons, factoryIcon, listIcon, nodesIcon, objectsIcon, plusIcon, popOutIcon, userIcon, usersIcon } from '@cds/core/icon';
 
 ClarityIcons.addIcons(plusIcon);
 ClarityIcons.addIcons(popOutIcon);
+ClarityIcons.addIcons(usersIcon);
+ClarityIcons.addIcons(listIcon);
+// ClarityIcons.addIcons(nodesIcon);
+ClarityIcons.addIcons(objectsIcon);
+ClarityIcons.addIcons(factoryIcon);
 
 @Component({
   selector: 'app-root',
