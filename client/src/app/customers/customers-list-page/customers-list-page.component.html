@@ -10,7 +10,7 @@
 
     <clr-dg-placeholder>We couldn't find any customers!</clr-dg-placeholder>
 
-    <clr-dg-row *ngFor="let customer of customers" [clrDgItem]="customer">
+    <clr-dg-row *ngFor="let customer of customers;trackBy: trackBy" [clrDgItem]="customer">
         <!-- <clr-dg-cell>{{user.id}}</clr-dg-cell> -->
         <clr-dg-cell>{{customer.name}}</clr-dg-cell>
         <clr-dg-cell>{{customer.description }}</clr-dg-cell>
@@ -19,14 +19,58 @@
       </clr-dg-cell> -->
     </clr-dg-row>
 
-    <clr-dg-detail *clrIfDetail="let detail">
-        <clr-dg-detail-header>{{detail.name}}</clr-dg-detail-header>
-        <app-general-editor [value]="detail" (save)="onSave($event)" [formDef]="formDef"></app-general-editor>
-        <br />
-        <app-user-defined-form-data-display [data]="detail" [formDef]="formDef"
-            [nestedDisplayField]="nestedDisplayField"></app-user-defined-form-data-display>
+    <!-- <ng-template clrIfDetail let-detail (clrIfDetailChange)="onDetailOpen($event)"> NOT WORKING: (clrIfDetailChange)="onDetailOpen($event) -->
+        <clr-dg-detail *clrIfDetail="let detail" (clrIfDetailChange)="onDetailOpen($event)">
+            <clr-dg-detail-header>{{detail.name}}</clr-dg-detail-header>
+            <app-general-editor [value]="detail" (save)="onSave($event)" [formDef]="formDef"></app-general-editor>
+            <br />
+            <app-user-defined-form-data-display [data]="detail" [formDef]="formDef"
+                [nestedDisplayField]="nestedDisplayField"></app-user-defined-form-data-display>
 
-    </clr-dg-detail>
+            <h3>Contacts</h3> <button (click)="onDetailOpen(detail)">Load</button>  <!-- remove load button when the change event works-->
+            <!-- Contact Grid -->
+            <clr-datagrid *ngIf="contacts">
+                <clr-dg-column [clrDgField]="'id'">Contact ID</clr-dg-column>
+                <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+                <clr-dg-column [clrDgField]="'description'">description</clr-dg-column>
+                <clr-dg-column [clrDgField]="'email'">Email</clr-dg-column>
+                <clr-dg-column [clrDgField]="'primaryPhone'">Primary Phone</clr-dg-column>
+                <clr-dg-column [clrDgField]="'mobile'">Mobile</clr-dg-column>
+
+                <clr-dg-row *clrDgItems="let contact of contacts">
+                  <clr-dg-cell>{{contact.id}}</clr-dg-cell>
+                  <clr-dg-cell>{{contact.name}}</clr-dg-cell>
+                  <clr-dg-cell>{{contact.description}}</clr-dg-cell>
+                  <clr-dg-cell>{{contact.email}}</clr-dg-cell>
+                  <clr-dg-cell>{{contact.primaryPhone}}</clr-dg-cell>
+                  <clr-dg-cell>{{contact.mobile}}</clr-dg-cell>
+                </clr-dg-row>
+
+                <clr-dg-footer>{{contacts.length}} contacts</clr-dg-footer>
+              </clr-datagrid>
+
+
+              <!-- <table *ngIf="contacts" class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let contact of contacts">
+                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.description }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>{{ contact.primaryPhone }}</td>
+                  </tr>
+                </tbody>
+              </table> -->
+
+        </clr-dg-detail>
+    <!-- </ng-template> -->
 
     <clr-dg-footer>
         <clr-dg-pagination #pagination [clrDgPageSize]="2" [clrDgTotalItems]="gridHandler.total">
@@ -42,7 +86,10 @@
 <clr-modal [(clrModalOpen)]="addModalIsOpen">
     <h3 class="modal-title">Add Customer</h3>
     <div class="modal-body">
-        <app-general-editor (save)="addCustomer($event)" [formDef]="formDef"></app-general-editor>
+        <app-general-editor #cusEditor [formDef]="formDef" [hideSave]="true"></app-general-editor>
+        <h3>Default Contact:</h3>
+        <app-general-editor #contactEditor [formDef]="contactFormDef" [hideSave]="true"></app-general-editor>
+        <button (click)="addCustomer(cusEditor.getValue(), contactEditor.getValue())">Get Value</button>
     </div>
 </clr-modal>
 

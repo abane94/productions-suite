@@ -11,6 +11,8 @@ import { FormDefinition, FormFieldDefinition, OptionDefinition } from '../../for
 export class GeneralEditorComponent<T> implements OnInit {
   @Input()
   public formDef!: FormDefinition;
+  @Input()
+  public hideSave: boolean = false;
 
   control: FormControl;
 
@@ -32,6 +34,10 @@ export class GeneralEditorComponent<T> implements OnInit {
 
   print() {
     console.log(JSON.stringify(this.control.value));
+  }
+
+  getValue() {
+    return this.control.value;
   }
 
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DataGridHandlerService } from 'src/app/data/data-grid-handler.service';
-import { RecipeService } from 'src/app/data/recipe.service';
+import { CustomerService } from 'src/app/data/customer.service';
 import { NestedDisplayFields } from 'src/app/forms/user-defined-form-data-display/user-defined-form-data-display.component';
 import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
-import { Customer } from 'src/types/customers.types';
-import CustomerFormDefinition from '../customer-form-definition';
+import { Customer, CustomerContact } from 'src/types/customers.types';
+import CustomerFormDefinition, { CustomerContactFormDefinition } from '../customer-form-definition';
 
 @Component({
   selector: 'app-customers-list-page',
@@ -26,10 +26,14 @@ export class CustomersListPageComponent implements OnInit {
   };
 
   formDef: FormDefinition;
+  contactFormDef: FormDefinition;
   customers: Customer[] = [];
 
+  contacts: CustomerContact[] = null;
+  current: Customer = null;
+
   selected!: Customer[];
-  constructor(private CustomerService: RecipeService, public gridHandler: DataGridHandlerService<Customer>) {
+  constructor(private CustomerService: CustomerService, public gridHandler: DataGridHandlerService<Customer>) {
     gridHandler.setService(CustomerService);
     gridHandler.onItems$.subscribe(customers => this.customers = customers );
     this.setup();
@@ -38,6 +42,7 @@ export class CustomersListPageComponent implements OnInit {
   async setup() {
     this.customers = (await this.CustomerService.get()).items;
     this.formDef = CustomerFormDefinition();
+    this.contactFormDef = CustomerContactFormDefinition();
   }
 
   onSave($event: Customer) {
@@ -61,10 +66,27 @@ export class CustomersListPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async addCustomer(Customer) {
+  async addCustomer(customer: Customer, contact: CustomerContact) {
     this.addModalIsOpen = false;
-    await this.CustomerService.add(Customer);
+    await this.CustomerService.addCustomer(customer, contact);
     this.customers = (await this.CustomerService.get()).items;
   }
 
+  onDetailOpen(customer: Customer | null) {
+    if (this.current === customer) {
+      return;
+    }
+    this.current = customer;
+    if (customer === null) {
+      return this.contacts = null
+    }
+    this.CustomerService.getContacts(customer.id).then(contacts => {
+      this.contacts = contacts;
+    });
+    // console.log(customer)
+  }
+
+  trackBy(index, item) {
+    return item.id;
+  }
 }

@@ -55,7 +55,7 @@ export function CustomerContactFormDefinition(): FormDefinition {
             {
                 type: 'TEXT',
                 key: 'email',
-                label: 'Name',
+                label: 'Email',
             },
             {
                 type: 'TEXT',

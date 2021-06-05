@@ -7,6 +7,7 @@ export interface Customer {
 
 export interface CustomerContact {
     id: number;
+    customerId: number;
     name: string;
     description: string;
     email: string;

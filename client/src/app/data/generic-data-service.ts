@@ -40,4 +40,9 @@ export abstract class GenericDataService<T extends {id: number}> {
             this.items.push(item);
         }
     }
+
+    async update(item: T) {
+      const idx = this.items.findIndex(i => i.id === item.id);
+      this.items[idx] = item;
+    }
 }
