@@ -14,7 +14,11 @@ const routes: Routes = [
     path: 'customers',
     loadChildren: () => import('./customers/customers.module').then(m => m.CustomersModule)
   },
-  { path: '', redirectTo: 'materials', pathMatch: 'full'}
+  {
+    path: 'quotes',
+    loadChildren: () => import('./quotes/quotes.module').then(m => m.QuotesModule)
+  },
+  { path: '', redirectTo: 'quotes', pathMatch: 'full'}
 ];
 
 @NgModule({
