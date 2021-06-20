@@ -5,7 +5,7 @@ export interface Recipe {
     description: string;
     baseHours: number;
     hoursPerUnit: number;
-    setup: true;
+    setup: boolean;
     setUpCost: number;
     minComplexity: number;
     maxComplexity: number;

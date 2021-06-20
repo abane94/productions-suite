@@ -57,7 +57,7 @@ interface NestedFormFieldDefinition extends FormFieldDefinitionBase<any> {
 export interface OptionDefinition {
   value: string;
   display: string;
-  default?: true;
+  default?: boolean;
 }
 
 interface OptionsSource {
