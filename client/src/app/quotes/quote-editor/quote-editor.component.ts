@@ -62,8 +62,8 @@ export class QuoteEditorComponent implements OnInit {
   materialDropDowns: { [materialClass: string]: Material[] } = {};
   materialSelections: number[] = [];
   materialsLoaded = false;
-  recipeOutput: any;
-  recipeFormDef: FormDefinition;
+  recipeOutputs: any[];
+  recipeFormDefList: FormDefinition[];
   constructor(private fb: FormBuilder, private recipeService: RecipeService, private materialService: MaterialService) {
     this.setup();
   }
@@ -123,48 +123,71 @@ export class QuoteEditorComponent implements OnInit {
       materialsDefs.push(material);
     }
 
-    this.recipeFormDef = this.materialListToFormDef(materialsDefs);
+    this.recipeFormDefList = this.materialListToFormDef(materialsDefs);
+    this.recipeOutputs = [].fill({});
 
     console.log(materialsDefs);
   }
 
   dumpRecipeForm() {
-    console.log(this.recipeOutput);
+    console.log(this.recipeOutputs);
   }
 
-  private materialListToFormDef(materials: Material[]): FormDefinition {
-    const formDef: FormDefinition = {
-      key: 'Materials',
-      fields: []
-    };
+  private materialListToFormDef(materials: Material[]): FormDefinition[] {
+    // const formDef: FormDefinition = {
+    //   key: 'Materials',
+    //   fields: []
+    // };
 
-    for (const material of materials) {
-      formDef.fields.push({
-        type: 'NESTED',
-        label: material.name,
-        key: material.name,
-        innerForm: {
-          key: 'MaterialSelections',
-          fields: material.options.items.map(option => ({
-            type: 'SELECT',
-            multiple: false,
-            // required?: boolean,
-            key: option.name,
-            label: option.name,
-            options: {
-              type: 'PLAINTEXT',
-              options: option.selections.items.map((selection, i) => ({
-                value: selection.value,
-                display: selection.display,
-                default: !i
+    // for (const material of materials) {
+    //   formDef.fields.push({
+    //     type: 'NESTED',
+    //     label: material.name,
+    //     key: material.name,
+    //     innerForm: {
+    //       key: 'MaterialSelections',
+    //       fields: material.options.items.map(option => ({
+    //         type: 'SELECT',
+    //         multiple: false,
+    //         // required?: boolean,
+    //         key: option.name,
+    //         label: option.name,
+    //         options: {
+    //           type: 'PLAINTEXT',
+    //           options: option.selections.items.map((selection, i) => ({
+    //             value: selection.value,
+    //             display: selection.display,
+    //             default: !i
+    //           }))
+    //         },
+    //         // helperText?: string,
+    //       }))
+    //     }
+    //   })
+    // }
+
+    return materials.map( material => {
+      return {
+              key: material.name,
+              fields: material.options.items.map(option => ({
+                type: 'SELECT',
+                multiple: false,
+                // required?: boolean,
+                key: option.name,
+                label: option.name,
+                options: {
+                  type: 'PLAINTEXT',
+                  options: option.selections.items.map((selection, i) => ({
+                    value: selection.value,
+                    display: selection.display,
+                    default: !i
+                  }))
+                },
+                // helperText?: string,
               }))
-            },
-            // helperText?: string,
-          }))
-        }
-      })
-    }
+            }
+    })
 
-    return formDef;
+    // return formDef;
   }
 }

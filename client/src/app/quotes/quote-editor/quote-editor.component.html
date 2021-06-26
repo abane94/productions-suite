@@ -74,8 +74,11 @@
           </div>
         </section>
       </form> -->
-      <ng-container *ngIf="recipeFormDef">
-        <app-user-defined-form-viewer [formDef]="recipeFormDef" [(ngModel)]="recipeOutput"></app-user-defined-form-viewer>
+      <ng-container *ngIf="recipeFormDefList">
+        <ng-container *ngFor="let recipeFormDef of recipeFormDefList; let i = index">
+          <h3>{{ recipeFormDef.key }}</h3>
+          <app-user-defined-form-viewer [formDef]="recipeFormDef" [(ngModel)]="recipeOutputs[i]"></app-user-defined-form-viewer>
+        </ng-container>
       </ng-container>
       <button (click)="dumpRecipeForm()">Dump</button>
 
