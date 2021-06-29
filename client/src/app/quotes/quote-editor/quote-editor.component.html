@@ -5,7 +5,8 @@
 <clr-wizard #wizard [clrWizardOpen]="open" (clrWizardOpenChange)="reset($event)">
     <clr-wizard-title>
         <h3>Add Line Item</h3>
-        Quant.   {{ order.quantity }}
+        Quant.   {{ form.controls.quantity.value }}
+        <button (click)="dumpForm()">Dump</button>
     </clr-wizard-title>
 
     <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
@@ -13,20 +14,20 @@
     <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
     <clr-wizard-button [type]="'finish'">Done</clr-wizard-button>
 
-    <clr-wizard-page #pageOne [clrWizardPageNextDisabled]="!order.quantity || !order.recipe">
+    <clr-wizard-page #pageOne [clrWizardPageNextDisabled]="!form.controls.quantity.value || !form.controls.recipe.value">
       <ng-template clrPageTitle>Basic Information</ng-template>
       <ng-template clrPageNavTitle>{{ pageOneTitle }}</ng-template>
 
-      <form clrForm clrLayout="horizontal" #formPageOne="ngForm">
+      <form clrForm clrLayout="horizontal" #formPageOne="ngForm" [formGroup]="form">
         <clr-input-container>
           <label>Quantity</label>
-          <input clrInput type="number" name="quant" required [(ngModel)]="order.quantity" />
+          <input clrInput type="number" name="quant" required formControlName="quantity" />
           <clr-control-error>This field cannot be empty!</clr-control-error>
         </clr-input-container>
 
         <clr-select-container *ngIf="recipes">
           <label>Recipe</label>
-          <select clrSelect name="recipe" [(ngModel)]="order.recipe">
+          <select clrSelect name="recipe" formControlName="recipe">
             <option *ngFor="let recipe of recipes" [value]="recipe.id"> <!-- TODO: the value should just be the recipe, but it comes out as [object Object]-->
               {{recipe.name}}
             </option>
@@ -39,9 +40,10 @@
       <ng-template clrPageTitle>Color</ng-template>
       <ng-template clrPageNavTitle>{{ pageTwoTitle }}</ng-template>
       <form #formPageTwo="ngForm" *ngIf="materialsLoaded">
-        <ng-container *ngFor="let material of order.recipeObj.materials.items; let i = index">
+        <ng-container *ngFor="let material of form.controls.recipeObj.value.materials.items; let i = index">
             <clr-select-container>
                 <label>{{ material.material }}</label>
+                <!-- This does not need to be part of the form, since this info will implicitly make it into the play load anyway -->
                 <select clrSelect name="recipe" [(ngModel)]="materialSelections[i]">
                   <option *ngFor="let m of materialDropDowns[material.material]" [value]="m.id">
                     {{m.name}}
@@ -75,12 +77,13 @@
         </section>
       </form> -->
       <ng-container *ngIf="recipeFormDefList">
-        <ng-container *ngFor="let recipeFormDef of recipeFormDefList; let i = index">
-          <h3>{{ recipeFormDef.key }}</h3>
-          <app-user-defined-form-viewer [formDef]="recipeFormDef" [(ngModel)]="recipeOutputs[i]"></app-user-defined-form-viewer>
-        </ng-container>
+        <form [formGroup]="materialForm">
+          <ng-container *ngFor="let recipeFormDef of recipeFormDefList; let i = index">
+            <h3>{{ recipeFormDef.key }}</h3>
+            <app-user-defined-form-viewer [formDef]="recipeFormDef" [formControlName]="recipeFormDef.key"></app-user-defined-form-viewer>
+          </ng-container>
+        </form>
       </ng-container>
-      <button (click)="dumpRecipeForm()">Dump</button>
 
     </clr-wizard-page>
 

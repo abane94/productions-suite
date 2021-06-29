@@ -1,16 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MaterialService } from 'src/app/data/material.service';
 import { RecipeService } from 'src/app/data/recipe.service';
 import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
 import { Material } from 'src/types/materials.types';
 import { Recipe } from 'src/types/recipes.types';
-
-interface Order {
-  quantity: number;
-  recipe: number;
-  recipeObj: Recipe;
-}
 
 @Component({
   selector: 'app-quote-editor',
@@ -53,19 +47,23 @@ export class QuoteEditorComponent implements OnInit {
   textsplanationOfRanking = 'Explanation of ranking';
   //#endregion
 
-  order: Order = {
-    quantity: 0,
-    recipe: null,
-    recipeObj: null
-  };
+
+  form: FormGroup;
+  materialForm: FormGroup;
+
 
   materialDropDowns: { [materialClass: string]: Material[] } = {};
   materialSelections: number[] = [];
   materialsLoaded = false;
-  recipeOutputs: any[];
   recipeFormDefList: FormDefinition[];
   constructor(private fb: FormBuilder, private recipeService: RecipeService, private materialService: MaterialService) {
     this.setup();
+
+    this.form = fb.group({
+      quantity: [0, Validators.min(1)],
+      recipe: '',
+      recipeObj: null
+    })
   }
 
   ngOnInit(): void {
@@ -97,9 +95,9 @@ export class QuoteEditorComponent implements OnInit {
   //#endregion
 
   async generateMaterialDropDowns() {
-    const recipeObj = await this.recipeService.getOne(this.order.recipe);
-    this.order.recipeObj = recipeObj;
-    console.log(this.order.recipe);
+    const recipeObj = await this.recipeService.getOne(this.form.controls.recipe.value);
+    this.form.controls.recipeObj.patchValue(recipeObj);
+    console.log(this.form.controls.recipe.value);
     const allMaterials = (await this.materialService.get()).items;
     for (const material of recipeObj.materials.items) {
       this.materialDropDowns[material.material] = allMaterials.filter(m => m.class = material.material);
@@ -113,24 +111,25 @@ export class QuoteEditorComponent implements OnInit {
 
     const materialsDefs: Material[] = [];
 
-    // retrieve material definitions
-    // for (const materialDep of this.order.recipeObj.materials.items) {
-    //   const material = this.materialService.getOne()
-    // }
-    for (let i = 0; i < this.order.recipeObj.materials.items.length; i++) {
-      const materialDep = this.order.recipeObj.materials.items[i];
+    const materialFormBuilder = {};
+    for (let i = 0; i < this.form.controls.recipeObj.value.materials.items.length; i++) {
+      // const materialDep = this.form.controls.recipeObj.value.materials.items[i];
       const material = await this.materialService.getOne(+this.materialSelections[i]);
       materialsDefs.push(material);
+      // this.form.addControl(material.name, this.fb.control(null));
+      materialFormBuilder[material.name] = null;
     }
 
+    this.materialForm = this.fb.group(materialFormBuilder);
+    this.form.addControl('materials', this.materialForm);
+
     this.recipeFormDefList = this.materialListToFormDef(materialsDefs);
-    this.recipeOutputs = [].fill({});
 
     console.log(materialsDefs);
   }
 
-  dumpRecipeForm() {
-    console.log(this.recipeOutputs);
+  dumpForm() {
+    console.log(this.form.value);
   }
 
   private materialListToFormDef(materials: Material[]): FormDefinition[] {
