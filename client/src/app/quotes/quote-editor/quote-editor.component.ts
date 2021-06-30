@@ -6,6 +6,13 @@ import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defi
 import { Material } from 'src/types/materials.types';
 import { Recipe } from 'src/types/recipes.types';
 
+interface Quote {
+  quantity: number,
+  recipe: string,
+  recipeObj?: Recipe,
+  materials?: { [materialName: string]: any }  // TODO: change any
+}
+
 @Component({
   selector: 'app-quote-editor',
   templateUrl: './quote-editor.component.html',
@@ -56,6 +63,7 @@ export class QuoteEditorComponent implements OnInit {
   materialSelections: number[] = [];
   materialsLoaded = false;
   recipeFormDefList: FormDefinition[];
+  materials: { [materialName: string]: Material } = {};
   constructor(private fb: FormBuilder, private recipeService: RecipeService, private materialService: MaterialService) {
     this.setup();
 
@@ -115,6 +123,7 @@ export class QuoteEditorComponent implements OnInit {
     for (let i = 0; i < this.form.controls.recipeObj.value.materials.items.length; i++) {
       // const materialDep = this.form.controls.recipeObj.value.materials.items[i];
       const material = await this.materialService.getOne(+this.materialSelections[i]);
+      this.materials[material.name] = material;
       materialsDefs.push(material);
       // this.form.addControl(material.name, this.fb.control(null));
       materialFormBuilder[material.name] = null;
@@ -130,6 +139,7 @@ export class QuoteEditorComponent implements OnInit {
 
   dumpForm() {
     console.log(this.form.value);
+    this.calculatePrice()
   }
 
   private materialListToFormDef(materials: Material[]): FormDefinition[] {
@@ -188,5 +198,37 @@ export class QuoteEditorComponent implements OnInit {
     })
 
     // return formDef;
+  }
+
+  calculatePrice(): number {
+    // TODO: could separate out perUnit, set up, and total prices
+    if (!this.form) { return 0; }
+    const val: Quote = this.form.value;
+    if (!val.recipeObj) { return 0; }
+    let price = 0;
+    const recipe = val.recipeObj;
+    const setup = false ; // val.setUp;
+
+
+    if (!val.materials) { return price; }
+    for (let i = 0; i < recipe.materials.items.length; i++) {
+      const materialRecipeSettings = recipe.materials.items[i];
+      const materialInstanceName = this.recipeFormDefList[i].key;
+      const selectedMaterialOptions = val.materials[materialInstanceName];
+      const materialDef = this.materials[materialInstanceName];
+      const totalQuantity = (materialRecipeSettings.perUnity + (setup ? materialRecipeSettings.perSetup : 0)) * val.quantity;
+
+      if (!selectedMaterialOptions) { return; }
+      let costPerItem = materialDef.baseCost;
+      materialDef.options.items.forEach( availableOption => {
+        const selectedOption = selectedMaterialOptions[availableOption.name];
+        const selectedOptionDef = availableOption.selections.items.find(option => option.value === selectedOption);
+        costPerItem += selectedOptionDef.priceAdjustment;
+      });
+
+      price += (totalQuantity * costPerItem);
+    }
+
+    return price;
   }
 }

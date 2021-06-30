@@ -6,6 +6,9 @@
     <clr-wizard-title>
         <h3>Add Line Item</h3>
         Quant.   {{ form.controls.quantity.value }}
+        <br/>
+        Price: {{ calculatePrice() | currency}}
+        <br/>
         <button (click)="dumpForm()">Dump</button>
     </clr-wizard-title>
 
