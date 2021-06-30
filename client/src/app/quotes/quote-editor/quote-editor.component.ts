@@ -54,6 +54,9 @@ export class QuoteEditorComponent implements OnInit {
   textsplanationOfRanking = 'Explanation of ranking';
   //#endregion
 
+  materialsPageLoaded = false;
+  materialDetailsPageLoaded = false;
+
 
   form: FormGroup;
   materialForm: FormGroup;
@@ -102,7 +105,8 @@ export class QuoteEditorComponent implements OnInit {
 
   //#endregion
 
-  async generateMaterialDropDowns() {
+  async loadMaterialSelectionPage() {
+    if (this.materialsPageLoaded) { return; }
     const recipeObj = await this.recipeService.getOne(this.form.controls.recipe.value);
     this.form.controls.recipeObj.patchValue(recipeObj);
     console.log(this.form.controls.recipe.value);
@@ -112,9 +116,11 @@ export class QuoteEditorComponent implements OnInit {
     }
 
     this.materialsLoaded = true;
+    this.materialsPageLoaded = true;
   }
 
-  async generateRecipeForm() {
+  async loadMaterialDetailSelectionPage() {
+    if (this.materialDetailsPageLoaded) { return; }
     console.log(this.materialSelections);
 
     const materialsDefs: Material[] = [];
@@ -135,6 +141,7 @@ export class QuoteEditorComponent implements OnInit {
     this.recipeFormDefList = this.materialListToFormDef(materialsDefs);
 
     console.log(materialsDefs);
+    this.materialDetailsPageLoaded = true;
   }
 
   dumpForm() {

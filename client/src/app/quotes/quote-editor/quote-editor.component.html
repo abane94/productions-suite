@@ -39,7 +39,7 @@
       </form>
     </clr-wizard-page>
 
-    <clr-wizard-page #pageTwo (clrWizardPageOnLoad)="generateMaterialDropDowns()">
+    <clr-wizard-page #pageTwo (clrWizardPageOnLoad)="loadMaterialSelectionPage()">
       <ng-template clrPageTitle>Color</ng-template>
       <ng-template clrPageNavTitle>{{ pageTwoTitle }}</ng-template>
       <form #formPageTwo="ngForm" *ngIf="materialsLoaded">
@@ -58,7 +58,7 @@
       </form>
     </clr-wizard-page>
 
-    <clr-wizard-page #pageThree [clrWizardPageNextDisabled]="!formPageThreeValid" (clrWizardPageOnLoad)="generateRecipeForm()">
+    <clr-wizard-page #pageThree [clrWizardPageNextDisabled]="!formPageThreeValid" (clrWizardPageOnLoad)="loadMaterialDetailSelectionPage()">
       <ng-template clrPageTitle>Power</ng-template>
       <ng-template clrPageNavTitle>{{ pageThreeTitle }}</ng-template>
 
