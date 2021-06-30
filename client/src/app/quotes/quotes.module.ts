@@ -7,10 +7,11 @@ import { QuoteEditorComponent } from './quote-editor/quote-editor.component';
 import { FormsModule } from '../forms/forms.module';
 import { FormsModule as ngFormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
+import { LineItemEditorComponent } from './line-item-editor/line-item-editor.component';
 
 
 @NgModule({
-  declarations: [QuoteEditorComponent],
+  declarations: [QuoteEditorComponent, LineItemEditorComponent],
   imports: [
     CommonModule,
     QuotesRoutingModule,
