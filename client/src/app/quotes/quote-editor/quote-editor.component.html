@@ -1,3 +1,4 @@
 <p>quote-editor works!</p>
 
-<app-line-item-editor></app-line-item-editor>
+<app-line-item-editor [(ngModel)]="val"></app-line-item-editor>
+<button (click)="dump()">Dump Val</button>

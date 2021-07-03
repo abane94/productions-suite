@@ -1,7 +1,7 @@
 <clr-wizard #wizard [clrWizardOpen]="open" (clrWizardOpenChange)="reset($event)">
     <clr-wizard-title>
         <h3>Add Line Item</h3>
-        Quant. {{ form.controls.quantity.value }}
+        Quant. {{ _form.controls.quantity.value }}
         <br />
         Price: {{ calculatePrice() | currency}}
         <br />
@@ -14,11 +14,11 @@
     <clr-wizard-button [type]="'finish'">Done</clr-wizard-button>
 
     <clr-wizard-page #pageOne
-        [clrWizardPageNextDisabled]="!form.controls.quantity.value || !form.controls.recipe.value">
+        [clrWizardPageNextDisabled]="!_form.controls.quantity.value || !_form.controls.recipe.value">
         <ng-template clrPageTitle>Basic Information</ng-template>
         <ng-template clrPageNavTitle>{{ pageOneTitle }}</ng-template>
 
-        <form clrForm clrLayout="horizontal" #formPageOne="ngForm" [formGroup]="form">
+        <form clrForm clrLayout="horizontal" #formPageOne="ngForm" [formGroup]="_form">
             <clr-input-container>
                 <label>Quantity</label>
                 <input clrInput type="number" name="quant" required formControlName="quantity" />
@@ -40,17 +40,30 @@
     <clr-wizard-page #pageTwo (clrWizardPageOnLoad)="loadMaterialSelectionPage()">
         <ng-template clrPageTitle>Color</ng-template>
         <ng-template clrPageNavTitle>{{ pageTwoTitle }}</ng-template>
-        <form #formPageTwo="ngForm" *ngIf="materialsLoaded">
-            <ng-container *ngFor="let material of form.controls.recipeObj.value.materials.items; let i = index">
-                <clr-select-container>
-                    <label>{{ material.material }}</label>
-                    <!-- This does not need to be part of the form, since this info will implicitly make it into the play load anyway -->
-                    <select clrSelect name="recipe" [(ngModel)]="materialSelections[i]">
-                        <option *ngFor="let m of materialDropDowns[material.material]" [value]="m.id">
-                            {{m.name}}
-                        </option>
-                    </select>
-                </clr-select-container>
+        <form #formPageTwo="ngForm" *ngIf="materialsLoaded"  [formGroup]="_form">
+            <ng-container formArrayName="materialSelections">
+                <ng-container *ngFor="let material of _form.controls.recipeObj.value.materials.items; let i = index">
+                    <!-- <clr-select-container>
+                        <label>{{ material.material }}</label>
+                        <select clrSelect name="recipe" [FormControlName]="i">
+                            <option *ngFor="let m of materialDropDowns[material.material]" [value]="'' + m.id">
+                                {{m.name}}
+                            </option>
+                        </select>
+                    </clr-select-container> -->
+
+                    <!-- The difference between how the select and datalist work has to do with how the value is represented somehow, string vs number ... -->
+
+                    <clr-datalist-container>
+                        <label>{{ material.material }}</label>
+                        <input clrDatalistInput [formControlName]="i" placeholder="No label" name="recipe" />
+                        <datalist>
+                            <option *ngFor="let m of materialDropDowns[material.material]" [value]="m.id">
+                                {{m.name}}
+                            </option>
+                        </datalist>
+                    </clr-datalist-container>
+                </ng-container>
             </ng-container>
 
         </form>

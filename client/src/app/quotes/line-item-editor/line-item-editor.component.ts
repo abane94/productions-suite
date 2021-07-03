@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MaterialService } from 'src/app/data/material.service';
 import { RecipeService } from 'src/app/data/recipe.service';
+import { GenericControlProvider, GenericControlValueAccessor } from 'src/app/forms/GenericControlValueAccessor';
 import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
 import { Material } from 'src/types/materials.types';
 import { Recipe } from 'src/types/recipes.types';
@@ -11,42 +12,44 @@ interface Quote {
   quantity: number,
   recipe: string,
   recipeObj?: Recipe,
+  materialSelections: string[];
   materials?: { [materialName: string]: any }  // TODO: change any
 }
 
 @Component({
   selector: 'app-line-item-editor',
   templateUrl: './line-item-editor.component.html',
-  styleUrls: ['./line-item-editor.component.scss']
+  styleUrls: ['./line-item-editor.component.scss'],
+  providers: [GenericControlProvider(LineItemEditorComponent)]
 })
-export class LineItemEditorComponent implements OnInit {
+export class LineItemEditorComponent extends GenericControlValueAccessor<Quote> {
+  _createFormGroup(): void {
+
+    this._form = this._fb.group({
+      quantity: [0, Validators.min(1)],
+      materialSelections: this._fb.array([]),
+      recipe: '',
+      recipeObj: null
+    })
+  }
   @Input() open = true;
   recipes: Recipe[];
   materialsPageLoaded = false;
   materialDetailsPageLoaded = false;
 
 
-  form: FormGroup;
   materialForm: FormGroup;
 
 
   materialDropDowns: { [materialClass: string]: Material[] } = {};
-  materialSelections: number[] = [];
   materialsLoaded = false;
   recipeFormDefList: FormDefinition[];
   materials: { [materialName: string]: Material } = {};
 
-  constructor(private fb: FormBuilder, private recipeService: RecipeService, private materialService: MaterialService) {
+  constructor(fb: FormBuilder, private recipeService: RecipeService, private materialService: MaterialService) {
+    super(fb);
     this.setup();
 
-    this.form = fb.group({
-      quantity: [0, Validators.min(1)],
-      recipe: '',
-      recipeObj: null
-    })
-  }
-
-  ngOnInit(): void {
   }
 
   private async setup() {
@@ -60,12 +63,13 @@ export class LineItemEditorComponent implements OnInit {
 
   async loadMaterialSelectionPage() {
     if (this.materialsPageLoaded) { return; }
-    const recipeObj = await this.recipeService.getOne(this.form.controls.recipe.value);
-    this.form.controls.recipeObj.patchValue(recipeObj);
-    console.log(this.form.controls.recipe.value);
+    const recipeObj = await this.recipeService.getOne(+this._form.controls.recipe.value);
+    this._form.controls.recipeObj.patchValue(recipeObj);
+    console.log(this._form.controls.recipe.value);
     const allMaterials = (await this.materialService.get()).items;
     for (const material of recipeObj.materials.items) {
       this.materialDropDowns[material.material] = allMaterials.filter(m => m.class = material.material);
+      (this._form.controls.materialSelections as FormArray).push(this._fb.control(this.materialDropDowns[material.material][0].id));
     }
 
     this.materialsLoaded = true;
@@ -73,23 +77,25 @@ export class LineItemEditorComponent implements OnInit {
   }
 
   async loadMaterialDetailSelectionPage() {
-    if (this.materialDetailsPageLoaded) { return; }
-    console.log(this.materialSelections);
+    console.log(this._form.controls.materialSelections.value);
 
     const materialsDefs: Material[] = [];
 
-    const materialFormBuilder = {};
-    for (let i = 0; i < this.form.controls.recipeObj.value.materials.items.length; i++) {
-      // const materialDep = this.form.controls.recipeObj.value.materials.items[i];
-      const material = await this.materialService.getOne(+this.materialSelections[i]);
-      this.materials[material.name] = material;
-      materialsDefs.push(material);
-      // this.form.addControl(material.name, this.fb.control(null));
-      materialFormBuilder[material.name] = null;
+    if (!this._form.controls.materials) {
+      this.materialForm = this._fb.group({});
+      this._form.addControl('materials', this.materialForm);
     }
 
-    this.materialForm = this.fb.group(materialFormBuilder);
-    this.form.addControl('materials', this.materialForm);
+    for (let i = 0; i < this._form.controls.recipeObj.value.materials.items.length; i++) {
+      const material = await this.materialService.getOne(+this._form.controls.materialSelections.value[i]);
+      this.materials[material.name] = material;
+      materialsDefs.push(material);
+      if (!this.materialForm.controls[material.name]) {
+        this.materialForm.addControl(material.name, this._fb.control({}));
+      }
+    }
+
+
 
     this.recipeFormDefList = this.materialListToFormDef(materialsDefs);
 
@@ -98,7 +104,7 @@ export class LineItemEditorComponent implements OnInit {
   }
 
   dumpForm() {
-    console.log(this.form.value);
+    console.log(this._form.value);
     this.calculatePrice()
   }
 
@@ -162,8 +168,8 @@ export class LineItemEditorComponent implements OnInit {
 
   calculatePrice(): number {
     // TODO: could separate out perUnit, set up, and total prices
-    if (!this.form) { return 0; }
-    const val: Quote = this.form.value;
+    if (!this._form) { return 0; }
+    const val: Quote = this._form.value;
     if (!val.recipeObj) { return 0; }
     let price = 0;
     const recipe = val.recipeObj;
@@ -183,7 +189,7 @@ export class LineItemEditorComponent implements OnInit {
       materialDef.options.items.forEach( availableOption => {
         const selectedOption = selectedMaterialOptions[availableOption.name];
         const selectedOptionDef = availableOption.selections.items.find(option => option.value === selectedOption);
-        costPerItem += selectedOptionDef.priceAdjustment;
+        costPerItem += selectedOptionDef?.priceAdjustment || 0;
       });
 
       price += (totalQuantity * costPerItem);

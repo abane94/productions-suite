@@ -29,7 +29,7 @@ export abstract class GenericDataService<T extends {id: number}> {
     }
 
     async getOne(id: number) {
-        return this.items.find(i => i.id = id);
+        return this.items.find(i => i.id === id);
     }
 
     async add(item: T) {
