@@ -7,6 +7,7 @@
             <ng-container [ngSwitch]="field.type">
                 <ng-container *ngSwitchCase="'NESTED'">
                     <clr-accordion>
+                      <!-- TODO: Maybe switch with stack view ?? -->
                         <clr-accordion-panel *ngFor="let subData of data[field.key].items; let i = index">
                           <clr-accordion-title>{{ accordionPanelDisplay(subData, field) }}</clr-accordion-title>
                           <clr-accordion-content [*clrIfExpanded] >

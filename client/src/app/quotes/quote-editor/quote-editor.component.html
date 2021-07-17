@@ -1,4 +1,97 @@
 <p>quote-editor works!</p>
 
-<app-line-item-editor [(ngModel)]="val"></app-line-item-editor>
+<!-- <app-line-item-editor [(ngModel)]="val"></app-line-item-editor> -->
 <button (click)="dump()">Dump Val</button>
+
+<form *ngIf="loaded && _form" [formGroup]="_form">
+    <!-- Customer pick or new, new opens a model that will save the customer and automatically fill it out with the id of the newly created customer-->
+    <clr-combobox-container>
+        <label>Customer</label>
+        <clr-combobox formControlName="customer" name="customerCombo" required>
+            <clr-options>
+                <clr-option *clrOptionItems="let cus of customers; field:'name'" [clrValue]="cus">{{cus.name}}</clr-option>
+            </clr-options>
+        </clr-combobox>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-error>There was an error</clr-control-error>
+    </clr-combobox-container>
+    <!-- Customer contact-->
+    <clr-combobox-container>
+        <label>Contact</label>
+        <clr-combobox formControlName="contact" name="contactCombo" required>
+            <clr-options>
+                <clr-option *clrOptionItems="let contact of contacts; field:'name'" [clrValue]="contact">{{contact.name}}</clr-option>
+            </clr-options>
+        </clr-combobox>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-error>There was an error</clr-control-error>
+    </clr-combobox-container>
+
+    <!-- TODO : Charge Codes - are these per customer or per contact?? -->
+    <!-- Taxable? -->
+
+
+    <!-- items -->
+    <button (click)="addItem()">Add Item</button>
+    <clr-datagrid [(clrDgSelected)]="selected">
+
+        <!-- <clr-dg-column>User ID</clr-dg-column> -->
+        <clr-dg-column>Product</clr-dg-column>
+        <clr-dg-column>Quantity</clr-dg-column>
+        <clr-dg-column>Created</clr-dg-column>
+
+        <!-- Dont need/ want filter, sorting, etc... So dont I dont need the clrDgField property -->
+        <!-- <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+        <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
+        <clr-dg-column [clrDgField]="'pokemon'">Pokemon</clr-dg-column>
+        <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column> -->
+
+        <clr-dg-row *ngFor="let control of itemsForm.controls;let i = index">
+
+            <clr-dg-action-overflow>
+                <button class="action-item" (click)="onCopy(control, i)">Copy</button>
+                <button class="action-item" (click)="onDelete(control, i)">Delete</button>
+                <button class="action-item" (click)="onEdit(control, i)">Edit</button>
+            </clr-dg-action-overflow>
+
+            <clr-dg-cell>{{control?.value?.recipeObj?.name}}</clr-dg-cell>
+            <clr-dg-cell>{{control?.value?.quantity}}</clr-dg-cell>
+            <clr-dg-cell>{{user?.creation | date}}</clr-dg-cell>
+            <clr-dg-cell>
+                <app-line-item-editor [formControl]="control" [open]="isOpen[i]"></app-line-item-editor>
+            </clr-dg-cell>
+
+            <!-- <clr-dg-row-detail *clrIfExpanded>
+                <h3>{{ control?.value?.recipeObj?.name }}</h3>
+                <h4>{{ control?.value?.recipeObj?.description }}</h4>
+                <div *ngFor="let material of (control?.value?.materials || {}) | keyvalue">
+                    <b>{{ material.key }}</b>
+                        <div *ngFor="let selection of material.value | keyvalue">{{ selection.key }}: {{ selection.value }}</div>
+                </div>
+            </clr-dg-row-detail> -->
+            <!-- <clr-dg-detail *clrIfDetail="let detail">
+                <clr-dg-detail-header>{{control?.value?.recipeObj?.name}}</clr-dg-detail-header>
+                <clr-dg-detail-body>
+                    {{ control?.value?.recipeObj?.description }}
+                    <div *ngFor="let material of (control?.value?.materials || {}) | keyvalue">
+                        <b>{{ material.key }}</b>
+                            <div *ngFor="let selection of material.value | keyvalue">{{ selection.key }}: {{ selection.value }}</div>
+                    </div>
+                </clr-dg-detail-body>
+            </clr-dg-detail> -->
+        </clr-dg-row>
+    </clr-datagrid>
+
+    <!-- additional charges: Expedite, install, shipped. Options for both predefined and entered in charges -->
+    <!-- Shipping seems like a pretty standard option, should the recipes or materials have a weight associated with them to display for shipping prices?? -->
+
+    <!-- Total -->
+
+    <!-- Description -->
+
+    <!-- For Order: Due Date -->
+
+    <!-- Who Filled Out - non editable -->
+</form>
+
+<!-- Print Button -->
