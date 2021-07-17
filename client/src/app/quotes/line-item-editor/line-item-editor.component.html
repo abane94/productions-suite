@@ -1,4 +1,4 @@
-<clr-wizard #wizard [clrWizardOpen]="open" (clrWizardOpenChange)="reset($event)">
+<clr-wizard #wizard [(clrWizardOpen)]="open" (clrWizardOpenChange)="reset($event)">
     <clr-wizard-title>
         <h3>Add Line Item</h3>
         Quant. {{ _form.controls.quantity.value }}
@@ -8,10 +8,10 @@
         <button (click)="dumpForm()">Dump</button>
     </clr-wizard-title>
 
-    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+    <clr-wizard-button [type]="'cancel'" (clrWizardButtonClicked)="onClose()">Cancel</clr-wizard-button>
     <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
     <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-    <clr-wizard-button [type]="'finish'">Done</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'" (clrWizardButtonClicked)="onClose()">Done</clr-wizard-button>
 
     <clr-wizard-page #pageOne
         [clrWizardPageNextDisabled]="!_form.controls.quantity.value || !_form.controls.recipe.value">

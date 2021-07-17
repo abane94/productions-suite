@@ -58,7 +58,7 @@
             <clr-dg-cell>{{control?.value?.quantity}}</clr-dg-cell>
             <clr-dg-cell>{{user?.creation | date}}</clr-dg-cell>
             <clr-dg-cell>
-                <app-line-item-editor [formControl]="control" [open]="isOpen[i]"></app-line-item-editor>
+                <app-line-item-editor [formControl]="control" [(open)]="isOpen[i]"></app-line-item-editor>
             </clr-dg-cell>
 
             <!-- <clr-dg-row-detail *clrIfExpanded>

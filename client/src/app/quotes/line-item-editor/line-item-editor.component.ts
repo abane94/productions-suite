@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MaterialService } from 'src/app/data/material.service';
 import { RecipeService } from 'src/app/data/recipe.service';
@@ -33,6 +33,7 @@ export class LineItemEditorComponent extends GenericControlValueAccessor<Quote> 
     })
   }
   @Input() open = true;
+  @Output() openChange = new EventEmitter<boolean>();
   recipes: Recipe[];
   materialsPageLoaded = false;
   materialDetailsPageLoaded = false;
@@ -196,6 +197,10 @@ export class LineItemEditorComponent extends GenericControlValueAccessor<Quote> 
     }
 
     return price;
+  }
+
+  onClose() {
+    this.openChange.emit(false);
   }
 
 }
