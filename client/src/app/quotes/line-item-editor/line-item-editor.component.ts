@@ -15,6 +15,7 @@ interface Quote {
   materialSelections: string[];
   materials?: { [materialName: string]: any }  // TODO: change any
   price: number;
+  description: string;
 }
 
 @Component({
@@ -31,7 +32,8 @@ export class LineItemEditorComponent extends GenericControlValueAccessor<Quote> 
       materialSelections: this._fb.array([]),
       recipe: '',
       recipeObj: null,
-      price: 0
+      price: 0,
+      description: ''
     })
   }
   @Input() open = true;
