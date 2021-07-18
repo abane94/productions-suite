@@ -92,7 +92,11 @@ export class LineItemEditorComponent extends GenericControlValueAccessor<Quote> 
       this.materials[material.name] = material;
       materialsDefs.push(material);
       if (!this.materialForm.controls[material.name]) {
-        this.materialForm.addControl(material.name, this._fb.control({}));
+        const formObj = {};
+        for ( const option of material.options.items) {
+          formObj[option.name] = option.selections.items[0].value;
+        }
+        this.materialForm.addControl(material.name, this._fb.control(formObj));
       }
     }
 
