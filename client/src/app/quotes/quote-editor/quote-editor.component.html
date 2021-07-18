@@ -61,24 +61,16 @@
                 <app-line-item-editor [formControl]="control" [(open)]="isOpen[i]"></app-line-item-editor>
             </clr-dg-cell>
 
-            <!-- <clr-dg-row-detail *clrIfExpanded>
-                <h3>{{ control?.value?.recipeObj?.name }}</h3>
-                <h4>{{ control?.value?.recipeObj?.description }}</h4>
-                <div *ngFor="let material of (control?.value?.materials || {}) | keyvalue">
-                    <b>{{ material.key }}</b>
-                        <div *ngFor="let selection of material.value | keyvalue">{{ selection.key }}: {{ selection.value }}</div>
-                </div>
-            </clr-dg-row-detail> -->
-            <!-- <clr-dg-detail *clrIfDetail="let detail">
-                <clr-dg-detail-header>{{control?.value?.recipeObj?.name}}</clr-dg-detail-header>
-                <clr-dg-detail-body>
-                    {{ control?.value?.recipeObj?.description }}
+            <clr-dg-row-detail *clrIfExpanded>
+                <div>
+                    <h3>{{ control?.value?.recipeObj?.name }}</h3>
+                    <h4>{{ control?.value?.recipeObj?.description }}</h4>
                     <div *ngFor="let material of (control?.value?.materials || {}) | keyvalue">
                         <b>{{ material.key }}</b>
                             <div *ngFor="let selection of material.value | keyvalue">{{ selection.key }}: {{ selection.value }}</div>
                     </div>
-                </clr-dg-detail-body>
-            </clr-dg-detail> -->
+                </div>
+            </clr-dg-row-detail>
         </clr-dg-row>
     </clr-datagrid>
 
