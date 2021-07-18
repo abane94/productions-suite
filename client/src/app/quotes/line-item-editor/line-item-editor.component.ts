@@ -14,6 +14,7 @@ interface Quote {
   recipeObj?: Recipe,
   materialSelections: string[];
   materials?: { [materialName: string]: any }  // TODO: change any
+  price: number;
 }
 
 @Component({
@@ -29,7 +30,8 @@ export class LineItemEditorComponent extends GenericControlValueAccessor<Quote> 
       quantity: [0, Validators.min(1)],
       materialSelections: this._fb.array([]),
       recipe: '',
-      recipeObj: null
+      recipeObj: null,
+      price: 0
     })
   }
   @Input() open = true;
@@ -199,11 +201,13 @@ export class LineItemEditorComponent extends GenericControlValueAccessor<Quote> 
 
       price += (totalQuantity * costPerItem);
     }
+    this._form.patchValue({price});
 
     return price;
   }
 
   onClose() {
+    this.calculatePrice();
     this.openChange.emit(false);
   }
 

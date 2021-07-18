@@ -65,6 +65,10 @@ export class QuoteEditorComponent extends GenericControlValueAccessor<Quote> imp
     }
   };
 
+  get totalPrice(): number {
+    return this.itemsForm.controls.reduce((sum, item) => sum + (item?.value?.price || 0), 0);
+  }
+
   constructor(
     fb: FormBuilder,
     private recipeService: RecipeService,
