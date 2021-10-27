@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "build:ci": "ng build --prod --sourceMap=false --base-href /productions-suite/",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
