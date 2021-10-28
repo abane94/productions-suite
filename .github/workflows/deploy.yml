@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Go To Client Dir
-      - run: cd client
+        run: cd client
       - name: Build
         run: npm run build:ci
       - name: Upload
