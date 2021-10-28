@@ -7,6 +7,9 @@ on:
 
 jobs:
   build:
+    defaults:
+        run:
+          working-directory: client
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
@@ -15,8 +18,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - name: Go To Client Dir
-        run: cd client
       - name: Install dependencies
         run: npm ci
       - name: Build
