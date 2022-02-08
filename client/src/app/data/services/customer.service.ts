@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Customer, CustomerContact } from 'src/types/customers.types';
-import { GenericDataService } from './generic-data-service';
+import { DataModule } from '../data.module';
+import { GenericDataService } from '../base-classes/generic-data-service-2';
 
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: DataModule
 })
 export class CustomerService extends GenericDataService<Customer> {
   items: Customer[] = [
@@ -40,9 +41,9 @@ export class CustomerService extends GenericDataService<Customer> {
     }
   }
 
-  async add(item: Customer) {
-    throw new Error('Not Supported, use addCustomer instead.');
-  }
+  // add(item: Customer): Observable< {
+  //   throw new Error('Not Supported, use addCustomer instead.');
+  // }
 
   async addContact(customerId: number, contact: CustomerContact) {
     // contact.customerId = item.id;

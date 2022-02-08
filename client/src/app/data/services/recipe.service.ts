@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Recipe } from 'src/types/recipes.types';
-import { GenericDataService } from './generic-data-service';
+import { Recipe } from 'src/types/models/recipes.types';
+import { DataModule } from './data.module';
+import { GenericDataService } from './base-classes/generic-data-service-2';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: DataModule
 })
 export class RecipeService extends GenericDataService<Recipe> {
   items: Recipe[] = [

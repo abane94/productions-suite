@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Material } from 'src/types/materials.types';
-import { GenericDataService } from './generic-data-service';
+import { DataModule } from './data.module';
+import { GenericDataService } from './base-classes/generic-data-service-2';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: DataModule
 })
 export class MaterialService extends GenericDataService<Material> {
 
