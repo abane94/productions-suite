@@ -1,14 +1,14 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Subject } from 'rxjs';
-import { GenericDataService } from './generic-data-service';
+import { GenericStore } from './base-classes/generic-store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataGridHandlerService<T extends {id: number}> {
 
-  private service: GenericDataService<T>;
+  private store: GenericStore<T>;
   loading = true;
   total: number;
 
@@ -16,16 +16,21 @@ export class DataGridHandlerService<T extends {id: number}> {
   onItems$ = this.onItemsSource.asObservable()
 
 
-  setService(service: GenericDataService<T>) {
-    this.service = service;
+  setStore(store: GenericStore<T>) {
+    this.store = store;
   }
 
   refresh(state: ClrDatagridStateInterface) {
     console.log(state);
-    this.service.get(state).then(result => {
-      this.onItemsSource.next(result.items);
-      this.total = result.total;
-      this.loading = false;
-    });
+
+    // TODO this might be redundant, since I could listen to the item observable once, and let that feed onItems$ (ore replace it entirely)
+    this.store.filter(state).subscribe(
+      result => {
+        this.onItemsSource.next(result.items);
+        this.total = result.total;
+        this.loading = false;
+      },
+      err => console.log("Error retrieving Items")
+    );
   }
 }

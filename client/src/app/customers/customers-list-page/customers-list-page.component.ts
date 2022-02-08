@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DataGridHandlerService } from 'src/app/data/data-grid-handler.service';
-import { CustomerService } from 'src/app/data/customer.service';
+import { CustomerService } from 'src/app/data/services/customer.service';
 import { NestedDisplayFields } from 'src/app/forms/user-defined-form-data-display/user-defined-form-data-display.component';
 import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
 import { Customer, CustomerContact } from 'src/types/customers.types';
 import CustomerFormDefinition, { CustomerContactFormDefinition } from '../customer-form-definition';
+import { CustomerStoreService } from 'src/app/data/stores/customer-store.service';
 
 @Component({
   selector: 'app-customers-list-page',
@@ -33,16 +34,22 @@ export class CustomersListPageComponent implements OnInit {
   current: Customer = null;
 
   selected!: Customer[];
-  constructor(private CustomerService: CustomerService, public gridHandler: DataGridHandlerService<Customer>) {
-    gridHandler.setService(CustomerService);
+  constructor(private customerStore: CustomerStoreService, public gridHandler: DataGridHandlerService<Customer>) {
+    gridHandler.setStore(customerStore);
     gridHandler.onItems$.subscribe(customers => this.customers = customers );
     this.setup();
   }
 
   async setup() {
-    this.customers = (await this.CustomerService.get()).items;
-    this.formDef = CustomerFormDefinition();
-    this.contactFormDef = CustomerContactFormDefinition();
+    // this.customers = (await this.customerStore.get()).items;
+    this.customerStore.items.subscribe(
+      res => {
+        this.formDef = CustomerFormDefinition();
+        this.contactFormDef = CustomerContactFormDefinition();
+      },
+      err =>  console.warn('Setup error')
+    )
+
   }
 
   onSave($event: Customer) {
@@ -68,8 +75,8 @@ export class CustomersListPageComponent implements OnInit {
 
   async addCustomer(customer: Customer, contact: CustomerContact) {
     this.addModalIsOpen = false;
-    await this.CustomerService.addCustomer(customer, contact);
-    this.customers = (await this.CustomerService.get()).items;
+    await this.customerStore.add(customer);  // TODO:
+    // this.customers = (await this.CustomerService.get()).items;   // this should not be needed, bs of how the store works
   }
 
   onDetailOpen(customer: Customer | null) {
@@ -80,7 +87,7 @@ export class CustomersListPageComponent implements OnInit {
     if (customer === null) {
       return this.contacts = null
     }
-    this.CustomerService.getContacts(customer.id).then(contacts => {
+    this.customerStore.getContacts(customer.id).then(contacts => {
       this.contacts = contacts;
     });
     // console.log(customer)

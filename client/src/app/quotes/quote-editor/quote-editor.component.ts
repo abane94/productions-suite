@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl } from '@angular/forms';
-import { CustomerService } from 'src/app/data/customer.service';
+import { CustomerService } from 'src/app/data/services/customer.service';
 import { MaterialService } from 'src/app/data/material.service';
 import { RecipeService } from 'src/app/data/recipe.service';
 import { GenericControlValueAccessor } from 'src/app/forms/GenericControlValueAccessor';

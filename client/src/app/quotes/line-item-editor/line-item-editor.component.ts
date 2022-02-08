@@ -5,7 +5,7 @@ import { RecipeService } from 'src/app/data/recipe.service';
 import { GenericControlProvider, GenericControlValueAccessor } from 'src/app/forms/GenericControlValueAccessor';
 import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
 import { Material } from 'src/types/materials.types';
-import { Recipe } from 'src/types/recipes.types';
+import { Recipe } from 'src/types/models/recipes.types';
 
 
 interface Quote {

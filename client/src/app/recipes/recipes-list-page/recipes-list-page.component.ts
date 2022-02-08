@@ -4,7 +4,7 @@ import { MaterialService } from 'src/app/data/material.service';
 import { RecipeService } from 'src/app/data/recipe.service';
 import { NestedDisplayFields } from 'src/app/forms/user-defined-form-data-display/user-defined-form-data-display.component';
 import { FormDefinition } from 'src/app/forms/user-defined-form-viewer/user-defined-form-viewer.component';
-import { Recipe } from 'src/types/recipes.types';
+import { Recipe } from 'src/types/models/recipes.types';
 import RecipeFormDefinition from '../recipe-form-definition';
 
 @Component({
