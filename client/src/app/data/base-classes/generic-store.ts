@@ -1,37 +1,58 @@
-import {Observable, of} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
 import {BehaviorSubject} from "rxjs";
+import { applyContext, applySingleContext, ListContext } from "src/types/context.types";
+import { ID, NoId } from "src/types/util/util";
 import { GenericDataService } from "./generic-data-service-2";
-
-interface IdContext {
-    id: number | string;
-}
+import { IGenericData, ListResult } from "./generic-data.type";
 
 
-export abstract class GenericStore<T extends {id: number}> {
+export abstract class GenericStore<T extends ID, G = Partial<T>> implements IGenericData<ID, G> {
 
-    private _items: BehaviorSubject<T[]> = new BehaviorSubject([]);
-    private context: any;
+    private _items: BehaviorSubject<ListResult<T>> = new BehaviorSubject({items: [], total: 0});
+    private bust = true;
 
-    constructor(protected dataService: GenericDataService<T>) {
-        this.loadInitialData();
+    constructor(protected dataService: IGenericData<T, G>) {
+        this.reload();
+    }
+
+    private maybeReload() {
+        if (this.bust) {
+            return this.reload();
+        }
+    }
+
+    private reload()  {
+        const obs = this.dataService.get({})
+            .subscribe({
+                next: x => this._items.next(x),
+                error: err => console.error('Observer got an error: ' + err),
+                complete: () => obs.unsubscribe(),
+            });
+        return obs;
     }
 
     get items() {
         return this._items.asObservable();
     }
 
-    loadInitialData() {
-        this.dataService.get()
-            .subscribe(
-                res => {
-                    this._items.next(res.items);
-                },
-                err => console.log("Error retrieving Items")
-            );
+    get(context?: ListContext<T>): Observable<ListResult<T>> {
+        if (context) {
+            const result = applyContext(this._items.value.items, context);
+            return of(result);
+        } else {
+            return of(this._items.value);
+        }
+
     }
 
-    getOne(id: number) {
-        const ret = this._items.value.find(item => item.id === id);
+    getOne(context: ID | Partial<T>): Observable<T> {
+        let ret: T;
+        if ((context as ID).id) {
+            ret = this._items.value.items.find(item => item.id === (context as ID).id);
+        } else {
+            ret = applySingleContext(this._items.value.items, (context as Partial<T>));
+        }
+
         // TODO: could refresh the list if not found, but then there could be side effects from launching a new next call
         return of(ret);
     }
@@ -39,61 +60,24 @@ export abstract class GenericStore<T extends {id: number}> {
     add(item: T): Observable<T> {
 
         let obs = this.dataService.add(item);
-
-        obs.subscribe(
-                res => {
-                    this._items.getValue().push(item);
-                    this._items.next(this._items.getValue());
-                });
+        this.reload();
 
         return obs;
     }
 
-    // toggleTodo(toggled:Todo): Observable {
-    //     let obs: Observable = this.todoBackendService.toggleTodo(toggled);
+    update(item: Partial<T> & ID): Observable<T> {
 
-    //     obs.subscribe(
-    //         res => {
-    //             let todos = this._todos.getValue();
-    //             let index = todos.findIndex((todo: Todo) => todo.id === toggled.id);
-    //             let todo:Todo = todos.get(index);
-    //             this._todos.next(todos.set(index, new Todo({id:toggled.id, description:toggled.description, completed:!toggled.completed}) ));
-    //         }
-    //     );
+        let obs = this.dataService.update(item);
+        this.reload();
 
-    //     return obs;
-    // }
+        return obs;
+    }
 
 
     delete(deleted: T): Observable<T> {
         let obs = this.dataService.delete(deleted);
-
-        obs.subscribe(
-                res => {
-                    let items: T[] = this._items.getValue();
-                    let index = items.findIndex(item => item.id === deleted.id);
-                    if (index > -1) {
-                        items.splice(index, 1);
-                    }
-                    this._items.next(items);
-                }
-            );
+        this.reload();
 
         return obs;
     }
-
-    filter(context: any) {  // TODO
-        this.context = context;
-        let obs = this.dataService.get(context);
-
-        obs.subscribe(
-            res => {
-                this._items.next(res.items);
-            }
-        );
-
-        return obs;
-    }
-
-
 }

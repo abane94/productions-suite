@@ -62,3 +62,40 @@ export type Filter<T> = IncludeFilter
     | FieldEqual<T>
     | FieldIncludeFilter<T>
     | FieldExcludeFilter<T>
+
+
+// TODO: move to common location that is not a types file
+
+export function applyFilter<T>(items: T[], filter: Filter<T>): T[] {
+    switch(filter.filter) {
+        case 'FIELD_GT':
+            return items.filter(el => (el[filter.field] as any as string | number) > filter.greaterThan);
+            break;
+        case 'FIELD_GTE':
+            return items.filter(el => (el[filter.field] as any as string | number) >= filter.greaterThanEqual);
+        case 'FIELD_LT':
+            return items.filter(el => (el[filter.field] as any as string | number) < filter.lessThan);
+        case 'FIELD_LTE':
+            return items.filter(el => (el[filter.field] as any as string | number) <= filter.lessThanEqual);
+        case 'FIELD_EQ':
+            return items.filter(el => (el[filter.field] as any as string | number) === filter.equals);
+        case 'FIELD_INCL':
+            return items.filter(el => (el[filter.field].toString()).includes(filter.incl));
+        case 'FIELD_EXCL':
+            return items.filter(el => !(el[filter.field].toString()).includes(filter.excl));
+        case 'INCL':
+            return items.filter(el => {
+                const fields = Object.keys(el).filter(field => typeof el[field] === 'string');
+                return fields.some(field => field.includes(filter.incl));
+            });
+            break;
+        case 'EXCL':
+            return items.filter(el => {
+                const fields = Object.keys(el).filter(field => typeof el[field] === 'string');
+                return !fields.some(field => field.includes(filter.excl));
+            });
+        default:
+          console.log(`Filter of type ${filter['filter']} is not supported`);
+          return [];
+      }
+}

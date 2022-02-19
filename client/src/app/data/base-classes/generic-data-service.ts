@@ -1,48 +1,78 @@
-import { ClrDatagridStateInterface } from "@clr/angular";
+import { Observable } from "rxjs";
+import { ListContext } from "src/types/context.types";
+import { ID, NoId } from "src/types/util/util";
+import { IGenericData, ListResult } from "./generic-data.type";
+import { HttpClient } from '@angular/common/http';
+import { map } from "rxjs/operators";
 
 
-export abstract class GenericDataService<T extends {id: number}> {
-    abstract items: T[] = [];
+export abstract class GenericDataService<T extends ID> implements IGenericData<T, Partial<T>> {
+  abstract url: string;
 
-    constructor() { }
+  constructor(protected http: HttpClient) { }
 
-    // returns the items with filters/sorting/paging applied, and the total that fit the criteria
-    async get(state?: ClrDatagridStateInterface): Promise<{items: T[], total: number}> {
-        if (!state) {
-            return {items: this.items, total: this.items.length};  // TODO: should probably be some default page size
-          }
-          let itemList =  this.items;
-          if (state.filters) {
-            itemList = itemList.filter(m => {
-            state.filters.every(f => ('' + m[f.property]).toLocaleLowerCase().indexOf(('' + f.value).toLowerCase()) > -1)
-            });
-          }
-          if (state.sort) {
-            itemList = itemList.sort((m1, m2) => state.sort.reverse ? (m1[state.sort.by.toString()] - m2[state.sort.by.toString()]) : (m2[state.sort.by.toString()] - m1[state.sort.by.toString()]))
-          }
-          const total = itemList.length;
-          if (state.page) {
-            itemList = itemList.slice(state.page.from, state.page.to + 1);
-          }
-
-          return {items: itemList, total};
+  get(context?: ListContext<T>): Observable<ListResult<T>> {
+    const url = context ? `${this.url}?${queryParams(context)}` : this.url;
+    return this.http.get<ListResult<T>>(url);
+  }
+  getOne(context: T | ID | Partial<T>): Observable<T> {
+    // throw new Error("Method not implemented.");
+    if (context.id) {
+      return this.http.get<T>(`${this.url}/${context.id}`);
+    } else {
+      const url = `${this.url}?${queryParams(context)}`;
+      return this.http.get<ListResult<T>>(url).pipe(
+        map(x => x.items[0])
+      );
     }
+  }
+  add(item: NoId<T, any>): Observable<T> {
+    return this.http.post<T>(this.url, item);
+  }
+  update(item: Partial<T> & ID): Observable<T> {
+    return this.http.patch<T>(`${this.url}/${item.id}`, item);
+  }
+  delete(item: T): Observable<T> {
+    return this.http.delete<T>(`${this.url}/${item.id}`);
+  }
 
-    async getOne(id: number) {
-        return this.items.find(i => i.id === id);
-    }
+}
 
-    async add(item: T) {
-        if (item.id) {
-            console.error('Adding item that already has ID');
-        } else {
-            item.id = this.items.length;
-            this.items.push(item);
+
+// TODO: move to common location
+
+
+// does not maintain order
+function queryParams(o: object, prefix = ''): string {
+  // let flat = {};
+  let flat = [];
+  const objStrings = [];
+  for (const field of (Object.keys(o)) || []) {
+    const val = o[field];
+    switch (typeof val) {
+      case 'bigint':
+      case 'symbol':
+       flat.push([prefix + field, val.toString()]);
+        break;
+      case 'boolean':
+        if (val) {
+          flat.push(field);  // use the field with out the value, only present if true
         }
+      case 'number':
+        flat.push([prefix + field, val]);
+        break;
+      case 'string':
+        flat.push([prefix + field, val]);
+        break;
+      case 'object':
+        objStrings.push(queryParams(val, `${field}.`));
+        break;
+      case 'undefined':
+        flat.push([prefix + field, null]);
     }
+  }
 
-    async update(item: T) {
-      const idx = this.items.findIndex(i => i.id === item.id);
-      this.items[idx] = item;
-    }
+  let str = new URLSearchParams(flat).toString();
+
+  return [str, ...objStrings].join('&');
 }
