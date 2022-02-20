@@ -96,7 +96,7 @@ export class ValueStateService<T extends ID> {
       });
     } else {
       // TODO: is this optimization needed?
-      const diff: Partial<T> & ID = { id: (this.value.id as Id) }; // this needs to be the new ID, in case there is some sort of copy things going on
+      const diff: Partial<T> & ID = { id: (this.value.id as Id) } as any; // this needs to be the new ID, in case there is some sort of copy things going on
       // need fields from both original and current in case fields have been added/removed
       const fields = new Set([...Object.keys(this.original), ...Object.keys(this.value)]);
       for (const field of Object.keys(this.value)) {
