@@ -11,9 +11,13 @@ export interface SortOption<T> {
 
 export interface ListContext<T> {  // TODO: does this need to be list specific, what would differentiate from UnitContext?
     page?: {  // can page be used for 'count' & 'skip'?  TODO: maybe rework page, or is this copied from a Clarity interface?
+        /** Index of the first element */
         from?: number;
+        /** index of the last element. Should = from + size */
         to?: number;
+        /** Page size Should = to - from */
         size?: number;
+        /** Current Page */
         current?: number;
     };
     sort?: {
@@ -72,7 +76,6 @@ export function applyContext<T extends ID, G = null>(items: T[], context: ListCo
     const total = resultList.length;
 
     if (context.page) {
-        // TODO: not sure what current means, it comes from clarity grid state interface
         const from = context.page.from || 0;
         const to = context.page.to || from + context.page.size || 0;
 
