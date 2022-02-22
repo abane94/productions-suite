@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Material } from 'src/types/materials.types';
+import { Material } from 'src/types/models/materials.types';
 import { FormDefinition, FormFieldDefinition, OptionDefinition } from '../../forms/user-defined-form-viewer/user-defined-form-viewer.component';
 import MaterialFormDefinition from '../material-form-definition';
 

@@ -51,13 +51,13 @@ export default function MaterialFormDefinition(categories: OptionDefinition[], c
                 options: classes
               }
           },
-          {
-            type: 'NUMBER',
-            key: 'baseCost',
-            label: 'Base Cost',
-            placeholder: '',
-            required: true
-          },
+          // {
+          //   type: 'NUMBER',
+          //   key: 'baseCost',
+          //   label: 'Base Cost',
+          //   placeholder: '',
+          //   required: true
+          // },
           {
             type: 'TEXT',
             key: 'supplier',
@@ -72,62 +72,62 @@ export default function MaterialFormDefinition(categories: OptionDefinition[], c
             placeholder: '',
             required: true
           },
-          {
-            type: 'NESTED',
-            key: 'options',
-            label: 'Options',
-            innerForm: {
-              key: 'MaterialOptions',
-              fields: [
-                {
-                  type: 'TEXT',
-                  key: 'name',
-                  label: 'Options Name',
-                  placeholder: '',
-                  required: true
-                },
-                {
-                  type: 'NESTED',
-                  key: 'selections',
-                  label: 'Selections',
-                  innerForm: {
-                    key: 'SelectionsInnerForm',
-                    fields: [
-                      {
-                        type: 'TEXT',
-                        key: 'value',
-                        label: 'Value',
-                        placeholder: '',
-                        required: true
-                      },
-                      {
-                        type: 'TEXT',
-                        key: 'display',
-                        label: 'Display',
-                        placeholder: '',
-                        required: true
-                      },
-                      {
-                        type: 'TEXT',
-                        key: 'img',
-                        label: 'Image',
-                        placeholder: '',
-                        required: false
-                      },
-                      {
-                        type: 'NUMBER',
-                        key: 'priceAdjustment',
-                        label: 'Price Adjustment (per unit)',
-                        // placeholder: '',
-                        required: false,
-                        step: 0.01
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          }
+          // {
+          //   type: 'NESTED',
+          //   key: 'options',
+          //   label: 'Options',
+          //   innerForm: {
+          //     key: 'MaterialOptions',
+          //     fields: [
+          //       {
+          //         type: 'TEXT',
+          //         key: 'name',
+          //         label: 'Options Name',
+          //         placeholder: '',
+          //         required: true
+          //       },
+          //       {
+          //         type: 'NESTED',
+          //         key: 'selections',
+          //         label: 'Selections',
+          //         innerForm: {
+          //           key: 'SelectionsInnerForm',
+          //           fields: [
+          //             {
+          //               type: 'TEXT',
+          //               key: 'value',
+          //               label: 'Value',
+          //               placeholder: '',
+          //               required: true
+          //             },
+          //             {
+          //               type: 'TEXT',
+          //               key: 'display',
+          //               label: 'Display',
+          //               placeholder: '',
+          //               required: true
+          //             },
+          //             {
+          //               type: 'TEXT',
+          //               key: 'img',
+          //               label: 'Image',
+          //               placeholder: '',
+          //               required: false
+          //             },
+          //             {
+          //               type: 'NUMBER',
+          //               key: 'priceAdjustment',
+          //               label: 'Price Adjustment (per unit)',
+          //               // placeholder: '',
+          //               required: false,
+          //               step: 0.01
+          //             }
+          //           ]
+          //         }
+          //       }
+          //     ]
+          //   }
+          // }
         ]
       };
 }

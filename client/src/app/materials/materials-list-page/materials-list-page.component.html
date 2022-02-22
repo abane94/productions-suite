@@ -11,12 +11,12 @@
 
     <clr-dg-placeholder>We couldn't find any materials!</clr-dg-placeholder>
 
-    <clr-dg-row *ngFor="let material of materials" [clrDgItem]="material">
+    <clr-dg-row *ngFor="let material of state.materials.value" [clrDgItem]="material">
         <!-- <clr-dg-cell>{{user.id}}</clr-dg-cell> -->
-        <clr-dg-cell>{{material.name}}</clr-dg-cell>
-        <clr-dg-cell>{{material.supplier}}</clr-dg-cell>
-        <clr-dg-cell>{{material.baseCost }}</clr-dg-cell>
-        <clr-dg-cell>{{material.description }}</clr-dg-cell>
+        <clr-dg-cell>{{material.value.name}}</clr-dg-cell>
+        <clr-dg-cell>{{material.value.supplier}}</clr-dg-cell>
+        <clr-dg-cell>{{material.value.baseCost }}</clr-dg-cell>
+        <clr-dg-cell>{{material.value.description }}</clr-dg-cell>
         <!-- <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user.color">{{user.color}}</span>
       </clr-dg-cell> -->
@@ -24,9 +24,9 @@
 
     <clr-dg-detail *clrIfDetail="let detail">
         <clr-dg-detail-header>{{detail.name}}</clr-dg-detail-header>
-        <app-material-editor [material]="detail" (save)="onSave($event)"></app-material-editor>
+        <app-material-editor [material]="detail.value" (save)="gridHandler.onSave($event)"></app-material-editor>
         <br />
-        <app-user-defined-form-data-display [data]="detail" [formDef]="formDef"
+        <app-user-defined-form-data-display [data]="detail.value" [formDef]="formDef"
             [nestedDisplayField]="nestedDisplayField"></app-user-defined-form-data-display>
     </clr-dg-detail>
 

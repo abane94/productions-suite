@@ -21,9 +21,9 @@ interface IListStateService<T extends { id: Id }, G = null> {
 
 export abstract class GenericListStateService<T extends ID> {
   protected data: IGenericData<T, Partial<T>>
-  protected value: ValueStateService<T>[];
-  protected total = 0;
-  protected pageSize = 10;
+  public value: ValueStateService<T>[];
+  public total = 0;
+  public pageSize = 10;
 
   public sort: ListContext<T>['sort'];
   public filters: ListContext<T>['filters'] = [];
@@ -72,22 +72,28 @@ export abstract class GenericListStateService<T extends ID> {
     }
   }
 
+  private initStateElement(item: Partial<T>) {
+    const state = new ValueStateService<T>();
+      // set the state's data store ??
+      state.set(item as T);
+      this.subs.push(state.onDelete.subscribe({
+        next: x => console.log('Element deleted'),  // TODO: remove from list
+      }));
+      return state;
+  }
+
   private setList(list: T[]) {
     // this.clear();\
     this.clearSubs();
     for (const item of list) {
-      const state = new ValueStateService<T>();
-      // set the state's data store ??
-      state.set(item);
-      this.subs.push(state.onDelete.subscribe({
-        next: x => console.log('Element deleted'),  // TODO: remove from list
-      }));
+      const state = this.initStateElement(item);
       this.value.push(state);
     }
   }
 
   private retrieveData() {
-    const sub = this.data.get(this.context).subscribe({
+    const obs = this.data.get(this.context);
+    const sub = obs.subscribe({
       next: x => {
         this.setList(x.items);
         this.total = x.total;
@@ -98,6 +104,8 @@ export abstract class GenericListStateService<T extends ID> {
         sub.unsubscribe();
       }
     });
+
+    return obs;
   }
 
 
@@ -116,9 +124,25 @@ export abstract class GenericListStateService<T extends ID> {
     this.retrieveData();
   }
 
+  setContext(c: ListContext<T>) {
+    if (c.page?.size) {
+      this.pageSize = c.page.size;
+    }
+    this.page = c.page;
+    this.filters = c.filters || [];
+    this.sort = c.sort;
+    return this.retrieveData();
+  }
+
   // save(idx) {
 
   // }
+
+  add(el: Partial<T>) {
+    const state = this.initStateElement(el);
+    this.value.push(state);
+    return state;
+  }
 
   //#region Page operations
   setPageSize(n: number) {
@@ -175,7 +199,9 @@ export abstract class GenericListStateService<T extends ID> {
   //#endregion
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'any'  // TODO: thismight not be what I want, this cant be a singleton, and it needs to be able to have multiple names versions injected
+})
 export class ListStateService<T extends ID> extends GenericListStateService<T> {
   setData(data: IGenericData<T, Partial<T>>) {
     this.data = data;

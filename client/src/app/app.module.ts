@@ -7,6 +7,8 @@ import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule } from './forms/forms.module';
+import { environment } from '../environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,12 @@ import { FormsModule } from './forms/forms.module';
     AppRoutingModule,
     ClarityModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
+
+    // conditional mock data
+    // TODO
+    // environment.demo ? InMemoryWebApiModule : []
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -17,7 +17,7 @@ import { IGenericData } from '../base-classes/generic-data.type';
 @Injectable()
 export class ValueStateService<T extends ID> {
   protected data: IGenericData<T, Partial<T>>
-  protected value: T;
+  public value: T;
   protected isNew: boolean = null;
   protected original: T;
 
@@ -71,7 +71,7 @@ export class ValueStateService<T extends ID> {
   load(context: Id | Partial<T>) {
     // TODO: should this throw an error if there are unsaved changes??
     // TODO: how to differentiate id vs partial object, what if Id is an Object like mongo OId?
-    const obs = this.data.getOne({id: context.toString()}).subscribe({
+    const obs = this.data.getOne({id: (context as Id)}).subscribe({
       next: x => this._set(x),
       error: err => console.error('Observer got an error: ' + err),
       complete: () => {
