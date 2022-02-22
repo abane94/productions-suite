@@ -41,10 +41,14 @@ export abstract class GenericDataService<T extends ID> implements IGenericData<T
 
 // TODO: move to common location
 
-
 // does not maintain order
 function queryParams(o: object, prefix = ''): string {
   // let flat = {};
+
+  const params = new URLSearchParams([['context', JSON.stringify(o)]]);
+  return params.toString();
+
+
   let flat = [];
   const objStrings = [];
   for (const field of (Object.keys(o)) || []) {

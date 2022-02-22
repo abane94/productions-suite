@@ -21,7 +21,7 @@ interface IListStateService<T extends { id: Id }, G = null> {
 
 export abstract class GenericListStateService<T extends ID> {
   protected data: IGenericData<T, Partial<T>>
-  public value: ValueStateService<T>[];
+  public value: ValueStateService<T>[] = [];
   public total = 0;
   public pageSize = 10;
 
@@ -83,7 +83,7 @@ export abstract class GenericListStateService<T extends ID> {
   }
 
   private setList(list: T[]) {
-    // this.clear();\
+    this.clear();
     this.clearSubs();
     for (const item of list) {
       const state = this.initStateElement(item);

@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from './forms/forms.module';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { InMemDB } from './mock/in-memory-database';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 @NgModule({
   declarations: [
@@ -20,11 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     ClarityModule,
     BrowserAnimationsModule,
     FormsModule,
+    environment.production ? [] : HttpClientInMemoryWebApiModule.forRoot(InMemDB), // TODO: use a 'demo' flag once dev server is ready
     HttpClientModule
-
-    // conditional mock data
-    // TODO
-    // environment.demo ? InMemoryWebApiModule : []
   ],
   providers: [],
   bootstrap: [AppComponent]

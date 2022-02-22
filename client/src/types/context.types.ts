@@ -33,8 +33,9 @@ export interface ListContext<T> {  // TODO: does this need to be list specific, 
 
 // TODO: move to common location that is not a types file
 
-export function applyContext<T extends ID, G = null>(items: T[], context: ListContext<T>): ListResult<T> {
-    let resultList = [];
+export function applyContext<T extends ID, G = null>(items: T[], context?: ListContext<T>): ListResult<T> {
+    if (!context) { return { items, total: items.length } }
+    let resultList = [...items];
     for (const filter of context.filters || []) {
         resultList = applyFilter(items, filter);
     }
@@ -56,12 +57,12 @@ export function applyContext<T extends ID, G = null>(items: T[], context: ListCo
                 case 'DEC':
                 case -1:
                     resultList = resultList.sort((a, b) => {
-                        return a[field] - b[field]
+                        return compare(a, b, field);
                     });
                     break;
                 default:
                     resultList = resultList.sort((a, b) => {
-                        return b[field] - a[field]
+                        return compare(b, a, field);
                     });
                     break;
             }
@@ -77,12 +78,23 @@ export function applyContext<T extends ID, G = null>(items: T[], context: ListCo
 
     if (context.page) {
         const from = context.page.from || 0;
-        const to = context.page.to || from + context.page.size || 0;
-
+        let to = (context.page.to || from + context.page.size || 0) + 1;
+        to = (to > resultList.length) ? undefined : to;
         resultList = resultList.slice(from, to);
     }
 
     return {items: resultList, total};
+}
+
+function compare<T>(a: T, b: T, f: keyof T) {
+    const field: string = f as string;
+    if (typeof a[field] === 'number' && typeof b[field] === 'number') {
+        return a[field] - b[field];
+    }
+    if (typeof a[field] === 'string' && typeof b[field] === 'string') {
+        return (a[field] as string).localeCompare(b[field]);
+    }
+    return (a[field] as number) - (b[field] as number);
 }
 
 

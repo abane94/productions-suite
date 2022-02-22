@@ -58,7 +58,7 @@ export class ValueStateService<T extends ID> {
 
   // public set triggers the observable, private does not
   set(v: T) {  // the only reason this is not private is so that, the list state can set the value instead of having each on reload itself
-    this.set(v);
+    this._set(v);
     this._handleSet.next(this.value);
   }
 
