@@ -5,10 +5,7 @@ import { DataModule } from '../data.module';
 import { GenericDataService } from '../base-classes/generic-data-service';
 import { HttpClient } from '@angular/common/http';
 
-@Injectable({
-  // providedIn: DataModule
-  providedIn: 'root'
-})
+@Injectable()
 export class MaterialService extends GenericDataService<Material> {
 
   public url = 'api/materials/';
