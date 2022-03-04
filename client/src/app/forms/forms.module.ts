@@ -9,11 +9,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NamedTemplateDirective } from './named-template/named-template.directive';
 import { UserDefinedFormDataDisplayComponent } from './user-defined-form-data-display/user-defined-form-data-display.component';
 import { GeneralEditorComponent } from './general-editor/general-editor.component';
+import { ObjectGridEditorComponent } from './object-grid-editor/object-grid-editor.component';
 
 
 
 @NgModule({
-  declarations: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent, GeneralEditorComponent],
+  declarations: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent, GeneralEditorComponent, ObjectGridEditorComponent],
   imports: [
     CommonModule,
     ClarityModule,
@@ -24,6 +25,6 @@ import { GeneralEditorComponent } from './general-editor/general-editor.componen
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA // Tells Angular we will have custom tags in our templates
   ],
-  exports: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent, GeneralEditorComponent]
+  exports: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent, GeneralEditorComponent, ObjectGridEditorComponent]
 })
 export class FormsModule { }

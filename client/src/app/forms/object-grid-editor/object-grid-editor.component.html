@@ -1,0 +1,73 @@
+
+<div class="card">
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+        <clr-input-container>
+            <input #fieldRow clrInput placeholder="row" name="row" [(ngModel)]="rowField" (keydown.enter)="addRow(fieldRow.value)"/>
+        </clr-input-container>
+        <button (click)="addRow(fieldRow.value)" type="button" class="btn btn-icon btn-primary" title="Add row"
+            aria-label="add row">
+            <cds-icon shape="plus"></cds-icon>
+        </button>
+
+        <clr-input-container>
+            <input #fieldCol clrInput placeholder="col" name="col" [(ngModel)]="colField"  (keydown.enter)="addColumn(fieldCol.value)"/>
+        </clr-input-container>
+        <button (click)="addColumn(fieldCol.value)" type="button" class="btn btn-icon btn-primary" title="Add Col"
+            aria-label="add Col">
+            <cds-icon shape="plus"></cds-icon>
+        </button>
+    </div>
+
+    <form class="clr-form clr-form-compact">
+        <table>
+            <tr>
+                <th></th>
+                <th *ngFor="let col of columns; let i = index">
+                    {{ col }}
+                </th>
+            </tr>
+
+            <tr *ngFor="let row of rows; let i = index">
+                <td>{{ row }}</td>
+                <td *ngFor="let col of columns; let j = index">
+                    <!-- <input clrInput layout="compact" [placeholder]="i" name="row" type="number" [value]="j"/> -->
+                    {{ (values[i] && values[i][j] && values[i][j][displayField]) || '-' }}
+                    <!-- [value here] -->
+                    <button type="button" class="btn btn-icon" aria-label="home" (click)="setModalTarget(i, j, true)">
+                        <cds-icon shape="pencil"></cds-icon>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <button (click)="getValue()" type="button" class="btn btn-icon btn-primary" title="Add row"
+        aria-label="add row">
+        <cds-icon shape="plus"></cds-icon>
+    </button>
+
+</div>
+
+
+
+<clr-modal [(clrModalOpen)]="showModal">
+    <h3 class="modal-title">
+        {{rows[modalTargetRow]}}/{{columns[modalTargetCol]}}
+    </h3>
+    <div class="modal-body">
+        <app-user-defined-form-viewer *ngIf="values && values[modalTargetRow] && values[modalTargetRow][modalTargetCol]"
+            [(ngModel)]="values[modalTargetRow][modalTargetRow]"
+            [formDef]="formDef"></app-user-defined-form-viewer>
+        <div *ngIf="!(values && values[modalTargetRow] && values[modalTargetRow][modalTargetCol])">
+            values: {{values|json}}
+            <br/>
+            modalTargetRow: {{modalTargetRow}}
+            <br/>
+            modalTargetCol: {{modalTargetCol}}
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" (click)="setModalTarget(null, null)">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="setModalTarget(null, null)">Ok</button>
+    </div>
+</clr-modal>
