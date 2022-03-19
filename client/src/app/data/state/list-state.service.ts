@@ -74,7 +74,7 @@ export abstract class GenericListStateService<T extends ID> {
 
   private initStateElement(item: Partial<T>) {
     const state = new ValueStateService<T>();
-      // set the state's data store ??
+      state.setData(this.data);
       state.set(item as T);
       this.subs.push(state.onDelete.subscribe({
         next: x => console.log('Element deleted'),  // TODO: remove from list

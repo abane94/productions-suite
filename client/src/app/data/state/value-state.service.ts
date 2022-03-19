@@ -50,6 +50,11 @@ export class ValueStateService<T extends ID> {
 
   constructor() { }
 
+  // TODO: is this right, could copy generic vs non patter of list state...
+  setData(data: IGenericData<T, Partial<T>>) {
+    this.data = data;
+  }
+
   private _set(v: T) {
     this.value = v;
     this.original = Object.assign({}, v);  // TODO: deep copy
@@ -75,7 +80,7 @@ export class ValueStateService<T extends ID> {
       next: x => this._set(x),
       error: err => console.error('Observer got an error: ' + err),
       complete: () => {
-        this._handleLoad.next(this.value);
+        // this._handleLoad.next(this.value); // this is done in _set which is called from the next handler
         obs.unsubscribe();
       },
     });

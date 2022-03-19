@@ -7,6 +7,7 @@ import { map } from "rxjs/operators";
 
 
 export abstract class GenericDataService<T extends ID> implements IGenericData<T, Partial<T>> {
+  /** the remote url for the model, NOTE: should not end with a slash!! */
   abstract url: string;
 
   constructor(protected http: HttpClient) { }

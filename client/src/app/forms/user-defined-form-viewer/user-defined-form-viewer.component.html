@@ -60,6 +60,14 @@
                 <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
                 <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
             </div>
+
+            <div *ngSwitchCase="'OBJECT_GRID'" style="padding-top: 10px">
+                <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
+                <app-object-grid-editor [formControlName]="field.key" [formDef]="castNestedField(field).formDef" [displayField]="castNestedField(field).displayField"></app-object-grid-editor>
+
+                <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
+                <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
+            </div>
         </div>
     </div>
 </form>

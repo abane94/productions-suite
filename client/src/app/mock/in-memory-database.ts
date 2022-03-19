@@ -69,6 +69,40 @@ export class InMemDB implements InMemoryDbService {
                             }
                         }
                     ]
+                },
+                priceMap: {
+                    "values": [
+                        [
+                            {
+                                "cost": 1,
+                                "supplierSku": "sadfgdfg",
+                                "colorFamily": "dfgsdfg",
+                                "colorSwatchImage": "sdfgsdfgfd"
+                            },
+                            {},
+                            {}
+                        ],
+                        [
+                            {},
+                            {},
+                            {}
+                        ],
+                        [
+                            {},
+                            {},
+                            {}
+                        ]
+                    ],
+                    "rows": [
+                        "red",
+                        "blue",
+                        "green"
+                    ],
+                    "columns": [
+                        "s",
+                        "m",
+                        "l"
+                    ]
                 }
             },
             {
@@ -218,8 +252,32 @@ export class InMemDB implements InMemoryDbService {
                 { body: { error: `'Villains' with id='${id}' not found` }, status: STATUS.NOT_FOUND };
 
             return this.finishOptions(options, req);
-        })
+        });
+    }
 
+    patch(req: RequestInfo) {
+        console.log(req);
+        const id = req.id;
+        const contextStr = req.query.get('context')?.shift();
+        const context = contextStr ? JSON.parse(contextStr) : null;
+        const data = id ? req.utils.findById(req.collection, id)
+                : applyContext(req.collection, context);
+        console.log('before');
+        console.log(data);
+        Object.assign(data, (req.req as any).body);
+        console.log('after');
+        console.log(data);
+        return req.utils.createResponse$(() => {
+            // const data = id ? req.utils.findById(req.collection, id)
+            //     : applyContext(req.collection, context);
+            const dataEncapsulation = req.utils.getConfig().dataEncapsulation;
+
+            const options: ResponseOptions = data ?
+                { body: dataEncapsulation ? { data } : data, status: STATUS.OK } :
+                { body: { error: `'Villains' with id='${id}' not found` }, status: STATUS.NOT_FOUND };
+
+            return this.finishOptions(options, req);
+        });
     }
 
     private finishOptions(options: ResponseOptions, { headers, url }: RequestInfo) {

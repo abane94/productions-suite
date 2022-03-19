@@ -128,6 +128,44 @@ export default function MaterialFormDefinition(categories: OptionDefinition[], c
           //     ]
           //   }
           // }
-        ]
+          {
+            type: 'OBJECT_GRID',
+            displayField: 'supplierSku',
+            key: 'priceMap',
+            formDef: {
+              key: 'sdgdf',
+              fields: [
+                  {
+                      type: 'NUMBER',
+                      key: 'cost',
+                      label: 'cost',
+                      placeholder: '',
+                      required: true
+                  },
+                  {
+                      type: 'TEXT',
+                      key: 'supplierSku',
+                      label: 'supplierSku',
+                      placeholder: '',
+                      required: true
+                  },
+                  {
+                    type: 'TEXT',
+                    key: 'colorFamily',
+                    label: 'colorFamily',
+                    placeholder: '',
+                    required: true
+                },
+                {
+                    type: 'TEXT',
+                    key: 'colorSwatchImage',
+                    label: 'colorSwatchImage',
+                    placeholder: '',
+                    required: true
+                }
+              ]
+            }
+          }
+        ],
       };
 }

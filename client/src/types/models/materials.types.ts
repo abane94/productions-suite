@@ -31,6 +31,18 @@ interface VariationLevel {
   } | VariationLevel;
 }
 
+export interface PriceMap {
+  columns: string[];
+  rows: string[];
+  values: object[][];
+}
+
+// "cost": 6.6,
+// "supplierSku": "B49695500",
+// "colorFamily": "Blacks",
+// "colorSwatchImage": "Images/ColorSwatch/21695_fm.jpg"
+
+
 export interface MaterialListing_Id<T> {
   id: T;
   name: string;
@@ -43,7 +55,7 @@ export interface MaterialListing_Id<T> {
   // brand: string;
   // brandImage: string;
   // styleImage: string;
-  // priceMap: VariationLevel;  // this could also be flat, each combination of variations gets its own record, and similar records would be loaded for changing/selecting the options in the UI
+  priceMap?: PriceMap;  // this could also be flat, each combination of variations gets its own record, and similar records would be loaded for changing/selecting the options in the UI
 
   // TODO: remove once priceMap is in use
   baseCost: number;

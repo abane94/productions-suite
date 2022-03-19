@@ -18,22 +18,23 @@
         </button>
     </div>
 
+    <!--  *ngIf="this._values?.length" -->
     <form class="clr-form clr-form-compact">
         <table>
             <tr>
                 <th></th>
-                <th *ngFor="let col of columns; let i = index">
-                    {{ col }}
+                <th *ngFor="let col of _cols.controls; let i = index">
+                    {{ col.value }}
                 </th>
             </tr>
 
-            <tr *ngFor="let row of rows; let i = index">
-                <td>{{ row }}</td>
-                <td *ngFor="let col of columns; let j = index">
+            <tr *ngFor="let row of _rows.controls; let i = index">
+                <td>{{ row.value }}</td>
+                <td *ngFor="let col of _cols.controls; let j = index">
                     <!-- <input clrInput layout="compact" [placeholder]="i" name="row" type="number" [value]="j"/> -->
-                    {{ (values[i] && values[i][j] && values[i][j][displayField]) || '-' }}
+                    {{ (_values.controls[i] && _values.controls[i].controls[j] && _values.controls[i].controls[j].value[displayField]) || '-' }}
                     <!-- [value here] -->
-                    <button type="button" class="btn btn-icon" aria-label="home" (click)="setModalTarget(i, j, true)">
+                    <button type="button" class="btn btn-icon" aria-label="home" (click)="openModal(i, j)">
                         <cds-icon shape="pencil"></cds-icon>
                     </button>
                 </td>
@@ -45,21 +46,35 @@
         aria-label="add row">
         <cds-icon shape="plus"></cds-icon>
     </button>
+    <br/>
+    {{_values.value|json}}
 
 </div>
 
 
 
-<clr-modal [(clrModalOpen)]="showModal">
+<clr-modal [(clrModalOpen)]="showModal" [clrModalClosable]="false">
     <h3 class="modal-title">
-        {{rows[modalTargetRow]}}/{{columns[modalTargetCol]}}
+        {{_rows?.controls[modalTargetRow]?.value}}/{{_cols?.controls[modalTargetCol]?.value}}
     </h3>
     <div class="modal-body">
-        <app-user-defined-form-viewer *ngIf="values && values[modalTargetRow] && values[modalTargetRow][modalTargetCol]"
-            [(ngModel)]="values[modalTargetRow][modalTargetRow]"
+
+        <!-- <ng-container *ngFor="let row of _rows.controls; let i = index">
+            <ng-container *ngFor="let col of _cols.controls; let j = index">
+                {{i}}/{{j}}
+                <app-user-defined-form-viewer *ngIf="_values && _values.controls[modalTargetRow] && $any(_values.controls[modalTargetRow]).controls[modalTargetCol] && modalTargetRow === i && modalTargetCol === j"
+                    [formControl]="_values.controls[modalTargetRow].controls[modalTargetRow]"
+                    [formDef]="formDef">
+                </app-user-defined-form-viewer>
+            </ng-container>
+        </ng-container> -->
+
+        <!-- *ngIf="_values && _values.controls[modalTargetRow] && $any(_values.controls[modalTargetRow]).controls[modalTargetCol]" -->
+        <app-user-defined-form-viewer
+            [(ngModel)]="tempFormValue"
             [formDef]="formDef"></app-user-defined-form-viewer>
-        <div *ngIf="!(values && values[modalTargetRow] && values[modalTargetRow][modalTargetCol])">
-            values: {{values|json}}
+        <div *ngIf="!(_values && _values.controls[modalTargetRow] && $any(_values.controls[modalTargetRow]).controls[modalTargetCol])">
+            values: {{_values.value|json}}
             <br/>
             modalTargetRow: {{modalTargetRow}}
             <br/>
@@ -67,7 +82,7 @@
         </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline" (click)="setModalTarget(null, null)">Cancel</button>
-      <button type="button" class="btn btn-primary" (click)="setModalTarget(null, null)">Ok</button>
+      <button type="button" class="btn btn-outline" (click)="closeModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="closeModal(true)">Ok</button>
     </div>
 </clr-modal>

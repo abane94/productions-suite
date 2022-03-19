@@ -3,7 +3,7 @@
     Add
 </button>
 
-<clr-datagrid (clrDgRefresh)="gridHandler.refresh($event)" [clrDgLoading]="gridHandler.loading" [(clrDgSelected)]="selected">
+<clr-datagrid style="height:80vh" (clrDgRefresh)="gridHandler.refresh($event)" [clrDgLoading]="gridHandler.loading" [(clrDgSelected)]="selected">
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'supplier'">Supplier</clr-dg-column>
     <clr-dg-column [clrDgField]="'baseCost'">Base Cost</clr-dg-column>

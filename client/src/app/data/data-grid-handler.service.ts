@@ -50,6 +50,7 @@ export class DataGridHandlerService<T extends ID> {
     if (idx === -1) {
       console.log('Save idx not found');
     } else {
+      this.state.value[idx].set($event);
       this.state.value[idx]?.save();
     }
   }

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PriceMap } from 'src/types/models/materials.types';
 import { GenericControlProvider, GenericControlValueAccessor } from '../GenericControlValueAccessor';
 import { NamedTemplateDirective } from '../named-template/named-template.directive';
 
@@ -14,7 +15,7 @@ export const castOptionsField = (f: FormFieldDefinition) => (f as MultiFormField
 export const castNestedField = (f: FormFieldDefinition) => (f as NestedFormFieldDefinition);
 
 export interface FormFieldDefinitionBase<T> {
-  type: 'TEXT' | 'NUMBER' | 'CHECK' | 'RADIO' | 'TOGGLE' |'DATE' | 'AUTOCOMPLETE' /** Combo? */ | 'SELECT' | 'RANGE' | 'TEXTAREA' | 'NESTED' | 'HIDDEN';  // TODO could have phone and email options, or those could be validators. HTML might have input types of these...
+  type: 'TEXT' | 'NUMBER' | 'CHECK' | 'RADIO' | 'TOGGLE' |'DATE' | 'AUTOCOMPLETE' /** Combo? */ | 'SELECT' | 'RANGE' | 'TEXTAREA' | 'NESTED' | 'HIDDEN' | 'OBJECT_GRID';  // TODO could have phone and email options, or those could be validators. HTML might have input types of these...
   key: string;
   label?: string;
   placeholder?: string;
@@ -54,6 +55,12 @@ interface NestedFormFieldDefinition extends FormFieldDefinitionBase<any> {
   innerForm: FormDefinition;
 }
 
+interface ObjectGridFormField extends FormFieldDefinitionBase<PriceMap> {
+  type: 'OBJECT_GRID';
+  formDef: FormDefinition;
+  displayField: string;
+}
+
 export interface OptionDefinition {
   value: string;
   display: string;
@@ -77,7 +84,7 @@ interface MultiFormFieldDefinition {
 }
 
 
-export type FormFieldDefinition = TextFormFieldDefinition | NumberFormFieldDefinition | BoolFormFieldDefinition | MultiFormFieldDefinition | DateFormFieldDefinition | NestedFormFieldDefinition | HiddenFormField;
+export type FormFieldDefinition = TextFormFieldDefinition | NumberFormFieldDefinition | BoolFormFieldDefinition | MultiFormFieldDefinition | DateFormFieldDefinition | NestedFormFieldDefinition | HiddenFormField | ObjectGridFormField;
 
 export interface FormDefinition {
   key: string;
@@ -173,6 +180,8 @@ export class UserDefinedFormViewerComponent extends GenericControlValueAccessor<
         case('NESTED'):
             defaultItem[formDef.key] = formDef.default || UserDefinedFormViewerComponent.buildFormObject(formDef.innerForm);
             break;
+        case('OBJECT_GRID'):
+            defaultItem[formDef.key] = formDef.default || { rows: [], columns: [], values: [] };
         }
     }
 

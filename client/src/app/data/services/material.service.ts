@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class MaterialService extends GenericDataService<Material> {
 
-  public url = 'api/materials/';
+  public url = 'api/materials';
 
   constructor(protected http: HttpClient) {
     super(http);
