@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PriceMap } from 'src/types/models/materials.types';
 import { GenericControlProvider, GenericControlValueAccessor } from '../GenericControlValueAccessor';
 import { NamedTemplateDirective } from '../named-template/named-template.directive';
+import { compare, FormComparison } from './form-reflection';
 
 /**
  * TODO:
@@ -22,6 +23,7 @@ export interface FormFieldDefinitionBase<T> {
   default?: T;
   required?: boolean;
   helperText?: string;
+  disabled?: FormComparison;
   // validators: any; // TODO: define valadators that a user can pick from a multi select
 }
 
@@ -111,6 +113,7 @@ export class UserDefinedFormViewerComponent extends GenericControlValueAccessor<
 
   // public form: FormGroup;
 
+  compare = compare;
   get Errors() {
     const ret: Record<string, any> = {
       form: this._form.errors
