@@ -1,0 +1,8 @@
+<div cdkDropList id="list-2" cdkDropListConnectedTo="list-1" [cdkDropListData]="list" (cdkDropListDropped)="drop($event)">
+    <div *ngIf="list.length === 0">
+        Drop material Here
+    </div>
+    <div *ngFor="let item of list; let i = index" cdkDrag>
+        <app-material-control-item [formControl]="items[i]" [material]="item"></app-material-control-item>
+    </div>
+</div>

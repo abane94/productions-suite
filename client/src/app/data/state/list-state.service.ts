@@ -205,6 +205,7 @@ export abstract class GenericListStateService<T extends ID> {
 export class ListStateService<T extends ID> extends GenericListStateService<T> {
   setData(data: IGenericData<T, Partial<T>>) {
     this.data = data;
+    this.setContext({});
   }
 }
 

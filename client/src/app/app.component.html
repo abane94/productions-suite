@@ -42,11 +42,14 @@
       </ul>
     </nav> -->
 
-    <div class="content-container">
+    <div class="content-container" fxLayout="row">
 
         <!-- Router Outlet -->
-        <div class="content-area">
+        <div class="content-area" fxFlex="80">
             <router-outlet></router-outlet>
+        </div>
+        <div class="material-pane" fxFlex="20">
+          <app-material-pane></app-material-pane>
         </div>
 
         <!-- <nav class="sidenav">

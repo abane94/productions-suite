@@ -11,6 +11,8 @@ import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { InMemDB } from './mock/in-memory-database';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { MaterialPaneModule } from './material-pane/material-pane.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
     BrowserAnimationsModule,
     FormsModule,
     environment.production ? [] : HttpClientInMemoryWebApiModule.forRoot(InMemDB), // TODO: use a 'demo' flag once dev server is ready
-    HttpClientModule
+    HttpClientModule,
+    FlexLayoutModule,
+    MaterialPaneModule
   ],
   providers: [],
   bootstrap: [AppComponent]
