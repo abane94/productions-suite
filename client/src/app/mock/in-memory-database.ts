@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { getStatusText, InMemoryDbService, RequestInfo, ResponseOptions, STATUS } from 'angular-in-memory-web-api';
 import { applyContext } from 'src/types/context.types';
+import { Process } from 'src/types/models/processes.types';
 import { Material } from '../../types/models/materials.types';
 
 @Injectable()
@@ -234,7 +235,19 @@ export class InMemDB implements InMemoryDbService {
                 }
             }
         ];
-        return { materials };
+        let processes: Process[] = [
+            {
+                id: 1,
+                name: 'Single Color screen print',
+                description: 'fdgdfsgljdsglkfdjlfdg',
+                useParentQuantity: true,
+                hours: 0.25,
+                applyTimeToQuantity: true,
+                price: 2.2,
+                applyPriceToQuantity: true
+            }
+        ];
+        return { materials, processes };
     }
 
     get(req: RequestInfo) {
