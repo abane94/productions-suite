@@ -1,0 +1,19 @@
+<div (click)="isOpen = true">
+    <b><u>{{ item.value.name }}</u></b>
+    <br/>
+    {{ val.name || '' }}
+    <br/>
+    Qnt: {{ val.quantity }}
+</div>
+
+
+<clr-modal [(clrModalOpen)]="isOpen">
+    <h3 class="modal-title">I have a nice title</h3>
+    <div class="modal-body">
+        <app-user-defined-form-viewer [formDef]="formDef"></app-user-defined-form-viewer>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="isOpen = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="isOpen = false">Ok</button>
+    </div>
+</clr-modal>

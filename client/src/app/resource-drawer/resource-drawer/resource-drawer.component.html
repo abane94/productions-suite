@@ -1,0 +1,26 @@
+
+<clr-tabs>
+    <clr-tab>
+      <button clrTabLink>Materials</button>
+      <clr-tab-content *clrIfActive>
+        <div cdkDropList cdkDropListSortingDisabled id="Material-drawer" [cdkDropListConnectedTo]="service.getDropZones('Material')" [cdkDropListData]="materials"> <!-- (cdkDropListDropped)="drop($event)"-->
+            <div *ngFor="let item of materials" cdkDrag>{{ item.value.name }}</div>
+        </div>
+
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Processes</button>
+      <clr-tab-content *clrIfActive="true">
+        <div cdkDropList cdkDropListSortingDisabled id="Process-drawer" [cdkDropListConnectedTo]="service.getDropZones('Process')" [cdkDropListData]="processes"> <!-- (cdkDropListDropped)="drop($event)"-->
+            <div *ngFor="let item of processes" cdkDrag>{{ item.value.name }}</div>
+        </div>
+      </clr-tab-content>
+    </clr-tab>
+    <!-- <clr-tab>
+      <button clrTabLink>Cloud</button>
+      <clr-tab-content *clrIfActive="true">
+        Cloud content
+      </clr-tab-content>
+    </clr-tab> -->
+</clr-tabs>

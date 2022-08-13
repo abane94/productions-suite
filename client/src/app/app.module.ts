@@ -13,6 +13,7 @@ import { InMemDB } from './mock/in-memory-database';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { MaterialPaneModule } from './material-pane/material-pane.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ResourceDrawerModule } from './resource-drawer/resource-drawer.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     environment.production ? [] : HttpClientInMemoryWebApiModule.forRoot(InMemDB), // TODO: use a 'demo' flag once dev server is ready
     HttpClientModule,
     FlexLayoutModule,
-    MaterialPaneModule
+    MaterialPaneModule,
+    ResourceDrawerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

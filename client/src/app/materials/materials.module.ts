@@ -7,6 +7,7 @@ import { FormsModule } from '../forms/forms.module';
 import { MaterialEditorComponent } from './material-editor/material-editor.component';
 import { FormsModule as ngFormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialPaneModule } from '../material-pane/material-pane.module';
+import { ResourceDrawerModule } from '../resource-drawer/resource-drawer.module';
 
 @NgModule({
   declarations: [MaterialsListPageComponent, MaterialEditorComponent],
@@ -17,7 +18,8 @@ import { MaterialPaneModule } from '../material-pane/material-pane.module';
     FormsModule,
     ngFormsModule,
     ReactiveFormsModule,
-    MaterialPaneModule
+    MaterialPaneModule,
+    ResourceDrawerModule
   ]
 })
 export class MaterialsModule { }

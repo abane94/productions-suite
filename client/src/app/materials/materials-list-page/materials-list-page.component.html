@@ -3,6 +3,8 @@
     Add
 </button>
 
+<app-resource-control></app-resource-control>
+
 <clr-datagrid style="height:80vh" (clrDgRefresh)="gridHandler.refresh($event)" [clrDgLoading]="gridHandler.loading" [(clrDgSelected)]="selected">
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'supplier'">Supplier</clr-dg-column>
@@ -41,7 +43,7 @@
 
  <!-- TODO: Remove after testing -->
 <!-- <app-object-grid-editor></app-object-grid-editor> -->
-<app-material-control></app-material-control>
+<!-- <app-material-control></app-material-control> -->
 
 
 <!--  Add Modal -->
