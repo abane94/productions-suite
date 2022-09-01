@@ -20,14 +20,14 @@ export class ResourceDrawerService {
   };
 
   getDropZones(resource: ResourceOptions) {
-    return this.dropsPerResource[resource].join(' ');
+    return this.dropsPerResource[resource];
   }
 
   constructor() { }
 
   requestResourceDropId(resource: ResourceOptions) {
     const guid = this.newGUID();
-    this.activeResourceControls[guid] = resource;
+    this.activeResourceControls.set(guid, resource);
     this.dropsPerResource[resource].push(guid);
     return guid;
   }

@@ -2,7 +2,7 @@ import { moveItemInArray, copyArrayItem } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { GenericControlProvider, GenericControlValueAccessor } from 'src/app/forms/GenericControlValueAccessor';
-import { ResourceDrawerService, ResourceOptions } from '../resource-drawer.service';
+import { ResourceDrawerService, ResourceOptions } from '../../../resource-drawer/resource-drawer.service';
 
 @Component({
   selector: 'app-resource-control',

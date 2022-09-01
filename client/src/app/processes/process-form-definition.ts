@@ -92,6 +92,11 @@ export default function ProcessFormDefinition(categories: OptionDefinition[], cl
             placeholder: '',
             required: true
           },
+          {
+            type: 'RESOURCE',
+            key: 'materials',
+            resource: 'Material'
+          }
           // {
           //   type: 'TEXT',
           //   key: 'supplierItemUrl',

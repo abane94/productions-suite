@@ -6,16 +6,11 @@ import { ClarityModule } from '@clr/angular';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '../forms/forms.module';
-import { ResourceControlComponent } from './resource-control/resource-control.component';
-import { ResourceControlItemComponent } from './resource-control-item/resource-control-item.component';
-
 
 
 @NgModule({
   declarations: [
     ResourceDrawerComponent,
-    ResourceControlComponent,
-    ResourceControlItemComponent
   ],
   imports: [
     CommonModule,
@@ -25,6 +20,8 @@ import { ResourceControlItemComponent } from './resource-control-item/resource-c
     FlexLayoutModule,
     FormsModule
   ],
-  exports: [ResourceDrawerComponent, ResourceControlComponent]
+  exports: [
+    ResourceDrawerComponent,
+  ]
 })
 export class ResourceDrawerModule { }

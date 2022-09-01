@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ResourceOptions } from 'src/app/resource-drawer/resource-drawer.service';
 import { PriceMap } from 'src/types/models/materials.types';
+import { ID } from 'src/types/util/util';
 import { GenericControlProvider, GenericControlValueAccessor } from '../GenericControlValueAccessor';
 import { NamedTemplateDirective } from '../named-template/named-template.directive';
 import { compare, FormComparison } from './form-reflection';
@@ -16,7 +18,7 @@ export const castOptionsField = (f: FormFieldDefinition) => (f as MultiFormField
 export const castNestedField = (f: FormFieldDefinition) => (f as NestedFormFieldDefinition);
 
 export interface FormFieldDefinitionBase<T> {
-  type: 'TEXT' | 'NUMBER' | 'CHECK' | 'RADIO' | 'TOGGLE' |'DATE' | 'AUTOCOMPLETE' /** Combo? */ | 'SELECT' | 'RANGE' | 'TEXTAREA' | 'NESTED' | 'HIDDEN' | 'OBJECT_GRID';  // TODO could have phone and email options, or those could be validators. HTML might have input types of these...
+  type: 'TEXT' | 'NUMBER' | 'CHECK' | 'RADIO' | 'TOGGLE' |'DATE' | 'AUTOCOMPLETE' /** Combo? */ | 'SELECT' | 'RANGE' | 'TEXTAREA' | 'NESTED' | 'HIDDEN' | 'OBJECT_GRID' | 'RESOURCE';  // TODO could have phone and email options, or those could be validators. HTML might have input types of these...
   key: string;
   label?: string;
   placeholder?: string;
@@ -63,6 +65,32 @@ interface ObjectGridFormField extends FormFieldDefinitionBase<PriceMap> {
   displayField: string;
 }
 
+interface ResourceFormField extends FormFieldDefinitionBase<ID> {
+  type: 'RESOURCE',
+  // multiple: false,
+  resource: ResourceOptions
+  // key: string;
+  // label?: string;
+  // placeholder?: string;
+  // default?: T;
+  // required?: boolean;
+  // helperText?: string;
+  // disabled?: FormComparison;
+}
+
+// TODO: implement a switch in the control to allow only one of many
+// interface ResourceFormField extends FormFieldDefinitionBase<ID[]> {
+//   type: 'RESOURCE_LIST',
+//   multiple: true,
+//   // key: string;
+//   // label?: string;
+//   // placeholder?: string;
+//   // default?: T;
+//   // required?: boolean;
+//   // helperText?: string;
+//   // disabled?: FormComparison;
+// }
+
 export interface OptionDefinition {
   value: string;
   display: string;
@@ -86,7 +114,7 @@ interface MultiFormFieldDefinition {
 }
 
 
-export type FormFieldDefinition = TextFormFieldDefinition | NumberFormFieldDefinition | BoolFormFieldDefinition | MultiFormFieldDefinition | DateFormFieldDefinition | NestedFormFieldDefinition | HiddenFormField | ObjectGridFormField;
+export type FormFieldDefinition = TextFormFieldDefinition | NumberFormFieldDefinition | BoolFormFieldDefinition | MultiFormFieldDefinition | DateFormFieldDefinition | NestedFormFieldDefinition | HiddenFormField | ObjectGridFormField | ResourceFormField;
 
 export interface FormDefinition {
   key: string;
@@ -185,6 +213,9 @@ export class UserDefinedFormViewerComponent extends GenericControlValueAccessor<
             break;
         case('OBJECT_GRID'):
             defaultItem[formDef.key] = formDef.default || { rows: [], columns: [], values: [] };
+            break;
+          case('RESOURCE'):  // TODO
+            defaultItem[formDef.key] = formDef.default || {};
         }
     }
 

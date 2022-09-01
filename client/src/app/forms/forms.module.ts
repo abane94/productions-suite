@@ -10,21 +10,34 @@ import { NamedTemplateDirective } from './named-template/named-template.directiv
 import { UserDefinedFormDataDisplayComponent } from './user-defined-form-data-display/user-defined-form-data-display.component';
 import { GeneralEditorComponent } from './general-editor/general-editor.component';
 import { ObjectGridEditorComponent } from './object-grid-editor/object-grid-editor.component';
+import { ResourceControlComponent } from './resource-control/resource-control/resource-control.component';
+import { ResourceControlItemComponent } from './resource-control/resource-control-item/resource-control-item.component';
 
-
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
-  declarations: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent, GeneralEditorComponent, ObjectGridEditorComponent],
+  declarations: [
+    UserDefinedFormViewerComponent,
+    ListItemModalContainerComponent,
+    MasterDetailControlComponent,
+    NamedTemplateDirective,
+    UserDefinedFormDataDisplayComponent,
+    GeneralEditorComponent,
+    ObjectGridEditorComponent,
+    ResourceControlComponent,
+    ResourceControlItemComponent
+  ],
   imports: [
     CommonModule,
     ClarityModule,
     ngFormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    DragDropModule,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA // Tells Angular we will have custom tags in our templates
   ],
-  exports: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent, GeneralEditorComponent, ObjectGridEditorComponent]
+  exports: [UserDefinedFormViewerComponent, ListItemModalContainerComponent, MasterDetailControlComponent, NamedTemplateDirective, UserDefinedFormDataDisplayComponent, GeneralEditorComponent, ObjectGridEditorComponent, ResourceControlComponent]
 })
 export class FormsModule { }

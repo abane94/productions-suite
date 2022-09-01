@@ -68,6 +68,13 @@
                 <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
                 <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
             </div>
+
+            <div *ngSwitchCase="'RESOURCE'" [attr.disabled]="compare(value, field.disabled, null)" [ngClass]="{'disabled': compare(value, field.disabled)}">
+                <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
+                <app-resource-control [formControlName]="field.key"  [attr.disabled]="compare(value, field.disabled, null)" [resource]="field.resource"></app-resource-control>
+                <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
+                <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
+            </div>
         </div>
     </div>
 </form>
