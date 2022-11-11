@@ -1,7 +1,7 @@
-import { NoId, Id } from "../util/util";
+import { NoId, Id, ResourceStub, Resource, Categorizable } from "../util/util";
 import { Material } from "./materials.types"
 
-interface Process_Id<T> {
+interface Process_Id<T> extends Partial<Categorizable> { // TODO: Remove partial
     id: T;
     name: string;
     description: string;
@@ -22,6 +22,7 @@ interface Process_Id<T> {
     applyPriceToQuantity: boolean;
     priceTiers?: {min: number, price: number}[];
     materials?: Material[];
+    stubs?: ResourceStub<Resource.Material>[];
 }
 
 export type Process_ = NoId<Process_Id<never>>;

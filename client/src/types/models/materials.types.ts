@@ -23,7 +23,7 @@
 //     }
 //   }
 
-import { Id, NoId } from "../util/util";
+import { Categorizable, Id, NoId } from "../util/util";
 
 interface VariationLevel {
   [variationOptions: string]: {
@@ -43,12 +43,10 @@ export interface PriceMap {
 // "colorSwatchImage": "Images/ColorSwatch/21695_fm.jpg"
 
 
-export interface MaterialListing_Id<T> {
+export interface MaterialListing_Id<T> extends Categorizable {
   id: T;
   name: string;
   description: string;
-  category: { display: string, value: string };
-  class: string;
   supplier: string;
   supplierItemUrl: string;
   // title: string;  // different from name, name is the piece nunmber, title is the quick description of the item
