@@ -36,6 +36,7 @@ export class ResourceControlComponent extends GenericControlValueAccessor<object
   }
 
   drop(event: any) {
+    const data = event.item.data;
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       // TODO: if sorting is allowed for the drag/drop, then moveItemInArray will also have to be used for the formArray
