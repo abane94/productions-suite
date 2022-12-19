@@ -3,7 +3,7 @@ type Comparison = 'EQ' | 'NEQ' | 'LT' | 'GT' | 'LTE' | 'GTE';
 export interface FormComparison {
     type: Comparison;
     field: string;
-    value: string;
+    value: string | boolean;
 }
 
 export interface FormComparisonList {

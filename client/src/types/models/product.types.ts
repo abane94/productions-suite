@@ -1,8 +1,8 @@
-import { Id, NoId } from "../util/util";
+import { Categorizable, Id, NoId, Resource, ResourceStub } from "../util/util";
 import { Material_Id } from "./materials.types";
 
 
-export interface Product_Id<T> {
+export interface Product_Id<T> extends Partial<Categorizable> {  // TODO: remove Partial
     id: T;
     name: string;
     description: string;
@@ -14,16 +14,9 @@ export interface Product_Id<T> {
     maxComplexity: number;
     materials: Material_Id<T>[];  // materials that are explicity included with the Product, but not tied to a process
     processes: T; //Process['id'];
+    MaterialStubs?: ResourceStub<Resource.Material>[];
+    // processStubs?: ResourceStub<Resource.Material>[];  //? include??
 }
 
 export type Product_ = NoId<Product_Id<never>>;
 export type Product = Product_Id<Id>
-
-
-// interface Test_Id<T> {
-//     id: T;
-//     name: string;
-//     age: number;
-//   }
-// export type Test_ = NoId<Test_Id<never>>  // the trailing underscore indicates that the model is missing the id, useful for add operations
-// export type Test = Test_Id<Id>;
