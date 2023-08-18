@@ -20,7 +20,12 @@ export abstract class ControlWrapper<T extends ControlValueAccessor> implements 
   }
 
   setDisabledState(isDisabled: boolean) {
-    this.valueAccessor.setDisabledState(isDisabled);
+    // this.valueAccessor.setDisabledState(isDisabled);
+    if (this.valueAccessor.setDisabledState) {
+      this.valueAccessor.setDisabledState(isDisabled);
+    } else {
+      throw new Error('cannot set value accessor as disabled, because `setDisabled` fn does not exist');
+    }
   }
 }
 

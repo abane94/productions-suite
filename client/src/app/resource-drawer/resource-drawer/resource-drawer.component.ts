@@ -9,14 +9,14 @@ import { ResourceDrawerService } from '../resource-drawer.service';
 // TODO: move specific list state implementations to common location
 @Injectable()
 export class MaterialListStateService extends GenericListStateService<Material> {
-  constructor(protected data: MaterialService ) {
+  constructor(protected override data: MaterialService ) {
     super();
     this.setContext({});
   }
 }
 @Injectable()
 export class ProcessListStateService extends GenericListStateService<Process> {
-  constructor(protected data: ProcessService ) {
+  constructor(protected override data: ProcessService ) {
     super();
     this.setContext({});
   }

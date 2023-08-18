@@ -4,7 +4,7 @@
       <button clrTabLink>Materials</button>
       <clr-tab-content *clrIfActive>
         <div cdkDropList cdkDropListSortingDisabled id="Material-drawer" [cdkDropListConnectedTo]="service.getDropZones('Material')" [cdkDropListData]="materials"> <!-- (cdkDropListDropped)="drop($event)"-->
-            <div class="drag-item" *ngFor="let item of materials" cdkDrag [cdkDragData]="item.value">{{ item.value.name }}</div>
+            <div class="drag-item" *ngFor="let item of materials" cdkDrag [cdkDragData]="item.value">{{ item.value!.name }}</div>
         </div>
 
       </clr-tab-content>
@@ -13,7 +13,7 @@
       <button clrTabLink>Processes</button>
       <clr-tab-content *clrIfActive="true">
         <div cdkDropList cdkDropListSortingDisabled id="Process-drawer" [cdkDropListConnectedTo]="service.getDropZones('Process')" [cdkDropListData]="processes"> <!-- (cdkDropListDropped)="drop($event)"-->
-            <div class="drag-item" *ngFor="let item of processes" cdkDrag [cdkDragData]="item.value">{{ item.value.name }}</div>
+            <div class="drag-item" *ngFor="let item of processes" cdkDrag [cdkDragData]="item.value">{{ item.value!.name }}</div>
         </div>
       </clr-tab-content>
     </clr-tab>

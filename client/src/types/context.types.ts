@@ -47,7 +47,7 @@ export function applyContext<T extends ID, G = null>(items: T[], context?: ListC
             resultList = resultList.sort((by as ClrDatagridComparatorInterface<T>).compare);
         } else if (typeof by === 'string') {
             resultList = resultList.sort((a, b) => {
-                return b[by] - a[by]
+                return (b as any)[by] - (a as any)[by]
             });
         } else {
             const field = (by as SortOption<T>).field;
@@ -78,7 +78,7 @@ export function applyContext<T extends ID, G = null>(items: T[], context?: ListC
 
     if (context.page) {
         const from = context.page.from || 0;
-        let to = (context.page.to || from + context.page.size || 0) + 1;
+        let to: number | undefined = (context.page.to || (from + context.page.size!) || 0) as number + 1;
         to = (to > resultList.length) ? undefined : to;
         resultList = resultList.slice(from, to);
     }
@@ -86,8 +86,7 @@ export function applyContext<T extends ID, G = null>(items: T[], context?: ListC
     return {items: resultList, total};
 }
 
-function compare<T>(a: T, b: T, f: keyof T) {
-    const field: string = f as string;
+function compare<T extends object, F extends keyof T>(a: T, b: T, field: F) {
     if (typeof a[field] === 'number' && typeof b[field] === 'number') {
         return a[field] - b[field];
     }
@@ -97,10 +96,10 @@ function compare<T>(a: T, b: T, f: keyof T) {
     return (a[field] as number) - (b[field] as number);
 }
 
-
+type key<T> = keyof T;
 export function applySingleContext<T>(items: T[], context: Partial<T>) {
     const results =  items.filter(el => {
-        const fields = Object.keys(context);
+        const fields: Array<keyof T> = Object.keys(context) as Array<keyof T>;
         return fields.every(field => el[field] === context[field]);
     });
     return results.length ? results[0] : null;

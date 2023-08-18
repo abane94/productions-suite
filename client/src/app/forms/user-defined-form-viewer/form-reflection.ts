@@ -33,17 +33,17 @@ export function compare(values: object, comparison?: FormComparison | FormCompar
 function compareSingle(values: object, comparison: FormComparison) {
     switch(comparison.type) {
         case 'EQ':
-            return values[comparison.field] === comparison.value;
+            return (values as any)[comparison.field] === comparison.value;
         case 'GT':
-            return values[comparison.field] > comparison.value;
+            return (values as any)[comparison.field] > comparison.value;
         case 'GTE':
-            return values[comparison.field] >= comparison.value;
+            return (values as any)[comparison.field] >= comparison.value;
         case 'LT':
-            return values[comparison.field] < comparison.value;
+            return (values as any)[comparison.field] < comparison.value;
         case 'LTE':
-            return values[comparison.field] <= comparison.value;
+            return (values as any)[comparison.field] <= comparison.value;
         case 'NEQ':
-            return values[comparison.field] !== comparison.value;
+            return (values as any)[comparison.field] !== comparison.value;
     }
 }
 

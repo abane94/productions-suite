@@ -26,12 +26,12 @@ export class ResourceControlComponent extends GenericControlValueAccessor<object
     super(fb);
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
       super.ngOnInit();
       this.guid = this.service.requestResourceDropId(this.resource);
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
       this.service.destroyResourceDrop(this.guid);
   }
 

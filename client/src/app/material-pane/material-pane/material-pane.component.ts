@@ -5,7 +5,7 @@ import { Material } from 'src/types/models/materials.types';
 
 @Injectable()
 export class MaterialListStateService extends GenericListStateService<Material> {
-  constructor(protected data: MaterialService ) {
+  constructor(protected override data: MaterialService ) {
     super();
     this.setContext({});
   }

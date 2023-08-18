@@ -12,9 +12,9 @@
 
     <clr-dg-row *ngFor="let process of state.process.value" [clrDgItem]="process">
         <!-- <clr-dg-cell>{{user.id}}</clr-dg-cell> -->
-        <clr-dg-cell>{{process.value.name}}</clr-dg-cell>
-        <clr-dg-cell>{{process.value.description }}</clr-dg-cell>
-        <clr-dg-cell>{{process.value.hours }}</clr-dg-cell>
+        <clr-dg-cell>{{process.value?.name}}</clr-dg-cell>
+        <clr-dg-cell>{{process.value?.description }}</clr-dg-cell>
+        <clr-dg-cell>{{process.value?.hours }}</clr-dg-cell>
         <!-- <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user.color">{{user.color}}</span>
       </clr-dg-cell> -->

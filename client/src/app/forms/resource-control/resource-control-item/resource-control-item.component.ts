@@ -21,7 +21,11 @@ export abstract class ControlWrapper<T extends ControlValueAccessor> implements 
   }
 
   setDisabledState(isDisabled: boolean) {
-    this.valueAccessor.setDisabledState(isDisabled);
+    if (this.valueAccessor.setDisabledState) {
+      this.valueAccessor.setDisabledState(isDisabled);
+    } else {
+      throw new Error('cannot set value accessor as disabled, because `setDisabled` fn does not exist');
+    }
   }
 }
 
@@ -31,8 +35,8 @@ export abstract class ControlWrapper<T extends ControlValueAccessor> implements 
   templateUrl: './resource-control-item.component.html',
   styleUrls: ['./resource-control-item.component.scss']
 })
-export class ResourceControlItemComponent<T extends ID> extends ControlWrapper<UserDefinedFormViewerComponent> implements AfterContentChecked {
-
+export class ResourceControlItemComponent<T extends ID & {name: string}> extends ControlWrapper<UserDefinedFormViewerComponent> implements AfterContentChecked {
+// TODO: move {name: string} to a common type
   @ViewChild(UserDefinedFormViewerComponent)
   public valueAccessor: UserDefinedFormViewerComponent;
 

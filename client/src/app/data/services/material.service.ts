@@ -10,13 +10,13 @@ export class MaterialService extends GenericDataService<Material> {
 
   public url = 'api/materials';
 
-  constructor(protected http: HttpClient) {
+  constructor(protected override http: HttpClient) {
     super(http);
   }
 
   async getMaterialClasses() {
-    const result = await this.get().toPromise();
-    const classList = result.items.map(m => m['class'] as string);
+    const result = await this.get().toPromise(); // firstValueFrom
+    const classList = (result ? result.items : []).map(m => m['class'] as string);
     return classList.filter((c, i, self) => self.indexOf(c) === i)
   }
 }

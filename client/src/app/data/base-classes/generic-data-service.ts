@@ -53,7 +53,7 @@ function queryParams(o: object, prefix = ''): string {
   let flat = [];
   const objStrings = [];
   for (const field of (Object.keys(o)) || []) {
-    const val = o[field];
+    const val = (o as any)[field];
     switch (typeof val) {
       case 'bigint':
       case 'symbol':

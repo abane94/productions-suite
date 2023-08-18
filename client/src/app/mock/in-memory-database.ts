@@ -277,7 +277,7 @@ export class InMemDB implements InMemoryDbService {
                 : applyContext(req.collection, context);
         console.log('before');
         console.log(data);
-        Object.assign(data, (req.req as any).body);
+        Object.assign(data || {}, (req.req as any).body); // TODO: check the typing on data
         console.log('after');
         console.log(data);
         return req.utils.createResponse$(() => {

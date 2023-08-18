@@ -15,10 +15,10 @@
 
     <clr-dg-row *ngFor="let material of state.materials.value" [clrDgItem]="material">
         <!-- <clr-dg-cell>{{user.id}}</clr-dg-cell> -->
-        <clr-dg-cell>{{material.value.name}}</clr-dg-cell>
-        <clr-dg-cell>{{material.value.supplier}}</clr-dg-cell>
-        <clr-dg-cell>{{material.value.baseCost }}</clr-dg-cell>
-        <clr-dg-cell>{{material.value.description }}</clr-dg-cell>
+        <clr-dg-cell>{{material.value?.name}}</clr-dg-cell>
+        <clr-dg-cell>{{material.value?.supplier}}</clr-dg-cell>
+        <clr-dg-cell>{{material.value?.baseCost }}</clr-dg-cell>
+        <clr-dg-cell>{{material.value?.description }}</clr-dg-cell>
         <!-- <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user.color">{{user.color}}</span>
       </clr-dg-cell> -->

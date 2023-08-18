@@ -7,14 +7,14 @@ import { IGenericData } from '../base-classes/generic-data.type';
 import { ValueStateService } from './value-state.service';
 
 interface IListStateService<T extends { id: Id }, G = null> {
-  constructor(data: IGenericData<T, G>);
+  // constructor(data: IGenericData<T, G>);
   value?: T[] | NoId<T>[];  // This should be a behavior subject I think
-  clear();  // clears the value;
-  sort(context: SortOption<T> | null);  // null clears the sort??
+  clear(): void;  // clears the value;
+  sort(context: SortOption<T> | null): T[] | NoId<T>[];  // null clears the sort??
   filter(context: Filter<T>): number;  // returns the idx of the filter added
-  removeFilter(idx: number);
+  removeFilter(idx: number): void;
   // reorderFilters(idxs: number[]);
-  save(idx: number);
+  save(idx: number): void;
   getContext(): ListContext<T>
   delete(idx: number): Id;
 }
@@ -25,7 +25,7 @@ export abstract class GenericListStateService<T extends ID> {
   public total = 0;
   public pageSize = 10;
 
-  public sort: ListContext<T>['sort'];
+  public sort?: ListContext<T>['sort'];
   public filters: ListContext<T>['filters'] = [];
   public page: ListContext<T>['page'];  // TODO: helper functions to manipulate pages?
 
@@ -68,7 +68,10 @@ export abstract class GenericListStateService<T extends ID> {
 
   private clearSubs() {
     while(this.subs.length) {
-      this.subs.pop().unsubscribe();
+      const sub = this.subs.pop();
+      if (sub) {
+        sub.unsubscribe();
+      }
     }
   }
 
@@ -100,7 +103,7 @@ export abstract class GenericListStateService<T extends ID> {
       },
       error: e => console.error(e),
       complete: () => {
-        this._handleNewData.next();
+        this._handleNewData.next(null);
         sub.unsubscribe();
       }
     });
@@ -110,17 +113,17 @@ export abstract class GenericListStateService<T extends ID> {
 
 
   setSort(context: ListContext<T>['sort'] | null) {
-    this.sort = context;
-    this.retrieveData();
+      this.sort = context || undefined;
+      this.retrieveData();
   }
 
   addFilter(context: Filter<T>) {
-    this.filters.push(context);
+    this.filters!.push(context);
     this.retrieveData();
   }
 
   removeFilter(idx: number) {
-    this.filters.splice(idx, 1);
+    this.filters!.splice(idx, 1);
     this.retrieveData();
   }
 
@@ -150,16 +153,16 @@ export abstract class GenericListStateService<T extends ID> {
   }
 
   get hasNextPage() {
-    return (this.page.current < (this.numPages + 1));
+    return ((this.page!.current || 0) < (this.numPages + 1));
   }
 
   get hasPrevPage() {
-    return this.page.current > 1;
+    return (this.page!.current || 0) > 1;
   }
 
   nextPage() {
     if (this.hasNextPage) {
-      const page = this.page.current - 1 + 1;  // 0 indexed, next
+      const page = (this.page!.current || 0) - 1 + 1;  // 0 indexed, next
       this.page = {
         from: page * this.pageSize,
         to: page * this.pageSize + this.pageSize,
@@ -172,7 +175,7 @@ export abstract class GenericListStateService<T extends ID> {
 
   prevPage() {
     if (this.hasPrevPage) {
-      const page = this.page.current - 1 - 1;  // 0 indexed, prev
+      const page = (this.page!.current || 0) - 1 - 1;  // 0 indexed, prev
       this.page = {
         from: page * this.pageSize,
         to: page * this.pageSize + this.pageSize,
@@ -184,7 +187,7 @@ export abstract class GenericListStateService<T extends ID> {
   }
 
   goToPage(/** 1 indexed */n: number) {
-    if (n = this.page.current) { return; }
+    if (n === this.page!.current) { return; }
     if (n < 0 && n <= this.numPages) {
       const page = n - 1;  // 0 indexed
       this.page = {

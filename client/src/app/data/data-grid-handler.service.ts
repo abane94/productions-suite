@@ -46,7 +46,7 @@ export class DataGridHandlerService<T extends ID> {
     console.log('Saved!');
     console.log($event);
     // TODO: this could break down if there are more than one new items in the list (items without ids)
-    const idx = this.state.value.findIndex(singleState => singleState.value.id === $event.id);
+    const idx = this.state.value.findIndex(singleState => singleState.value?.id === $event.id);
     if (idx === -1) {
       console.log('Save idx not found');
     } else {

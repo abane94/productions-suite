@@ -4,7 +4,7 @@
             Drop {{resource}} Here
         </div>
         <div *ngFor="let item of list; let i = index" cdkDrag>
-            <app-resource-control-item [formControl]="items[i]" [item]="item"></app-resource-control-item>
+            <app-resource-control-item [formControl]="$any($any(items)[i])" [item]="item"></app-resource-control-item>
         </div>
     </div>
 </ng-container>

@@ -32,7 +32,7 @@
                 <td>{{ row.value }}</td>
                 <td *ngFor="let col of _cols.controls; let j = index">
                     <!-- <input clrInput layout="compact" [placeholder]="i" name="row" type="number" [value]="j"/> -->
-                    {{ (_values.controls[i] && _values.controls[i].controls[j] && _values.controls[i].controls[j].value[displayField]) || '-' }}
+                    {{ (_values.controls[i] && $any(_values.controls[i]).controls[j] && $any(_values.controls[i]).controls[j].value[displayField]) || '-' }}
                     <!-- [value here] -->
                     <button type="button" class="btn btn-icon" aria-label="home" (click)="openModal(i, j)">
                         <cds-icon shape="pencil"></cds-icon>
@@ -54,8 +54,8 @@
 
 
 <clr-modal [(clrModalOpen)]="showModal" [clrModalClosable]="false">
-    <h3 class="modal-title">
-        {{_rows?.controls[modalTargetRow]?.value}}/{{_cols?.controls[modalTargetCol]?.value}}
+    <h3 class="modal-title" *ngIf="showModal">
+        {{_rows.controls[modalTargetRow!].value}}/{{_cols.controls[modalTargetCol!].value}}
     </h3>
     <div class="modal-body">
 
@@ -71,9 +71,10 @@
 
         <!-- *ngIf="_values && _values.controls[modalTargetRow] && $any(_values.controls[modalTargetRow]).controls[modalTargetCol]" -->
         <app-user-defined-form-viewer
+            *ngIf="showModal"
             [(ngModel)]="tempFormValue"
             [formDef]="formDef"></app-user-defined-form-viewer>
-        <div *ngIf="!(_values && _values.controls[modalTargetRow] && $any(_values.controls[modalTargetRow]).controls[modalTargetCol])">
+        <div *ngIf="!(_values && _values.controls[modalTargetRow!] && $any(_values.controls[modalTargetRow!]).controls[modalTargetCol!])">
             values: {{_values.value|json}}
             <br/>
             modalTargetRow: {{modalTargetRow}}
@@ -82,7 +83,7 @@
         </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline" (click)="closeModal()">Cancel</button>
-      <button type="button" class="btn btn-primary" (click)="closeModal(true)">Ok</button>
+    <button type="button" class="btn btn-outline" (click)="closeModal()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="closeModal(true)">Ok</button>
     </div>
 </clr-modal>

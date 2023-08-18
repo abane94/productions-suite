@@ -16,6 +16,8 @@ import { compare, FormComparison } from './form-reflection';
 // helper methods to cast the fields in the template
 export const castOptionsField = (f: FormFieldDefinition) => (f as MultiFormFieldDefinition);
 export const castNestedField = (f: FormFieldDefinition) => (f as NestedFormFieldDefinition);
+export const castGridField = (f: FormFieldDefinition) => (f as ObjectGridFormField);
+export const castResourceField = (f: FormFieldDefinition) => (f as ResourceFormField);
 
 export interface FormFieldDefinitionBase<T> {
   type: 'TEXT' | 'NUMBER' | 'CHECK' | 'RADIO' | 'TOGGLE' |'DATE' | 'AUTOCOMPLETE' /** Combo? */ | 'SELECT' | 'RANGE' | 'TEXTAREA' | 'NESTED' | 'HIDDEN' | 'OBJECT_GRID' | 'RESOURCE';  // TODO could have phone and email options, or those could be validators. HTML might have input types of these...
@@ -110,6 +112,7 @@ interface MultiFormFieldDefinition {
   label: string;
   options: OptionsSource;
   helperText?: string;
+  disabled?: FormComparison;
   multiple: boolean;  // TODO check to see which components this is possible on, and the editor will have to make sure it checks out
 }
 
@@ -165,6 +168,8 @@ export class UserDefinedFormViewerComponent extends GenericControlValueAccessor<
   // helper methods to cast the fields in the template
   castOptionsField = castOptionsField;
   castNestedField = castNestedField;
+  castGridField = castGridField;
+  castResourceField = castResourceField;
 
   constructor(_fb: FormBuilder) {
     super(_fb);

@@ -1,5 +1,5 @@
 <h3>Materials</h3>
 
 <div cdkDropList cdkDropListSortingDisabled id="list-1" cdkDropListConnectedTo="list-2" [cdkDropListData]="items"> <!-- (cdkDropListDropped)="drop($event)"-->
-    <div *ngFor="let item of items" cdkDrag>{{ item.value.name }}</div>
+    <div *ngFor="let item of items" cdkDrag>{{ item.value?.name }}</div>
 </div>

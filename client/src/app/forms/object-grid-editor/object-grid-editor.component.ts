@@ -25,7 +25,7 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
     });
   }
 
-  writeValue(value: {values: object[][], columns: string[], rows: string[]} | null | undefined): void {
+  override writeValue(value: {values: object[][], columns: string[], rows: string[]} | null | undefined): void {
     if (!value) {
       return;
     }
@@ -57,10 +57,10 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
   colField: string;
 
   showModal = false;
-  modalTargetRow: number;
-  modalTargetCol: number;
+  modalTargetRow?: number;
+  modalTargetCol?: number;
 
-  tempFormValue: object = {};
+  tempFormValue?: object = {};
 
   @Input()
   formDef: FormDefinition = {
@@ -100,10 +100,10 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
   displayField = 'supplierSku';
 
   get modalTarget() {
-    return this._values.controls?.[this.modalTargetRow]?.[this.modalTargetRow];  // TODO: is this a typo??? there are 2 modalTargetRows. UPDATE: usability testing seems to indicate it works, test this function specifically
+    return (this._values.controls?.[this.modalTargetRow!] as any)?.[this.modalTargetRow!] as any;  // TODO: is this a typo??? there are 2 modalTargetRows. UPDATE: usability testing seems to indicate it works, test this function specifically
   }
 
-  constructor(protected _fb: FormBuilder) { super(_fb); }
+  constructor(protected override _fb: FormBuilder) { super(_fb); }
 
   setModalTarget(row: number, col: number, showModal = false) {
     this.modalTargetCol = col;
@@ -119,10 +119,10 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
     this.tempFormValue = (this._values.controls[this.modalTargetRow] as FormArray).controls[this.modalTargetCol].value;
 
     // make sure the form is empty
-    if (!Object.keys(this.tempFormValue).length) {
+    if (!Object.keys(this.tempFormValue!).length) {
       this.tempFormValue = {};  // this will keep the empty fields from being added before save is clicked
       for (const field of this.formDef.fields.map(f => f.key)) {
-        this.tempFormValue[field] = null;
+        (this.tempFormValue as any)[field] = null;
       }
     }
     this.showModal = true;
@@ -131,11 +131,11 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
   closeModal(save = false) {
     this.showModal = false
     if (save) {
-      (this._values.controls[this.modalTargetRow] as FormArray).controls[this.modalTargetCol].patchValue(this.tempFormValue);
+      (this._values.controls[this.modalTargetRow!] as FormArray).controls[this.modalTargetCol!].patchValue(this.tempFormValue);
     }
-    this.modalTargetCol = null;
-    this.modalTargetRow = null;
-    this.tempFormValue = null;
+    this.modalTargetCol = undefined;
+    this.modalTargetRow = undefined;
+    this.tempFormValue = undefined;
   }
 
   addColumn(label: string) {

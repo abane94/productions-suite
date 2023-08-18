@@ -80,18 +80,18 @@ export function applyFilter<T>(items: T[], filter: Filter<T>): T[] {
         case 'FIELD_EQ':
             return items.filter(el => (el[filter.field] as any as string | number) === filter.equals);
         case 'FIELD_INCL':
-            return items.filter(el => (el[filter.field].toString()).includes(filter.incl));
+            return items.filter(el => ((el[filter.field] as any).toString()).includes(filter.incl));
         case 'FIELD_EXCL':
-            return items.filter(el => !(el[filter.field].toString()).includes(filter.excl));
+            return items.filter(el => !((el[filter.field] as any).toString()).includes(filter.excl));
         case 'INCL':
             return items.filter(el => {
-                const fields = Object.keys(el).filter(field => typeof el[field] === 'string');
+                const fields = Object.keys(el as any).filter(field => typeof ((el as any)[field]) === 'string');
                 return fields.some(field => field.includes(filter.incl));
             });
             break;
         case 'EXCL':
             return items.filter(el => {
-                const fields = Object.keys(el).filter(field => typeof el[field] === 'string');
+                const fields = Object.keys(el as any).filter(field => typeof (el as any)[field] === 'string');
                 return !fields.some(field => field.includes(filter.excl));
             });
         default:

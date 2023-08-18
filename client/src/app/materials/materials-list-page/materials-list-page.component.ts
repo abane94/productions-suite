@@ -56,7 +56,7 @@ export class MaterialsListPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async addMaterial(material) {
+  async addMaterial(material: Material) {
     // this.addModalIsOpen = false;
     // await this.materialService.add(material);
     // this.materials = (await this.materialService.get()).items;

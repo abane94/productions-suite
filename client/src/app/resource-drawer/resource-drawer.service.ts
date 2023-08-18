@@ -35,8 +35,11 @@ export class ResourceDrawerService {
   destroyResourceDrop(guid: string) {
     // called by controls in their on destroy method
     const resource = this.activeResourceControls.get(guid);
-    this.activeResourceControls.delete(guid);
-    this.dropsPerResource[resource] = this.dropsPerResource[resource].filter(s => s !== guid);  // TODO: is this concurrent safe?
+    if (resource) {
+      this.activeResourceControls.delete(guid);
+      this.dropsPerResource[resource] = this.dropsPerResource[resource].filter(s => s !== guid);  // TODO: is this concurrent safe?
+    }
+
   }
 
   // todo: move to util location

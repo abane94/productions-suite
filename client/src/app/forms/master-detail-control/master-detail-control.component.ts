@@ -41,7 +41,7 @@ export class MasterDetailControlComponent extends GenericControlValueAccessor<an
 
   }
 
-  writeValue(value: any | null | undefined): void {
+  override writeValue(value: any | null | undefined): void {
     if (!value) {  // TODO: I thought if the value was null it meant reset, determine if this is correct
       return;
     }

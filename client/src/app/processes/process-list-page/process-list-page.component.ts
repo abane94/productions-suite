@@ -56,7 +56,7 @@ export class ProcessListPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async addProcess(process) {
+  async addProcess(process: Process) {
     // this.addModalIsOpen = false;
     // await this.processService.add(process);
     // this.process = (await this.processService.get()).items;

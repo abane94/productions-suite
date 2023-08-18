@@ -17,9 +17,9 @@ import { IGenericData } from '../base-classes/generic-data.type';
 @Injectable()
 export class ValueStateService<T extends ID> {
   protected data: IGenericData<T, Partial<T>>
-  public value: T;
-  protected isNew: boolean = null;
-  protected original: T;
+  public value?: T;
+  protected isNew: boolean = false; // TODO is there a reason this was null?
+  protected original?: T;
 
   //#region Events
   private _handleClear: Subject<null> = new Subject();
@@ -27,8 +27,8 @@ export class ValueStateService<T extends ID> {
       return this._handleClear.asObservable();
   }
 
-  private _handleSet: Subject<T> = new Subject();
-  public get onSet(): Observable<T> {
+  private _handleSet: Subject<T | undefined> = new Subject();
+  public get onSet(): Observable<T | undefined> {
       return this._handleSet.asObservable();
   }
 
@@ -37,8 +37,8 @@ export class ValueStateService<T extends ID> {
       return this._handleLoad.asObservable();
   }
 
-  private _handleSave: Subject<T> = new Subject();
-  public get onSave(): Observable<T> {
+  private _handleSave: Subject<T | undefined> = new Subject();
+  public get onSave(): Observable<T | undefined> {
       return this._handleSave.asObservable();
   }
 
@@ -55,7 +55,7 @@ export class ValueStateService<T extends ID> {
     this.data = data;
   }
 
-  private _set(v: T) {
+  private _set(v: T | undefined) {
     this.value = v;
     this.original = Object.assign({}, v);  // TODO: deep copy
     this._handleSet.next(this.value);
@@ -67,9 +67,10 @@ export class ValueStateService<T extends ID> {
     this._handleSet.next(this.value);
   }
 
+  // TODO: if clear is not needed, value and original should not be optional, this will remove the need to ?. in several places
   clear() {
-    this.value = null;
-    this.original = null;
+    this.value = undefined;
+    this.original = undefined;
     this._handleClear.next(null);
   }
 
@@ -90,6 +91,11 @@ export class ValueStateService<T extends ID> {
     let obs: Observable<T>;
     let sub: Subscription;
     if (this.isNew) {
+      if (!this.value) {
+        const e = 'trying to save new null value';
+        console.error(e);
+        throw new Error(e)
+      }
       obs = this.data.add(this.value);
       sub = obs.subscribe({
         next: x => { this._set(x); this.isNew = false; },
@@ -100,11 +106,16 @@ export class ValueStateService<T extends ID> {
         },
       });
     } else {
+      if (!this.value) {
+        const e = 'trying to save null value';
+        console.error(e);
+        throw new Error(e)
+      }
       // TODO: is this optimization needed?
       const diff: Partial<T> & ID = { id: (this.value.id as Id) } as any; // this needs to be the new ID, in case there is some sort of copy things going on
       // need fields from both original and current in case fields have been added/removed
-      const fields = new Set([...Object.keys(this.original), ...Object.keys(this.value)]);
-      for (const field of Object.keys(this.value)) {
+      const fields = new Set([...Object.keys(this.original || {}), ...Object.keys(this.value)]);
+      for (const field of (Object.keys(this.value)) as Array<keyof T>) {
         diff[field] = this.value[field];  // TODO: make sure that nulling out removed fields will remove them in the db
       }
       diff['id'] = this.value.id;  // this needs to be the new ID, in case there is some sort of copy things going on
@@ -124,9 +135,14 @@ export class ValueStateService<T extends ID> {
   }
 
   delete(): Observable<Id> {
+    if (!this.value) {
+      const e = 'trying to delete null value';
+      console.error(e);
+      throw new Error(e)
+    }
     const obs = this.data.delete(this.value);
     const sub = obs.subscribe({
-      next: x => { this._set(null); this.isNew = true; },
+      next: x => { this._set(undefined); this.isNew = true; },
       error: err => console.error('Observer got an error: ' + err),
       complete: () => {
         this._handleDelete.next(this);

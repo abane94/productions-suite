@@ -12,7 +12,7 @@ export class ProcessService extends GenericDataService<Process> {
 
   public url = 'api/processes';
 
-  constructor(protected http: HttpClient) {
+  constructor(protected override http: HttpClient) {
     super(http);
   }
 }
