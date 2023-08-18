@@ -100,7 +100,7 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
   displayField = 'supplierSku';
 
   get modalTarget() {
-    return this._values.controls?.[this.modalTargetRow]?.[this.modalTargetRow];
+    return this._values.controls?.[this.modalTargetRow]?.[this.modalTargetRow];  // TODO: is this a typo??? there are 2 modalTargetRows. UPDATE: usability testing seems to indicate it works, test this function specifically
   }
 
   constructor(protected _fb: FormBuilder) { super(_fb); }
