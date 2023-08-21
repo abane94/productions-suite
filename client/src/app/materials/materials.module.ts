@@ -6,7 +6,6 @@ import { ClarityModule } from '@clr/angular';
 import { FormsModule } from '../forms/forms.module';
 import { MaterialEditorComponent } from './material-editor/material-editor.component';
 import { FormsModule as ngFormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { MaterialPaneModule } from '../material-pane/material-pane.module';
 
 @NgModule({
   declarations: [MaterialsListPageComponent, MaterialEditorComponent],
