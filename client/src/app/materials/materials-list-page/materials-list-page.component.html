@@ -8,7 +8,6 @@
 <clr-datagrid style="height:80vh" (clrDgRefresh)="gridHandler.refresh($event)" [clrDgLoading]="gridHandler.loading" [(clrDgSelected)]="selected">
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'supplier'">Supplier</clr-dg-column>
-    <clr-dg-column [clrDgField]="'baseCost'">Base Cost</clr-dg-column>
     <clr-dg-column [clrDgField]="'description'">Description</clr-dg-column>
 
     <clr-dg-placeholder>We couldn't find any materials!</clr-dg-placeholder>
@@ -17,7 +16,6 @@
         <!-- <clr-dg-cell>{{user.id}}</clr-dg-cell> -->
         <clr-dg-cell>{{material.value?.name}}</clr-dg-cell>
         <clr-dg-cell>{{material.value?.supplier}}</clr-dg-cell>
-        <clr-dg-cell>{{material.value?.baseCost }}</clr-dg-cell>
         <clr-dg-cell>{{material.value?.description }}</clr-dg-cell>
         <!-- <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user.color">{{user.color}}</span>

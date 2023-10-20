@@ -13,64 +13,10 @@ export class InMemDB implements InMemoryDbService {
                 name: 'TShirt',
                 description: 'A simple tshirt',
                 'category': { value: 'clothing', display: 'clothing' },
-                'baseCost': 1.45,
                 class: 'shirt',
                 'supplier': 'gilden',
                 'supplierItemUrl': 'dsagfds',
-                'options': {
-                    'items': [
-                        {
-                            'name': 'Size',
-                            'selections': {
-                                'items': [
-                                    {
-                                        'value': 'M',
-                                        'display': 'M',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'S',
-                                        'display': 'S',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'XXL',
-                                        'display': 'XXL',
-                                        'img': '',
-                                        'priceAdjustment': 0.1
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            'name': 'Color',
-                            'selections': {
-                                'items': [
-                                    {
-                                        'value': 'BLUE',
-                                        'display': 'BLUE',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'RED',
-                                        'display': 'RED',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'TIE DYE',
-                                        'display': 'TIE',
-                                        'img': 'DYE',
-                                        'priceAdjustment': 0.15
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                },
+
                 priceMap: {
                     "values": [
                         [
@@ -112,61 +58,40 @@ export class InMemDB implements InMemoryDbService {
                 description: 'A simple tshirt',
                 'category': { value: 'clothing', display: 'clothing' },
                 class: 'shirt',
-                'baseCost': 1.45,
                 'supplier': 'gilden',
                 'supplierItemUrl': 'dsagfds',
-                'options': {
-                    'items': [
-                        {
-                            'name': 'Size',
-                            'selections': {
-                                'items': [
-                                    {
-                                        'value': 'M',
-                                        'display': 'M',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'S',
-                                        'display': 'S',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'XXL',
-                                        'display': 'XXL',
-                                        'img': '',
-                                        'priceAdjustment': 0.1
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            'name': 'Color',
-                            'selections': {
-                                'items': [
-                                    {
-                                        'value': 'BLUE',
-                                        'display': 'BLUE',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'RED',
-                                        'display': 'RED',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'TIE DYE',
-                                        'display': 'TIE',
-                                        'img': 'DYE',
-                                        'priceAdjustment': 0.15
-                                    }
-                                ]
-                            }
-                        }
+                priceMap: {
+                    "values": [
+                        [
+                            {
+                                "cost": 1,
+                                "supplierSku": "sadfgdfg",
+                                "colorFamily": "dfgsdfg",
+                                "colorSwatchImage": "sdfgsdfgfd"
+                            },
+                            {},
+                            {}
+                        ],
+                        [
+                            {},
+                            {},
+                            {}
+                        ],
+                        [
+                            {},
+                            {},
+                            {}
+                        ]
+                    ],
+                    "rows": [
+                        "red",
+                        "blue",
+                        "green"
+                    ],
+                    "columns": [
+                        "s",
+                        "m",
+                        "l"
                     ]
                 }
             },
@@ -176,61 +101,40 @@ export class InMemDB implements InMemoryDbService {
                 description: 'A simple tshirt',
                 class: 'shirt',
                 'category': { value: 'clothing', display: 'clothing' },
-                'baseCost': 1.45,
                 'supplier': 'gilden',
                 'supplierItemUrl': 'dsagfds',
-                'options': {
-                    'items': [
-                        {
-                            'name': 'Size',
-                            'selections': {
-                                'items': [
-                                    {
-                                        'value': 'M',
-                                        'display': 'M',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'S',
-                                        'display': 'S',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'XXL',
-                                        'display': 'XXL',
-                                        'img': '',
-                                        'priceAdjustment': 0.1
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            'name': 'Color',
-                            'selections': {
-                                'items': [
-                                    {
-                                        'value': 'BLUE',
-                                        'display': 'BLUE',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'RED',
-                                        'display': 'RED',
-                                        'img': '',
-                                        'priceAdjustment': 0
-                                    },
-                                    {
-                                        'value': 'TIE DYE',
-                                        'display': 'TIE',
-                                        'img': 'DYE',
-                                        'priceAdjustment': 0.15
-                                    }
-                                ]
-                            }
-                        }
+                priceMap: {
+                    "values": [
+                        [
+                            {
+                                "cost": 1,
+                                "supplierSku": "sadfgdfg",
+                                "colorFamily": "dfgsdfg",
+                                "colorSwatchImage": "sdfgsdfgfd"
+                            },
+                            {},
+                            {}
+                        ],
+                        [
+                            {},
+                            {},
+                            {}
+                        ],
+                        [
+                            {},
+                            {},
+                            {}
+                        ]
+                    ],
+                    "rows": [
+                        "red",
+                        "blue",
+                        "green"
+                    ],
+                    "columns": [
+                        "s",
+                        "m",
+                        "l"
                     ]
                 }
             }

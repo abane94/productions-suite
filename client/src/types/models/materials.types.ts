@@ -54,22 +54,6 @@ export interface MaterialListing_Id<T> extends Categorizable {
   // brandImage: string;
   // styleImage: string;
   priceMap?: PriceMap;  // this could also be flat, each combination of variations gets its own record, and similar records would be loaded for changing/selecting the options in the UI
-
-  // TODO: remove once priceMap is in use
-  baseCost: number;
-  options: {
-    items: {
-      name: string;
-      selections: {
-        items: {
-          value: string;
-          display: string;
-          img: string;
-          priceAdjustment: number
-        }[]
-      }
-    }[]
-  }
 }
 
 export type MaterialListing_ = NoId<MaterialListing_Id<never>>;
