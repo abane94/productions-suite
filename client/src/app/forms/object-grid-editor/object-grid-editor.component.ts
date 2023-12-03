@@ -25,7 +25,7 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
     });
   }
 
-  override writeValue(value: {values: object[][], columns: string[], rows: string[]} | null | undefined): void {
+  override writeValue(value: { values: object[][], columns: string[], rows: string[] } | null | undefined): void {
     if (!value) {
       return;
     }
@@ -44,7 +44,7 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
     }
     if (value.values) {
       for (let i = 0; i < value.rows.length; i++) {
-        for(let j = 0; j < value.columns.length; j++) {
+        for (let j = 0; j < value.columns.length; j++) {
           (this._values.controls[i] as FormArray).controls[j].setValue(value.values[i][j]);
         }
       }
@@ -65,36 +65,36 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
   @Input()
   formDef: FormDefinition = {
     key: 'sdgdf',
-    fields: [
-        {
-            type: 'NUMBER',
-            key: 'cost',
-            label: 'cost',
-            placeholder: '',
-            required: true
-        },
-        {
-            type: 'TEXT',
-            key: 'supplierSku',
-            label: 'supplierSku',
-            placeholder: '',
-            required: true
-        },
-        {
-          type: 'TEXT',
-          key: 'colorFamily',
-          label: 'colorFamily',
-          placeholder: '',
-          required: true
+    fields: {
+      cost: {
+        type: 'NUMBER',
+        key: 'cost',
+        label: 'cost',
+        placeholder: '',
+        required: true
       },
-      {
-          type: 'TEXT',
-          key: 'colorSwatchImage',
-          label: 'colorSwatchImage',
-          placeholder: '',
-          required: true
+      supplierSku: {
+        type: 'TEXT',
+        key: 'supplierSku',
+        label: 'supplierSku',
+        placeholder: '',
+        required: true
+      },
+      colorFamily: {
+        type: 'TEXT',
+        key: 'colorFamily',
+        label: 'colorFamily',
+        placeholder: '',
+        required: true
+      },
+      colorSwatchImage: {
+        type: 'TEXT',
+        key: 'colorSwatchImage',
+        label: 'colorSwatchImage',
+        placeholder: '',
+        required: true
       }
-    ]
+    }
   }
   @Input()
   displayField = 'supplierSku';
@@ -121,7 +121,7 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
     // make sure the form is empty
     if (!Object.keys(this.tempFormValue!).length) {
       this.tempFormValue = {};  // this will keep the empty fields from being added before save is clicked
-      for (const field of this.formDef.fields.map(f => f.key)) {
+      for (const field of Object.keys(this.formDef.fields)) {
         (this.tempFormValue as any)[field] = null;
       }
     }
@@ -151,7 +151,7 @@ export class ObjectGridEditorComponent extends GenericControlValueAccessor<objec
     this._rows.push(this._fb.control(label));
     this.rowField = '';
 
-    for(const ls of this._values.controls) {
+    for (const ls of this._values.controls) {
       (ls as FormArray).push(this._fb.control({}));  // null
     }
   }

@@ -1,79 +1,79 @@
 <!-- form header information and wrappers etc...-->
 
 <form *ngIf="_form && formDef" clrForm [formGroup]="_form" clrLayout="horizontal"> <!-- TODO: conditional logic to determin layout-->
-    <div *ngFor="let field of formDef.fields;">
-        <div [ngSwitch]="field.type">
+    <div *ngFor="let field of formDef.fields | keyvalue">
+        <div [ngSwitch]="field.value.type">
             <div *ngSwitchCase="'HIDDEN'">
-                <input [formControlName]="field.key" type="hidden">
+                <input [formControlName]="field.value.key" type="hidden">
             </div>
             <div *ngSwitchCase="'TEXT'">
-                <!-- <input [formControlName]="field.key"> -->
-                <clr-input-container [attr.disabled]="compare(value, field.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.disabled)}">
-                    <label class="clr-control-label">{{ field.label }}{{ field.required ? '*' : '' }}</label>
-                    <input clrInput type="text" [formControlName]="field.key" [attr.disabled]="compare(value, field.disabled, undefined)"/>
-                    <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
-                    <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
+                <!-- <input [formControlName]="field.value.key"> -->
+                <clr-input-container [attr.disabled]="compare(value, field.value.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.value.disabled)}">
+                    <label class="clr-control-label">{{ field.value.label }}{{ field.value.required ? '*' : '' }}</label>
+                    <input clrInput type="text" [formControlName]="field.value.key" [attr.disabled]="compare(value, field.value.disabled, undefined)"/>
+                    <clr-control-helper *ngIf="field.value.helperText">{{ field.value.helperText }}</clr-control-helper>
+                    <clr-control-error *ngIf="_form.controls[field.value.key].errors">{{ _form.controls[field.value.key].errors }}</clr-control-error>
                 </clr-input-container>
             </div>
             <div *ngSwitchCase="'NUMBER'">
-                <!-- <input [formControlName]="field.key" type="number" [step]="field.step">TODO: if step id not defined will this cause an issue?-->
-                <clr-input-container [attr.disabled]="compare(value, field.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.disabled)}">
-                    <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
-                    <input clrInput type="number" [formControlName]="field.key" [attr.disabled]="compare(value, field.disabled, undefined)"/> <!--  [step]="field.step" -->
-                    <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
-                    <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
+                <!-- <input [formControlName]="field.value.key" type="number" [step]="field.value.step">TODO: if step id not defined will this cause an issue?-->
+                <clr-input-container [attr.disabled]="compare(value, field.value.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.value.disabled)}">
+                    <label>{{ field.value.label }}{{ field.value.required ? '*' : '' }}</label>
+                    <input clrInput type="number" [formControlName]="field.value.key" [attr.disabled]="compare(value, field.value.disabled, undefined)"/> <!--  [step]="field.value.step" -->
+                    <clr-control-helper *ngIf="field.value.helperText">{{ field.value.helperText }}</clr-control-helper>
+                    <clr-control-error *ngIf="_form.controls[field.value.key].errors">{{ _form.controls[field.value.key].errors }}</clr-control-error>
                 </clr-input-container>
             </div>
             <div *ngSwitchCase="'CHECK'">
-                <!-- <input [formControlName]="field.key" type="number" [step]="field.step">TODO: if step id not defined will this cause an issue?-->
-                <clr-checkbox-container [attr.disabled]="compare(value, field.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.disabled)}">
+                <!-- <input [formControlName]="field.value.key" type="number" [step]="field.value.step">TODO: if step id not defined will this cause an issue?-->
+                <clr-checkbox-container [attr.disabled]="compare(value, field.value.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.value.disabled)}">
                     <clr-checkbox-wrapper>
-                        <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
-                        <input clrCheckbox type="checkbox" [formControlName]="field.key" [attr.disabled]="compare(value, field.disabled, undefined)"/> <!--  [step]="field.step" -->
-                        <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
-                        <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
+                        <label>{{ field.value.label }}{{ field.value.required ? '*' : '' }}</label>
+                        <input clrCheckbox type="checkbox" [formControlName]="field.value.key" [attr.disabled]="compare(value, field.value.disabled, undefined)"/> <!--  [step]="field.value.step" -->
+                        <clr-control-helper *ngIf="field.value.helperText">{{ field.value.helperText }}</clr-control-helper>
+                        <clr-control-error *ngIf="_form.controls[field.value.key].errors">{{ _form.controls[field.value.key].errors }}</clr-control-error>
                     </clr-checkbox-wrapper>
                 </clr-checkbox-container>
             </div>
             <div *ngSwitchCase="'SELECT'">
-                <clr-select-container [attr.disabled]="compare(value, field.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.disabled)}">
-                    <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
-                    <select clrSelect [formControlName]="field.key" [attr.disabled]="compare(value, field.disabled, undefined)">
-                      <option *ngFor="let opt of castOptionsField(field).options.options" [value]="opt.value">{{ opt.display }}</option>
+                <clr-select-container [attr.disabled]="compare(value, field.value.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.value.disabled)}">
+                    <label>{{ field.value.label }}{{ field.value.required ? '*' : '' }}</label>
+                    <select clrSelect [formControlName]="field.value.key" [attr.disabled]="compare(value, field.value.disabled, undefined)">
+                      <option *ngFor="let opt of castOptionsField(field.value).options.options" [value]="opt.value">{{ opt.display }}</option>
                     </select>
-                    <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
-                    <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
+                    <clr-control-helper *ngIf="field.value.helperText">{{ field.value.helperText }}</clr-control-helper>
+                    <clr-control-error *ngIf="_form.controls[field.value.key].errors">{{ _form.controls[field.value.key].errors }}</clr-control-error>
                   </clr-select-container>
             </div>
             <div *ngSwitchCase="'DATE'">
-                <clr-date-container [attr.disabled]="compare(value, field.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.disabled)}">
-                    <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
-                    <input type="date" [formControlName]="field.key" [clrDate]="newDate()" [attr.disabled]="compare(value, field.disabled, undefined)"/>
-                    <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
-                    <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
+                <clr-date-container [attr.disabled]="compare(value, field.value.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.value.disabled)}">
+                    <label>{{ field.value.label }}{{ field.value.required ? '*' : '' }}</label>
+                    <input type="date" [formControlName]="field.value.key" [clrDate]="newDate()" [attr.disabled]="compare(value, field.value.disabled, undefined)"/>
+                    <clr-control-helper *ngIf="field.value.helperText">{{ field.value.helperText }}</clr-control-helper>
+                    <clr-control-error *ngIf="_form.controls[field.value.key].errors">{{ _form.controls[field.value.key].errors }}</clr-control-error>
                 </clr-date-container>
             </div>
-            <div *ngSwitchCase="'NESTED'" style="padding-top: 10px" [ngClass]="{'disabled': compare(value, field.disabled)}">
-                <label class="nested-label">{{ field.label }}{{ field.required ? '*' : '' }}</label>
-                <app-master-detail-control [formControlName]="field.key" [innerForm]="castNestedField(field).innerForm" [templates]="templates" [attr.disabled]="compare(value, field.disabled, undefined)"></app-master-detail-control>
+            <div *ngSwitchCase="'NESTED'" style="padding-top: 10px" [ngClass]="{'disabled': compare(value, field.value.disabled)}">
+                <label class="nested-label">{{ field.value.label }}{{ field.value.required ? '*' : '' }}</label>
+                <app-master-detail-control [formControlName]="field.value.key" [innerForm]="castNestedField(field.value).innerForm" [templates]="templates" [attr.disabled]="compare(value, field.value.disabled, undefined)"></app-master-detail-control>
 
-                <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
-                <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
+                <clr-control-helper *ngIf="field.value.helperText">{{ field.value.helperText }}</clr-control-helper>
+                <clr-control-error *ngIf="_form.controls[field.value.key].errors">{{ _form.controls[field.value.key].errors }}</clr-control-error>
             </div>
 
-            <div *ngSwitchCase="'OBJECT_GRID'" style="padding-top: 10px" [ngClass]="{'disabled': compare(value, field.disabled)}">
-                <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
-                <app-object-grid-editor [formControlName]="field.key" [formDef]="castGridField(field).formDef" [displayField]="castGridField(field).displayField" [attr.disabled]="compare(value, field.disabled, undefined)"></app-object-grid-editor>
+            <div *ngSwitchCase="'OBJECT_GRID'" style="padding-top: 10px" [ngClass]="{'disabled': compare(value, field.value.disabled)}">
+                <label>{{ field.value.label }}{{ field.value.required ? '*' : '' }}</label>
+                <app-object-grid-editor [formControlName]="field.value.key" [formDef]="castGridField(field.value).formDef" [displayField]="castGridField(field.value).displayField" [attr.disabled]="compare(value, field.value.disabled, undefined)"></app-object-grid-editor>
 
-                <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
-                <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
+                <clr-control-helper *ngIf="field.value.helperText">{{ field.value.helperText }}</clr-control-helper>
+                <clr-control-error *ngIf="_form.controls[field.value.key].errors">{{ _form.controls[field.value.key].errors }}</clr-control-error>
             </div>
 
-            <div *ngSwitchCase="'RESOURCE'" [attr.disabled]="compare(value, field.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.disabled)}">
-                <label>{{ field.label }}{{ field.required ? '*' : '' }}</label>
-                <app-resource-control [formControlName]="field.key"  [attr.disabled]="compare(value, field.disabled, undefined)" [resource]="castResourceField(field).resource"></app-resource-control>
-                <clr-control-helper *ngIf="field.helperText">{{ field.helperText }}</clr-control-helper>
-                <clr-control-error *ngIf="_form.controls[field.key].errors">{{ _form.controls[field.key].errors }}</clr-control-error>
+            <div *ngSwitchCase="'RESOURCE'" [attr.disabled]="compare(value, field.value.disabled, undefined)" [ngClass]="{'disabled': compare(value, field.value.disabled)}">
+                <label>{{ field.value.label }}{{ field.value.required ? '*' : '' }}</label>
+                <app-resource-control [formControlName]="field.value.key"  [attr.disabled]="compare(value, field.value.disabled, undefined)" [resource]="castResourceField(field.value).resource"></app-resource-control>
+                <clr-control-helper *ngIf="field.value.helperText">{{ field.value.helperText }}</clr-control-helper>
+                <clr-control-error *ngIf="_form.controls[field.value.key].errors">{{ _form.controls[field.value.key].errors }}</clr-control-error>
             </div>
         </div>
     </div>

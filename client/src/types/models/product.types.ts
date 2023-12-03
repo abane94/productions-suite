@@ -7,6 +7,7 @@ export interface Product_Id<T> extends Partial<Categorizable> {  // TODO: remove
     name: string;
     description: string;
     baseHours: number;
+    useQuantity: boolean;
     quantity: {
         hoursPerUnit: number;
     } | null;  // if the quantity of the product is null, the product is not allowed to have precesses with a null quantity
@@ -14,7 +15,7 @@ export interface Product_Id<T> extends Partial<Categorizable> {  // TODO: remove
     maxComplexity: number;
     materials: Material_Id<T>[];  // materials that are explicity included with the Product, but not tied to a process
     processes: T; //Process['id'];
-    MaterialStubs?: ResourceStub<Resource.Material>[];
+    materialStubs?: ResourceStub<Resource.Material>[];
     // processStubs?: ResourceStub<Resource.Material>[];  //? include??
 }
 

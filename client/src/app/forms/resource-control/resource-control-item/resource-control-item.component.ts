@@ -43,27 +43,27 @@ export class ResourceControlItemComponent<T extends ID & {name: string}> extends
   @Input()
   formDef: FormDefinition = {
     key: 'dgsdfgsfdh',
-    fields: [
+    fields: {
       // {
       //   type: 'HIDDEN',
       //   key: 'id',
       //   label: 'ID'
       // },
-      {
+      name: {
         type: 'TEXT',
         key: 'name',
         label: 'Name',
         placeholder: '',
         required: true
       },
-      {
+      quantity: {
         type: 'NUMBER',
         key: 'quantity',
         label: 'Quantity',
         placeholder: '',
         required: true
       },
-    ]
+    }
   };
 
   @Input()

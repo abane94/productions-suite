@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ResourceOptions } from 'src/app/resource-drawer/resource-drawer.service';
 import { PriceMap } from 'src/types/models/materials.types';
-import { ID } from 'src/types/util/util';
+import { AllKeysOf, ID } from 'src/types/util/util';
 import { GenericControlProvider, GenericControlValueAccessor } from '../GenericControlValueAccessor';
 import { NamedTemplateDirective } from '../named-template/named-template.directive';
 import { compare, FormComparison } from './form-reflection';
@@ -28,6 +28,7 @@ export interface FormFieldDefinitionBase<T> {
   required?: boolean;
   helperText?: string;
   disabled?: FormComparison;
+  displayOrder?: number;
   // validators: any; // TODO: define valadators that a user can pick from a multi select
 }
 
@@ -113,6 +114,7 @@ interface MultiFormFieldDefinition {
   options: OptionsSource;
   helperText?: string;
   disabled?: FormComparison;
+  displayOrder?: number;
   multiple: boolean;  // TODO check to see which components this is possible on, and the editor will have to make sure it checks out
 }
 
@@ -121,7 +123,13 @@ export type FormFieldDefinition = TextFormFieldDefinition | NumberFormFieldDefin
 
 export interface FormDefinition {
   key: string;
-  fields: FormFieldDefinition[];  // this should be a list with a key property instead of {key: FieldDef}, so that the ordering of the fields is consistent
+  fields: { [key: string]: FormFieldDefinition };
+  // order: keyof FormDefinition['fields'][];
+}
+
+
+export interface TypedFormDef<T> extends FormDefinition {
+  fields: { [Property in keyof T]: FormFieldDefinition & { key: Property}};
 }
 
 @Component({
@@ -190,7 +198,7 @@ export class UserDefinedFormViewerComponent extends GenericControlValueAccessor<
 
     const defaultItem: Record<string, any> = {};
 
-    for (const formDef of innerForm.fields) {
+    for (const formDef of Object.values(innerForm.fields)) {
         switch(formDef.type) {
         case('TEXT'):
         case('TEXTAREA'):

@@ -1,24 +1,24 @@
 <table class="table user-defined-data-view">
 
     <tbody>
-      <tr *ngFor="let field of formDef.fields;">
-        <td>{{ field.label }}</td>
+      <tr *ngFor="let field of formDef.fields | keyvalue;">
+        <td>{{ field.value.label }}</td>
         <td>
-            <ng-container [ngSwitch]="field.type">
+            <ng-container [ngSwitch]="field.value.type">
                 <ng-container *ngSwitchCase="'NESTED'">
                     <clr-accordion>
                       <!-- TODO: Maybe switch with stack view ?? -->
-                        <clr-accordion-panel *ngFor="let subData of data[field.key].items; let i = index">
-                          <clr-accordion-title>{{ accordionPanelDisplay(subData, field) }}</clr-accordion-title>
+                        <clr-accordion-panel *ngFor="let subData of data[field.value.key].items; let i = index">
+                          <clr-accordion-title>{{ accordionPanelDisplay(subData, field.value) }}</clr-accordion-title>
                           <clr-accordion-content [*clrIfExpanded] >
-                            <app-user-defined-form-data-display  [formDef]="castNestedField(field).innerForm" [data]="subData" [nestedDisplayField]="getNestedDisplayFieldObject(field)"></app-user-defined-form-data-display>
+                            <app-user-defined-form-data-display  [formDef]="castNestedField(field.value).innerForm" [data]="subData" [nestedDisplayField]="getNestedDisplayFieldObject(field.value)"></app-user-defined-form-data-display>
                           </clr-accordion-content>
                         </clr-accordion-panel>
                     </clr-accordion>
                 </ng-container>
 
                 <ng-container *ngSwitchDefault>
-                    {{ data[field.key]?.display || data[field.key] }}
+                    {{ data[field.value.key]?.display || data[field.value.key] }}
                 </ng-container>
             </ng-container>
         </td>

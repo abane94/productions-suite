@@ -1,38 +1,39 @@
 import { ResourceSelectOptions } from "src/types/util/util";
-import { FormDefinition, FormFieldDefinition, OptionDefinition } from "../forms/user-defined-form-viewer/user-defined-form-viewer.component";
+import { OptionDefinition, TypedFormDef } from "../forms/user-defined-form-viewer/user-defined-form-viewer.component";
+import { Process } from "src/types/models/processes.types";
 
 
-export default function ProcessFormDefinition(categories: OptionDefinition[], classes: OptionDefinition[]): FormDefinition {
+export default function ProcessFormDefinition(categories: OptionDefinition[], classes: OptionDefinition[]): TypedFormDef<Process> {
     return {
         key: 'dgsdfgsfdh',
-        fields: [
-            {
+        fields: {
+            id: {
                 type: 'HIDDEN',
                 key: 'id',
                 label: 'ID'
             },
-            {
+            name: {
                 type: 'TEXT',
                 key: 'name',
                 label: 'Name',
                 placeholder: '',
                 required: true
             },
-            {
+            description: {
                 type: 'TEXT',
                 key: 'description',
                 label: 'Description',
                 placeholder: '',
                 required: true
             },
-            {
+            useParentQuantity: {
                 type: 'CHECK',
                 key: 'useParentQuantity',
                 label: 'Use Parent Quantity',
                 placeholder: '',
                 required: true
             },
-            {
+            category: {
               type: 'SELECT',
               key: 'category',
               label: 'Category',
@@ -52,14 +53,14 @@ export default function ProcessFormDefinition(categories: OptionDefinition[], cl
             //       options: classes
             //     }
             // },
-            {
+            hours: {
                 type: 'NUMBER',
                 key: 'hours',
                 label: 'Hours',
                 placeholder: '',
                 required: true
             },
-            {
+            applyTimeToQuantity: {
                 type: 'CHECK',
                 key: 'applyTimeToQuantity',
                 label: 'Apply time to quantity',
@@ -69,14 +70,14 @@ export default function ProcessFormDefinition(categories: OptionDefinition[], cl
                     value: '1'
                 }
             },
-            {
+            price: {
                 type: 'NUMBER',
                 key: 'price',
                 label: 'Price',
                 placeholder: '',
                 required: true
             },
-            {
+            applyPriceToQuantity: {
                 type: 'CHECK',
                 key: 'applyPriceToQuantity',
                 label: 'Apply price to quantity',
@@ -86,33 +87,26 @@ export default function ProcessFormDefinition(categories: OptionDefinition[], cl
                     value: '1'
                 }
             },
-            {
-                type: 'TEXT',
-                key: 'supplier',
-                label: 'Supplier',
-                placeholder: '',
-                required: true
-            },
-            {
+            materials: {
                 type: 'RESOURCE',
                 key: 'materials',
                 resource: 'Material'
             },
-            {
+            stubs: {
                 type: 'NESTED',
                 key: 'stubs',
                 label: 'Material Stubs',
                 innerForm: {
                     key: 'does not matter',
-                    fields: [
-                        {
+                    fields: {
+                        title: {
                             type: 'TEXT',
                             key: 'title',
                             label: 'Title',
                             placeholder: '',
                             required: true
                         },
-                        {
+                        category: {
                           type: 'SELECT',
                           key: 'category',
                           label: 'Category',
@@ -122,14 +116,14 @@ export default function ProcessFormDefinition(categories: OptionDefinition[], cl
                               options: categories  // TODO: is this correct???
                             }
                         },
-                        {
+                        class: {
                             type: 'TEXT',
                             key: 'class',
                             label: 'Class',
                             placeholder: '',
                             required: false
                         },
-                        {
+                        multiple: {
                             type: 'CHECK',
                             key: 'multiple',
                             label: 'Allow Multiple',
@@ -145,7 +139,7 @@ export default function ProcessFormDefinition(categories: OptionDefinition[], cl
                         //         options: ResourceSelectOptions
                         //       }
                         //   },
-                    ]
+                    }
                 }
             }
             // {
@@ -249,6 +243,6 @@ export default function ProcessFormDefinition(categories: OptionDefinition[], cl
             //     ]
             //   }
             // }
-        ],
+        },
     };
 }
