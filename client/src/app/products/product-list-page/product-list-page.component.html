@@ -1,0 +1,51 @@
+<button class="btn btn-primary" (click)="addModalIsOpen = true">
+    <cds-icon shape="plus"></cds-icon>
+    Add
+</button>
+
+<clr-datagrid style="height:80vh" (clrDgRefresh)="gridHandler.refresh($event)" [clrDgLoading]="gridHandler.loading" [(clrDgSelected)]="selected">
+    <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+    <clr-dg-column [clrDgField]="'description'">Description</clr-dg-column>
+    <clr-dg-column [clrDgField]="'hours'">Id</clr-dg-column>
+
+    <clr-dg-placeholder>We couldn't find any products!</clr-dg-placeholder>
+
+    <clr-dg-row *ngFor="let product of state.product.value" [clrDgItem]="product">
+        <!-- <clr-dg-cell>{{user.id}}</clr-dg-cell> -->
+        <clr-dg-cell>{{product.value?.name}}</clr-dg-cell>
+        <clr-dg-cell>{{product.value?.description }}</clr-dg-cell>
+        <clr-dg-cell>{{product.value?.id }}</clr-dg-cell>
+        <!-- <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color">{{user.color}}</span>
+      </clr-dg-cell> -->
+    </clr-dg-row>
+
+    <clr-dg-detail *clrIfDetail="let detail">
+        <clr-dg-detail-header>{{detail.name}}</clr-dg-detail-header>
+        <app-product-editor [product]="detail.value" (save)="gridHandler.onSave($event)"></app-product-editor>
+        <br />
+        <app-user-defined-form-data-display [data]="detail.value" [formDef]="formDef"
+            [nestedDisplayField]="nestedDisplayField"></app-user-defined-form-data-display>
+    </clr-dg-detail>
+
+    <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="2" [clrDgTotalItems]="gridHandler.total">
+          <clr-dg-page-size [clrPageSizeOptions]="[1,2,5,10]">Product per page</clr-dg-page-size>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} users
+        </clr-dg-pagination>
+      </clr-dg-footer>
+</clr-datagrid>
+
+
+ <!-- TODO: Remove after testing -->
+<!-- <app-object-grid-editor></app-object-grid-editor> -->
+<!-- <app-product-control></app-product-control> -->
+
+
+<!--  Add Modal -->
+<clr-modal [(clrModalOpen)]="addModalIsOpen">
+    <h3 class="modal-title">Add Product</h3>
+    <div class="modal-body">
+        <app-product-editor (save)="addProduct($event)"></app-product-editor>
+    </div>
+</clr-modal>

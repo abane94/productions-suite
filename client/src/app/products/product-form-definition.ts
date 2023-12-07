@@ -2,7 +2,7 @@ import { ResourceSelectOptions } from "src/types/util/util";
 import { TypedFormDef, OptionDefinition } from "../forms/user-defined-form-viewer/user-defined-form-viewer.component";
 import { Product } from "src/types/models/product.types";
 
-export default function ProcessFormDefinition(categories: OptionDefinition[], classes: OptionDefinition[]): TypedFormDef<Product> {
+export default function ProductFormDefinition(categories: OptionDefinition[], classes: OptionDefinition[]): TypedFormDef<Product> {
     return {
         key: 'dgsdfgsfdh',
         fields: {
@@ -132,7 +132,7 @@ export default function ProcessFormDefinition(categories: OptionDefinition[], cl
                     }
                 }
             }
-            // TODO: process stubs?
+            // TODO: product stubs?
         },
     };
 }

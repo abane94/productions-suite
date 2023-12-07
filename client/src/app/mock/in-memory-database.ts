@@ -3,6 +3,7 @@ import { getStatusText, InMemoryDbService, RequestInfo, ResponseOptions, STATUS 
 import { applyContext } from 'src/types/context.types';
 import { Process } from 'src/types/models/processes.types';
 import { Material } from '../../types/models/materials.types';
+import Products from './db/products';
 
 @Injectable()
 export class InMemDB implements InMemoryDbService {
@@ -151,7 +152,7 @@ export class InMemDB implements InMemoryDbService {
                 applyPriceToQuantity: true
             }
         ];
-        return { materials, processes };
+        return { materials, processes, products: Products };
     }
 
     get(req: RequestInfo) {

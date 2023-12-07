@@ -1,5 +1,5 @@
 import { Categorizable, Id, NoId, Resource, ResourceStub } from "../util/util";
-import { Material_Id } from "./materials.types";
+import { MaterialListing_Id } from "./materials.types";
 
 
 export interface Product_Id<T> extends Partial<Categorizable> {  // TODO: remove Partial
@@ -13,8 +13,8 @@ export interface Product_Id<T> extends Partial<Categorizable> {  // TODO: remove
     } | null;  // if the quantity of the product is null, the product is not allowed to have precesses with a null quantity
     minComplexity: number;
     maxComplexity: number;
-    materials: Material_Id<T>[];  // materials that are explicity included with the Product, but not tied to a process
-    processes: T; //Process['id'];
+    materials: MaterialListing_Id<T>[];  // materials that are explicity included with the Product, but not tied to a process
+    processes: T[]; //Process['id'];
     materialStubs?: ResourceStub<Resource.Material>[];
     // processStubs?: ResourceStub<Resource.Material>[];  //? include??
 }
