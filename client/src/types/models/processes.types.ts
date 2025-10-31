@@ -27,3 +27,31 @@ interface Process_Id<T> extends Partial<Categorizable> { // TODO: Remove partial
 
 export type Process_ = NoId<Process_Id<never>>;
 export type Process = Process_Id<Id>;
+
+
+
+interface Process_Id_V2<T> extends Partial<Categorizable> { // TODO: Remove partial
+    id: T;
+    name: string;
+    description: string;
+    // quantity: number | null; // when null refers to a quantity, it means, that the quantity comes from the product. UPDATE: Null is hard to combine with a number input, I think 0(?) or negative would do the trick
+    inheritQuanity: boolean;
+    // time: {
+    //     applyToQuantity: boolean;  // this could be the processes quantity, or if null, its the products quantity
+    //     value: number;
+    // },
+    hours: number;
+    hoursPerQuantity: number;
+    // applyTimeToQuantity: boolean;
+    // cost: {
+    //     applyToQuantity: boolean;
+    //     value: number;
+    //     tiers: {min: number, price: number}[] ;  // this is only valid if applyToQuantity is true
+    // },
+    price: number;
+    pricePerQuantity: number;
+    // applyPriceToQuantity: boolean;
+    priceTiers?: {min: number, price: number}[];  // TODO this is based on pricePerQuantity???
+    materials?: Material[];
+    stubs?: ResourceStub<Resource.Material>[];
+}

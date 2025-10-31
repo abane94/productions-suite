@@ -1,0 +1,17 @@
+
+Todo:
+  [X] figure out the correct way to send form def through the resource drawer
+  [X] add material resource controls to the process formdef
+  [] specify single vs many material controls
+  [] look into adding filters for resource control, this would need to be able to be defined by a user
+  [] combine like form definition fields, like ones that match up to interfaces, and use speard to include them in actual form definitions
+  [] use more interfaces for form definitions and types (EX: Complexity wich would have min and max)
+
+  [X] product form defs
+  [X] shell in the product page
+  [] order/quote/encounter(lead?) types
+  [] price strategy for things, could be an base price plus options, aprice map, tiers
+  [] create value-grid control, so that price map can be translated into a grid that tracks quantity and sums price. Create a helper function in resource control to take the info about the material and create the correct form
+  [] add arbitrary form fieds to material and process
+  [] control which fields are added to object-grid control, but require price (if its a price map only??)
+  [] how possible is it to refactor what a formDefinition looks like, could fields be an object with form key being the key and the value would be the field definition (minus key?). This could improve typing abilities
